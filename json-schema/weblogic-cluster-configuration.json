@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.oracle.com/weblogic/cluster-configuration",
+  "title": "WebLogic Cluster Configuration",
+  "description": "Configuration schema for an Oracle WebLogic Server cluster including messaging mode, load balancing algorithm, and multicast settings.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique name of the cluster within the domain",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "clusterMessagingMode": {
+      "type": "string",
+      "description": "Messaging mode used for cluster communication",
+      "enum": ["unicast", "multicast"],
+      "default": "unicast"
+    },
+    "clusterBroadcastChannel": {
+      "type": "string",
+      "description": "Multicast channel name for cluster communication (used with multicast mode)"
+    },
+    "multicastAddress": {
+      "type": "string",
+      "description": "Multicast address for cluster heartbeat messages",
+      "default": "239.192.0.0"
+    },
+    "multicastPort": {
+      "type": "integer",
+      "description": "Multicast port for cluster heartbeat messages",
+      "default": 7001,
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "clusterAddress": {
+      "type": "string",
+      "description": "Comma-separated list of host:port pairs for all servers in the cluster"
+    },
+    "defaultLoadAlgorithm": {
+      "type": "string",
+      "description": "Load balancing algorithm for routing requests to cluster members",
+      "enum": [
+        "round-robin",
+        "weight-based",
+        "round-robin-affinity",
+        "weight-based-affinity",
+        "random"
+      ],
+      "default": "round-robin"
+    },
+    "weblogicPluginEnabled": {
+      "type": "boolean",
+      "description": "Whether the WebLogic plugin is enabled for this cluster",
+      "default": false
+    },
+    "frontendHost": {
+      "type": "string",
+      "description": "Frontend hostname for the cluster (used in URL generation behind a load balancer)"
+    },
+    "frontendHTTPPort": {
+      "type": "integer",
+      "description": "Frontend HTTP port",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "frontendHTTPSPort": {
+      "type": "integer",
+      "description": "Frontend HTTPS port",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "httpPingRetryCount": {
+      "type": "integer",
+      "description": "Number of HTTP ping retries before marking a server as failed",
+      "default": 3,
+      "minimum": 0
+    },
+    "httpPingPeriod": {
+      "type": "integer",
+      "description": "Period in seconds between HTTP health pings",
+      "default": 10,
+      "minimum": 1
+    },
+    "migrationBasis": {
+      "type": "string",
+      "description": "Basis for automatic service migration",
+      "enum": ["consensus", "database"],
+      "default": "consensus"
+    },
+    "dataSourceForAutomaticMigration": {
+      "type": "string",
+      "description": "Data source used for database-based automatic migration leasing"
+    },
+    "replicationChannel": {
+      "type": "string",
+      "description": "Network channel used for session replication"
+    },
+    "sessionFlushInterval": {
+      "type": "integer",
+      "description": "Interval in seconds for flushing session data to the replication channel",
+      "default": 3
+    },
+    "numberOfServersInClusterAddress": {
+      "type": "integer",
+      "description": "Number of servers to include in the generated cluster address",
+      "minimum": 0
+    }
+  },
+  "required": ["name"]
+}

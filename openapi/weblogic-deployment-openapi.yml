@@ -1,0 +1,924 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server Deployment API
+  description: >-
+    RESTful API for deploying, undeploying, redeploying, and managing
+    applications and shared libraries on Oracle WebLogic Server. Supports
+    uploading application archives, deploying from the server file system,
+    managing deployment plans, and controlling application lifecycle states
+    across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html
+servers:
+  - url: https://{host}:{port}/management/weblogic/latest
+    description: WebLogic Server Administration Server
+    variables:
+      host:
+        default: localhost
+        description: Hostname of the WebLogic Administration Server
+      port:
+        default: '7001'
+        description: Port of the WebLogic Administration Server
+security:
+  - basicAuth: []
+tags:
+  - name: Application Deployments
+    description: >-
+      Deploy, undeploy, redeploy, and manage application configurations
+      using the edit tree
+  - name: Library Deployments
+    description: Deploy and manage shared libraries
+  - name: Deployment Operations
+    description: >-
+      Runtime deployment operations using the domain runtime deployment
+      manager
+  - name: Upload
+    description: Upload application archives to the administration server
+paths:
+  /edit/appDeployments:
+    get:
+      operationId: listAppDeployments
+      summary: List all application deployments
+      description: >-
+        Returns all application deployment configurations in the domain.
+        Requires an active edit session for modification operations.
+      tags:
+        - Application Deployments
+      responses:
+        '200':
+          description: List of application deployments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AppDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createAppDeployment
+      summary: Create an application deployment
+      description: >-
+        Creates a new application deployment configuration. Requires an
+        active edit session. The application must be accessible from the
+        administration server file system or uploaded first.
+      tags:
+        - Application Deployments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppDeploymentCreate'
+      responses:
+        '201':
+          description: Application deployment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppDeployment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/appDeployments/{appName}:
+    get:
+      operationId: getAppDeployment
+      summary: Get an application deployment
+      description: Returns the configuration of a specific application deployment.
+      tags:
+        - Application Deployments
+      parameters:
+        - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: updateAppDeployment
+      summary: Update an application deployment
+      description: >-
+        Updates the configuration of a specific application deployment.
+        Requires an active edit session.
+      tags:
+        - Application Deployments
+      parameters:
+        - $ref: '#/components/parameters/appName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppDeploymentUpdate'
+      responses:
+        '200':
+          description: Application deployment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppDeployment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteAppDeployment
+      summary: Remove an application deployment
+      description: >-
+        Removes an application deployment configuration from the domain.
+        Requires an active edit session. This undeploys the application
+        from all targets upon activation.
+      tags:
+        - Application Deployments
+      parameters:
+        - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment removed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /edit/libraries:
+    get:
+      operationId: listLibraries
+      summary: List all shared library deployments
+      description: >-
+        Returns all shared library deployment configurations in the domain.
+      tags:
+        - Library Deployments
+      responses:
+        '200':
+          description: List of shared library deployments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LibraryDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createLibrary
+      summary: Create a shared library deployment
+      description: >-
+        Creates a new shared library deployment. Requires an active edit session.
+      tags:
+        - Library Deployments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibraryDeploymentCreate'
+      responses:
+        '201':
+          description: Library deployment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryDeployment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/libraries/{libraryName}:
+    get:
+      operationId: getLibrary
+      summary: Get a shared library deployment
+      description: Returns the configuration of a specific shared library deployment.
+      tags:
+        - Library Deployments
+      parameters:
+        - $ref: '#/components/parameters/libraryName'
+      responses:
+        '200':
+          description: Library deployment configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteLibrary
+      summary: Remove a shared library deployment
+      description: >-
+        Removes a shared library deployment from the domain. Requires an
+        active edit session.
+      tags:
+        - Library Deployments
+      parameters:
+        - $ref: '#/components/parameters/libraryName'
+      responses:
+        '200':
+          description: Library deployment removed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/deploymentManager/deploy:
+    post:
+      operationId: deploy
+      summary: Deploy an application at runtime
+      description: >-
+        Deploys an application to the specified targets using the deployment
+        manager. This is a runtime operation that does not require an edit
+        session.
+      tags:
+        - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application deployment name
+                source:
+                  type: string
+                  description: >-
+                    Path to the application archive or exploded directory
+                    on the administration server
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target server or cluster names
+                plan:
+                  type: string
+                  description: Path to the deployment plan
+                deploymentOptions:
+                  type: object
+                  properties:
+                    stageMode:
+                      type: string
+                      enum:
+                        - stage
+                        - nostage
+                        - external_stage
+                    planStageMode:
+                      type: string
+                      enum:
+                        - stage
+                        - nostage
+                        - external_stage
+                    retireGracefully:
+                      type: boolean
+                      description: Whether to retire previous version gracefully
+                    retireTimeout:
+                      type: integer
+                      description: Timeout in seconds for graceful retirement
+                    securityModel:
+                      type: string
+                      enum:
+                        - DDOnly
+                        - CustomRoles
+                        - CustomRolesAndPolicies
+                        - Advanced
+              required:
+                - name
+                - source
+                - targets
+      responses:
+        '200':
+          description: Deployment initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/undeploy:
+    post:
+      operationId: undeploy
+      summary: Undeploy an application at runtime
+      description: >-
+        Undeploys an application from the specified targets using the
+        deployment manager.
+      tags:
+        - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application deployment name to undeploy
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target servers or clusters to undeploy from
+                deploymentOptions:
+                  type: object
+                  properties:
+                    gracefulIgnoreSessions:
+                      type: boolean
+                      description: Whether to ignore active sessions
+                    gracefulProductionToAdmin:
+                      type: boolean
+                      description: Whether to transition to admin mode first
+                    timeout:
+                      type: integer
+                      description: Timeout in seconds for graceful undeployment
+              required:
+                - name
+      responses:
+        '200':
+          description: Undeployment initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/redeploy:
+    post:
+      operationId: redeploy
+      summary: Redeploy an application
+      description: >-
+        Redeploys an application, refreshing it from the source location.
+        Can update the entire application or specific modules.
+      tags:
+        - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application deployment name
+                source:
+                  type: string
+                  description: Updated source path (optional, uses existing if omitted)
+                plan:
+                  type: string
+                  description: Updated deployment plan path
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target servers or clusters
+                deploymentOptions:
+                  type: object
+                  properties:
+                    retireGracefully:
+                      type: boolean
+                    retireTimeout:
+                      type: integer
+              required:
+                - name
+      responses:
+        '200':
+          description: Redeployment initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/startApplication:
+    post:
+      operationId: startApplication
+      summary: Start a deployed application
+      description: >-
+        Starts a deployed application that is currently in the prepared
+        or admin state, transitioning it to the active state.
+      tags:
+        - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application name to start
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target servers or clusters
+              required:
+                - name
+      responses:
+        '200':
+          description: Application start initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/stopApplication:
+    post:
+      operationId: stopApplication
+      summary: Stop a deployed application
+      description: >-
+        Stops a deployed application, transitioning it to the prepared
+        state where it no longer accepts client requests.
+      tags:
+        - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application name to stop
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target servers or clusters
+                deploymentOptions:
+                  type: object
+                  properties:
+                    gracefulIgnoreSessions:
+                      type: boolean
+                    timeout:
+                      type: integer
+              required:
+                - name
+      responses:
+        '200':
+          description: Application stop initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/deploymentProgressObjects:
+    get:
+      operationId: listDeploymentProgress
+      summary: List all deployment progress objects
+      description: >-
+        Returns progress information for all in-progress and recently
+        completed deployment operations.
+      tags:
+        - Deployment Operations
+      responses:
+        '200':
+          description: List of deployment progress objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeploymentProgress'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/deploymentProgressObjects/{taskId}:
+    get:
+      operationId: getDeploymentProgress
+      summary: Get deployment progress
+      description: Returns progress information for a specific deployment operation.
+      tags:
+        - Deployment Operations
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: Deployment task identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deployment progress information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentProgress'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/deploymentManager/upload:
+    post:
+      operationId: uploadApplication
+      summary: Upload an application archive
+      description: >-
+        Uploads an application archive (EAR, WAR, JAR) or deployment plan
+        to the administration server upload directory for subsequent
+        deployment.
+      tags:
+        - Upload
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Application archive file to upload
+              required:
+                - file
+      responses:
+        '200':
+          description: File uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sourcePath:
+                    type: string
+                    description: >-
+                      Server-side path where the file was uploaded. Use
+                      this path as the source when deploying.
+                  fileName:
+                    type: string
+                    description: Uploaded file name
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+  parameters:
+    appName:
+      name: appName
+      in: path
+      required: true
+      description: The name of the application deployment
+      schema:
+        type: string
+    libraryName:
+      name: libraryName
+      in: path
+      required: true
+      description: The name of the shared library deployment
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    AppDeployment:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name
+        sourcePath:
+          type: string
+          description: Path to the application archive or exploded directory
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        moduleType:
+          type: string
+          description: Module type
+          enum:
+            - ear
+            - war
+            - jar
+            - rar
+        planPath:
+          type: string
+          description: Path to the deployment plan
+        stagingMode:
+          type: string
+          description: Application staging mode
+          enum:
+            - stage
+            - nostage
+            - external_stage
+        securityDDModel:
+          type: string
+          description: Security deployment descriptor model
+          enum:
+            - DDOnly
+            - CustomRoles
+            - CustomRolesAndPolicies
+            - Advanced
+        versionIdentifier:
+          type: string
+          description: Application version identifier
+        notes:
+          type: string
+          description: Optional notes about the deployment
+        deploymentOrder:
+          type: integer
+          description: >-
+            Order in which this application is deployed relative to other
+            deployments. Lower values deploy first.
+          default: 100
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    AppDeploymentCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name
+        sourcePath:
+          type: string
+          description: Path to the application archive or exploded directory
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        moduleType:
+          type: string
+          description: Module type
+          enum:
+            - ear
+            - war
+            - jar
+            - rar
+        planPath:
+          type: string
+          description: Path to the deployment plan
+        stagingMode:
+          type: string
+          description: Application staging mode
+          enum:
+            - stage
+            - nostage
+            - external_stage
+        securityDDModel:
+          type: string
+          enum:
+            - DDOnly
+            - CustomRoles
+            - CustomRolesAndPolicies
+            - Advanced
+        deploymentOrder:
+          type: integer
+          default: 100
+        notes:
+          type: string
+      required:
+        - name
+        - sourcePath
+        - targets
+    AppDeploymentUpdate:
+      type: object
+      properties:
+        targets:
+          type: array
+          items:
+            type: string
+          description: Updated target servers or clusters
+        planPath:
+          type: string
+          description: Updated deployment plan path
+        stagingMode:
+          type: string
+          enum:
+            - stage
+            - nostage
+            - external_stage
+        securityDDModel:
+          type: string
+          enum:
+            - DDOnly
+            - CustomRoles
+            - CustomRolesAndPolicies
+            - Advanced
+        deploymentOrder:
+          type: integer
+        notes:
+          type: string
+    LibraryDeployment:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Library name
+        sourcePath:
+          type: string
+          description: Path to the library archive
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        specificationVersion:
+          type: string
+          description: Library specification version
+        implementationVersion:
+          type: string
+          description: Library implementation version
+        moduleType:
+          type: string
+          description: Module type
+          enum:
+            - ear
+            - war
+            - jar
+        stagingMode:
+          type: string
+          enum:
+            - stage
+            - nostage
+            - external_stage
+        deploymentOrder:
+          type: integer
+          default: 100
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    LibraryDeploymentCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Library name
+        sourcePath:
+          type: string
+          description: Path to the library archive
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        moduleType:
+          type: string
+          enum:
+            - ear
+            - war
+            - jar
+        stagingMode:
+          type: string
+          enum:
+            - stage
+            - nostage
+            - external_stage
+        deploymentOrder:
+          type: integer
+          default: 100
+      required:
+        - name
+        - sourcePath
+        - targets
+    DeploymentTaskStatus:
+      type: object
+      properties:
+        taskId:
+          type: string
+          description: Unique identifier for the deployment task
+        status:
+          type: string
+          description: Current status of the deployment task
+          enum:
+            - INITIATED
+            - IN_PROGRESS
+            - COMPLETED
+            - FAILED
+            - CANCELLED
+        progress:
+          type: string
+          description: Progress description
+        completed:
+          type: boolean
+          description: Whether the task is complete
+        failed:
+          type: boolean
+          description: Whether the task failed
+        message:
+          type: string
+          description: Status or error message
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    DeploymentProgress:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Deployment task name
+        state:
+          type: string
+          description: Current deployment state
+          enum:
+            - STATE_NEW
+            - STATE_PREPARING
+            - STATE_PREPARED
+            - STATE_ACTIVATING
+            - STATE_ACTIVE
+            - STATE_DEACTIVATING
+            - STATE_RETIRING
+            - STATE_RETIRED
+            - STATE_FAILED
+        progress:
+          type: string
+          description: Progress description
+        completed:
+          type: boolean
+          description: Whether the operation is complete
+        failed:
+          type: boolean
+          description: Whether the operation failed
+        targets:
+          type: array
+          items:
+            type: object
+            properties:
+              target:
+                type: string
+              state:
+                type: string
+              error:
+                type: string
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+          format: uri
+        title:
+          type: string

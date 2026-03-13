@@ -1,0 +1,233 @@
+{
+  "@context": {
+    "@vocab": "https://schema.oracle.com/weblogic/",
+    "wls": "https://schema.oracle.com/weblogic/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+
+    "Domain": {
+      "@id": "wls:Domain",
+      "@context": {
+        "name": "schema:name",
+        "adminServerName": "wls:adminServerName",
+        "domainVersion": "schema:softwareVersion",
+        "productionModeEnabled": {
+          "@id": "wls:productionModeEnabled",
+          "@type": "xsd:boolean"
+        },
+        "configurationVersion": "wls:configurationVersion",
+        "servers": {
+          "@id": "wls:hasServer",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "clusters": {
+          "@id": "wls:hasCluster",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "JDBCSystemResources": {
+          "@id": "wls:hasDataSource",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "appDeployments": {
+          "@id": "wls:hasDeployment",
+          "@type": "@id",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "Server": {
+      "@id": "wls:Server",
+      "@context": {
+        "name": "schema:name",
+        "listenAddress": "wls:listenAddress",
+        "listenPort": {
+          "@id": "wls:listenPort",
+          "@type": "xsd:integer"
+        },
+        "SSLListenPort": {
+          "@id": "wls:SSLListenPort",
+          "@type": "xsd:integer"
+        },
+        "cluster": {
+          "@id": "wls:memberOf",
+          "@type": "@id"
+        },
+        "machine": {
+          "@id": "wls:assignedTo",
+          "@type": "@id"
+        },
+        "state": "wls:serverState",
+        "startupMode": "wls:startupMode",
+        "stagingMode": "wls:stagingMode",
+        "autoRestart": {
+          "@id": "wls:autoRestart",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "Cluster": {
+      "@id": "wls:Cluster",
+      "@context": {
+        "name": "schema:name",
+        "clusterMessagingMode": "wls:messagingMode",
+        "clusterAddress": "wls:clusterAddress",
+        "defaultLoadAlgorithm": "wls:loadAlgorithm",
+        "frontendHost": "wls:frontendHost",
+        "frontendHTTPPort": {
+          "@id": "wls:frontendHTTPPort",
+          "@type": "xsd:integer"
+        },
+        "frontendHTTPSPort": {
+          "@id": "wls:frontendHTTPSPort",
+          "@type": "xsd:integer"
+        },
+        "members": {
+          "@id": "wls:hasMember",
+          "@type": "@id",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "DataSource": {
+      "@id": "wls:DataSource",
+      "@context": {
+        "name": "schema:name",
+        "targets": {
+          "@id": "wls:targetedTo",
+          "@container": "@set"
+        },
+        "JNDINames": {
+          "@id": "wls:jndiName",
+          "@container": "@set"
+        },
+        "url": "wls:jdbcUrl",
+        "driverName": "wls:jdbcDriver",
+        "initialCapacity": {
+          "@id": "wls:initialCapacity",
+          "@type": "xsd:integer"
+        },
+        "maxCapacity": {
+          "@id": "wls:maxCapacity",
+          "@type": "xsd:integer"
+        },
+        "minCapacity": {
+          "@id": "wls:minCapacity",
+          "@type": "xsd:integer"
+        },
+        "state": "wls:dataSourceState",
+        "enabled": {
+          "@id": "wls:enabled",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "AppDeployment": {
+      "@id": "wls:AppDeployment",
+      "@context": {
+        "name": "schema:name",
+        "sourcePath": "wls:sourcePath",
+        "targets": {
+          "@id": "wls:targetedTo",
+          "@container": "@set"
+        },
+        "moduleType": "wls:moduleType",
+        "planPath": "wls:planPath",
+        "stagingMode": "wls:stagingMode",
+        "versionIdentifier": "schema:version",
+        "deploymentOrder": {
+          "@id": "wls:deploymentOrder",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "ServerRuntime": {
+      "@id": "wls:ServerRuntime",
+      "@context": {
+        "name": "schema:name",
+        "state": "wls:serverState",
+        "weblogicVersion": "schema:softwareVersion",
+        "activationTime": {
+          "@id": "wls:activationTime",
+          "@type": "xsd:long"
+        },
+        "healthState": {
+          "@id": "wls:healthState",
+          "@type": "@id"
+        },
+        "heapSizeCurrent": {
+          "@id": "wls:heapSizeCurrent",
+          "@type": "xsd:long"
+        },
+        "heapSizeMax": {
+          "@id": "wls:heapSizeMax",
+          "@type": "xsd:long"
+        },
+        "heapFreeCurrent": {
+          "@id": "wls:heapFreeCurrent",
+          "@type": "xsd:long"
+        }
+      }
+    },
+
+    "HealthState": {
+      "@id": "wls:HealthState",
+      "@context": {
+        "state": "wls:healthValue",
+        "subsystemName": "wls:subsystem",
+        "symptoms": {
+          "@id": "wls:symptom",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "JMSServer": {
+      "@id": "wls:JMSServer",
+      "@context": {
+        "name": "schema:name",
+        "messagesCurrentCount": {
+          "@id": "wls:currentMessages",
+          "@type": "xsd:long"
+        },
+        "messagesPendingCount": {
+          "@id": "wls:pendingMessages",
+          "@type": "xsd:long"
+        },
+        "consumersCurrentCount": {
+          "@id": "wls:currentConsumers",
+          "@type": "xsd:long"
+        },
+        "destinationsCurrentCount": {
+          "@id": "wls:currentDestinations",
+          "@type": "xsd:long"
+        }
+      }
+    },
+
+    "DeploymentProgress": {
+      "@id": "wls:DeploymentProgress",
+      "@context": {
+        "name": "schema:name",
+        "state": "wls:deploymentState",
+        "progress": "wls:progressDescription",
+        "completed": {
+          "@id": "wls:completed",
+          "@type": "xsd:boolean"
+        },
+        "failed": {
+          "@id": "wls:failed",
+          "@type": "xsd:boolean"
+        }
+      }
+    }
+  }
+}

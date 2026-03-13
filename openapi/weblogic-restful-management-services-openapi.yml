@@ -1,0 +1,2117 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server RESTful Management Services API
+  description: >-
+    RESTful API for administering Oracle WebLogic Server domains including
+    configuration management, editing domain configurations, server lifecycle
+    management, and domain runtime monitoring. This API provides access to
+    the WebLogic Server configuration and runtime MBean trees through RESTful
+    endpoints organized into edit, domain configuration, server configuration,
+    domain runtime, server runtime, and lifecycle resource sets.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+  x-documentation:
+    - url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/reference.html
+      description: WebLogic Server 14c API Reference
+externalDocs:
+  description: Administering Oracle WebLogic Server with RESTful Management Services
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/reference.html
+servers:
+  - url: https://{host}:{port}/management/weblogic/latest
+    description: WebLogic Server Administration Server
+    variables:
+      host:
+        default: localhost
+        description: Hostname of the WebLogic Administration Server
+      port:
+        default: '7001'
+        description: Port of the WebLogic Administration Server
+security:
+  - basicAuth: []
+tags:
+  - name: Edit
+    description: >-
+      Configuration editing operations. An edit session must be started before
+      making changes to the domain configuration. Changes are staged and then
+      activated.
+  - name: Domain Configuration
+    description: >-
+      Read-only access to the domain-level configuration MBean tree including
+      servers, clusters, data sources, JMS resources, and security realms.
+  - name: Server Configuration
+    description: >-
+      Read-only access to the server-level configuration MBean tree for
+      individual managed servers.
+  - name: Domain Runtime
+    description: >-
+      Access to domain-level runtime MBeans including server lifecycle
+      operations, deployment operations, and domain-wide monitoring data.
+  - name: Server Runtime
+    description: >-
+      Access to server-level runtime MBeans providing monitoring data for
+      individual server instances including thread pools, JDBC, JMS, and
+      application runtimes.
+  - name: Lifecycle
+    description: >-
+      Server lifecycle management operations including starting, stopping,
+      suspending, and resuming servers.
+paths:
+  /edit:
+    get:
+      operationId: getEditRoot
+      summary: Get edit configuration tree root
+      description: >-
+        Returns the root resource of the edit configuration tree. This provides
+        links to all configurable resources in the domain.
+      tags:
+        - Edit
+      responses:
+        '200':
+          description: Edit tree root resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditRoot'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/changeManager/startEdit:
+    post:
+      operationId: startEdit
+      summary: Start an edit session
+      description: >-
+        Starts a new configuration edit session. Only one edit session can be
+        active per user. The edit session locks the domain configuration for
+        exclusive modification by the current user.
+      tags:
+        - Edit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                waitTimeInMillis:
+                  type: integer
+                  description: Maximum time in milliseconds to wait for the edit lock
+                  default: -1
+                timeoutInMillis:
+                  type: integer
+                  description: >-
+                    Time in milliseconds before the edit session times out due
+                    to inactivity
+                  default: 900000
+                exclusive:
+                  type: boolean
+                  description: Whether to request exclusive editing access
+                  default: false
+      responses:
+        '200':
+          description: Edit session started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeManagerStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Another edit session is already active
+  /edit/changeManager/activate:
+    post:
+      operationId: activate
+      summary: Activate pending changes
+      description: >-
+        Activates all pending configuration changes made during the current
+        edit session. This distributes changes to all affected servers in the
+        domain.
+      tags:
+        - Edit
+      responses:
+        '200':
+          description: Changes activated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivationStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: No pending changes to activate
+  /edit/changeManager/cancelEdit:
+    post:
+      operationId: cancelEdit
+      summary: Cancel the current edit session
+      description: >-
+        Cancels the current edit session and discards all pending configuration
+        changes.
+      tags:
+        - Edit
+      responses:
+        '200':
+          description: Edit session cancelled successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/changeManager/undoUnactivatedChanges:
+    post:
+      operationId: undoUnactivatedChanges
+      summary: Undo unactivated changes
+      description: >-
+        Reverts all unactivated changes within the current edit session without
+        ending the session.
+      tags:
+        - Edit
+      responses:
+        '200':
+          description: Changes reverted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/servers:
+    get:
+      operationId: getEditServers
+      summary: List all server configurations
+      description: Returns all server configurations in the domain for editing.
+      tags:
+        - Edit
+      responses:
+        '200':
+          description: List of server configurations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServerConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditServer
+      summary: Create a new server configuration
+      description: Creates a new managed server configuration in the domain.
+      tags:
+        - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerConfiguration'
+      responses:
+        '201':
+          description: Server created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerConfiguration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/servers/{serverName}:
+    get:
+      operationId: getEditServer
+      summary: Get a server configuration
+      description: Returns the configuration of a specific server for editing.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: updateEditServer
+      summary: Update a server configuration
+      description: Updates the configuration of a specific server.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerConfiguration'
+      responses:
+        '200':
+          description: Server updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerConfiguration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEditServer
+      summary: Delete a server configuration
+      description: Deletes a managed server configuration from the domain.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /edit/clusters:
+    get:
+      operationId: getEditClusters
+      summary: List all cluster configurations
+      description: Returns all cluster configurations in the domain for editing.
+      tags:
+        - Edit
+      responses:
+        '200':
+          description: List of cluster configurations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ClusterConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditCluster
+      summary: Create a new cluster configuration
+      description: Creates a new cluster configuration in the domain.
+      tags:
+        - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClusterConfiguration'
+      responses:
+        '201':
+          description: Cluster created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterConfiguration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/clusters/{clusterName}:
+    get:
+      operationId: getEditCluster
+      summary: Get a cluster configuration
+      description: Returns the configuration of a specific cluster for editing.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/clusterName'
+      responses:
+        '200':
+          description: Cluster configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: updateEditCluster
+      summary: Update a cluster configuration
+      description: Updates the configuration of a specific cluster.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/clusterName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClusterConfiguration'
+      responses:
+        '200':
+          description: Cluster updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEditCluster
+      summary: Delete a cluster configuration
+      description: Deletes a cluster configuration from the domain.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/clusterName'
+      responses:
+        '200':
+          description: Cluster deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /edit/JDBCSystemResources:
+    get:
+      operationId: getEditDataSources
+      summary: List all JDBC system resource configurations
+      description: Returns all JDBC system resource (data source) configurations in the domain.
+      tags:
+        - Edit
+      responses:
+        '200':
+          description: List of JDBC system resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JDBCSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditDataSource
+      summary: Create a new JDBC system resource
+      description: Creates a new JDBC system resource (data source) configuration.
+      tags:
+        - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JDBCSystemResource'
+      responses:
+        '201':
+          description: JDBC system resource created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JDBCSystemResource'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/JDBCSystemResources/{dataSourceName}:
+    get:
+      operationId: getEditDataSource
+      summary: Get a JDBC system resource configuration
+      description: Returns the configuration of a specific JDBC system resource.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/dataSourceName'
+      responses:
+        '200':
+          description: JDBC system resource configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JDBCSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEditDataSource
+      summary: Delete a JDBC system resource
+      description: Deletes a JDBC system resource configuration from the domain.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/dataSourceName'
+      responses:
+        '200':
+          description: JDBC system resource deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /edit/JMSSystemResources:
+    get:
+      operationId: getEditJMSResources
+      summary: List all JMS system resource configurations
+      description: Returns all JMS system resource configurations in the domain.
+      tags:
+        - Edit
+      responses:
+        '200':
+          description: List of JMS system resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JMSSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditJMSResource
+      summary: Create a new JMS system resource
+      description: Creates a new JMS system resource configuration.
+      tags:
+        - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JMSSystemResource'
+      responses:
+        '201':
+          description: JMS system resource created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/appDeployments:
+    get:
+      operationId: getEditAppDeployments
+      summary: List all application deployment configurations
+      description: Returns all application deployment configurations in the domain.
+      tags:
+        - Edit
+      responses:
+        '200':
+          description: List of application deployments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AppDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditAppDeployment
+      summary: Create a new application deployment configuration
+      description: Creates a new application deployment configuration.
+      tags:
+        - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppDeployment'
+      responses:
+        '201':
+          description: Application deployment created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/appDeployments/{appName}:
+    get:
+      operationId: getEditAppDeployment
+      summary: Get an application deployment configuration
+      description: Returns the configuration of a specific application deployment.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEditAppDeployment
+      summary: Delete an application deployment configuration
+      description: Deletes an application deployment configuration.
+      tags:
+        - Edit
+      parameters:
+        - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainConfig:
+    get:
+      operationId: getDomainConfigRoot
+      summary: Get domain configuration tree root
+      description: >-
+        Returns the root resource of the read-only domain configuration tree,
+        providing links to all configuration resources in the domain.
+      tags:
+        - Domain Configuration
+      responses:
+        '200':
+          description: Domain configuration root resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainConfig/servers:
+    get:
+      operationId: getDomainConfigServers
+      summary: List all server configurations (read-only)
+      description: Returns all server configurations in the domain (read-only view).
+      tags:
+        - Domain Configuration
+      responses:
+        '200':
+          description: List of server configurations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServerConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainConfig/servers/{serverName}:
+    get:
+      operationId: getDomainConfigServer
+      summary: Get a server configuration (read-only)
+      description: Returns the configuration of a specific server (read-only view).
+      tags:
+        - Domain Configuration
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainConfig/clusters:
+    get:
+      operationId: getDomainConfigClusters
+      summary: List all cluster configurations (read-only)
+      description: Returns all cluster configurations in the domain (read-only view).
+      tags:
+        - Domain Configuration
+      responses:
+        '200':
+          description: List of cluster configurations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ClusterConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainConfig/securityConfiguration:
+    get:
+      operationId: getDomainSecurityConfig
+      summary: Get domain security configuration
+      description: Returns the security configuration of the domain including realms.
+      tags:
+        - Domain Configuration
+      responses:
+        '200':
+          description: Security configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime:
+    get:
+      operationId: getDomainRuntimeRoot
+      summary: Get domain runtime tree root
+      description: >-
+        Returns the root resource of the domain runtime MBean tree, providing
+        links to runtime monitoring data and lifecycle operations across all
+        servers in the domain.
+      tags:
+        - Domain Runtime
+      responses:
+        '200':
+          description: Domain runtime root resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/serverLifeCycleRuntimes:
+    get:
+      operationId: getServerLifecycleRuntimes
+      summary: List all server lifecycle runtimes
+      description: >-
+        Returns lifecycle runtime information for all servers in the domain,
+        including current state and available lifecycle operations.
+      tags:
+        - Domain Runtime
+      responses:
+        '200':
+          description: List of server lifecycle runtimes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServerLifecycleRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}:
+    get:
+      operationId: getServerLifecycleRuntime
+      summary: Get a server lifecycle runtime
+      description: >-
+        Returns lifecycle runtime information for a specific server including
+        its current state.
+      tags:
+        - Domain Runtime
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server lifecycle runtime
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerLifecycleRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/start:
+    post:
+      operationId: startServer
+      summary: Start a managed server
+      description: Starts the specified managed server.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server start initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/shutdown:
+    post:
+      operationId: shutdownServer
+      summary: Shut down a managed server
+      description: >-
+        Gracefully shuts down the specified managed server. In-flight work
+        is completed before shutdown.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeout:
+                  type: integer
+                  description: Timeout in seconds for graceful shutdown
+                  default: 0
+                ignoreSessions:
+                  type: boolean
+                  description: Whether to ignore active sessions during shutdown
+                  default: false
+                waitForAllSessions:
+                  type: boolean
+                  description: Whether to wait for all HTTP sessions to complete
+                  default: false
+      responses:
+        '200':
+          description: Server shutdown initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/forceShutdown:
+    post:
+      operationId: forceShutdownServer
+      summary: Force shut down a managed server
+      description: >-
+        Forces an immediate shutdown of the specified managed server without
+        waiting for in-flight work to complete.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server force shutdown initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/suspend:
+    post:
+      operationId: suspendServer
+      summary: Suspend a managed server
+      description: >-
+        Suspends the specified managed server, transitioning it to ADMIN state
+        where it only accepts administrative requests.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeout:
+                  type: integer
+                  description: Timeout in seconds for graceful suspend
+                  default: 0
+      responses:
+        '200':
+          description: Server suspend initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/resume:
+    post:
+      operationId: resumeServer
+      summary: Resume a suspended managed server
+      description: >-
+        Resumes the specified managed server from ADMIN state back to RUNNING
+        state, re-enabling it to accept client requests.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server resume initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/restartSSL:
+    post:
+      operationId: restartSSL
+      summary: Restart SSL on a managed server
+      description: >-
+        Restarts the SSL listen sockets on the specified managed server,
+        reloading SSL certificates and keys.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: SSL restart initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverRuntimes:
+    get:
+      operationId: getDomainServerRuntimes
+      summary: List all server runtimes in the domain
+      description: >-
+        Returns runtime information for all running servers in the domain,
+        accessed from the administration server.
+      tags:
+        - Domain Runtime
+      responses:
+        '200':
+          description: List of server runtimes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServerRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/serverRuntimes/{serverName}:
+    get:
+      operationId: getDomainServerRuntime
+      summary: Get a server runtime from the domain
+      description: Returns runtime information for a specific server in the domain.
+      tags:
+        - Domain Runtime
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server runtime information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/deploymentManager/deploymentProgressObjects:
+    get:
+      operationId: getDeploymentProgressObjects
+      summary: List deployment progress objects
+      description: >-
+        Returns information about in-progress and completed deployment
+        operations across the domain.
+      tags:
+        - Domain Runtime
+      responses:
+        '200':
+          description: List of deployment progress objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeploymentProgress'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverConfig:
+    get:
+      operationId: getServerConfigRoot
+      summary: Get server configuration tree root
+      description: >-
+        Returns the root resource of the read-only server configuration tree
+        for the server handling the request.
+      tags:
+        - Server Configuration
+      responses:
+        '200':
+          description: Server configuration root resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverRuntime:
+    get:
+      operationId: getServerRuntimeRoot
+      summary: Get server runtime tree root
+      description: >-
+        Returns the root resource of the server runtime MBean tree for the
+        server handling the request.
+      tags:
+        - Server Runtime
+      responses:
+        '200':
+          description: Server runtime root resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverRuntime/JVMRuntime:
+    get:
+      operationId: getJVMRuntime
+      summary: Get JVM runtime information
+      description: >-
+        Returns JVM runtime information including heap usage, uptime, and
+        Java version for the current server.
+      tags:
+        - Server Runtime
+      responses:
+        '200':
+          description: JVM runtime information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JVMRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverRuntime/threadPoolRuntime:
+    get:
+      operationId: getThreadPoolRuntime
+      summary: Get thread pool runtime information
+      description: >-
+        Returns thread pool runtime information including active threads,
+        queue length, and throughput metrics for the current server.
+      tags:
+        - Server Runtime
+      responses:
+        '200':
+          description: Thread pool runtime information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreadPoolRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverRuntime/JDBCServiceRuntime:
+    get:
+      operationId: getJDBCServiceRuntime
+      summary: Get JDBC service runtime information
+      description: >-
+        Returns JDBC service runtime information including data source
+        runtimes and connection pool metrics.
+      tags:
+        - Server Runtime
+      responses:
+        '200':
+          description: JDBC service runtime information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JDBCServiceRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans:
+    get:
+      operationId: getJDBCDataSourceRuntimes
+      summary: List all JDBC data source runtimes
+      description: >-
+        Returns runtime information for all JDBC data sources on the current
+        server.
+      tags:
+        - Server Runtime
+      responses:
+        '200':
+          description: List of JDBC data source runtimes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JDBCDataSourceRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans/{dataSourceName}:
+    get:
+      operationId: getJDBCDataSourceRuntime
+      summary: Get a JDBC data source runtime
+      description: Returns runtime information for a specific JDBC data source.
+      tags:
+        - Server Runtime
+      parameters:
+        - $ref: '#/components/parameters/dataSourceName'
+      responses:
+        '200':
+          description: JDBC data source runtime
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JDBCDataSourceRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /serverRuntime/JMSRuntime:
+    get:
+      operationId: getJMSRuntime
+      summary: Get JMS runtime information
+      description: >-
+        Returns JMS runtime information including JMS server runtimes and
+        connection statistics for the current server.
+      tags:
+        - Server Runtime
+      responses:
+        '200':
+          description: JMS runtime information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JMSRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverRuntime/JMSRuntime/JMSServers:
+    get:
+      operationId: getJMSServerRuntimes
+      summary: List all JMS server runtimes
+      description: Returns runtime information for all JMS servers on the current server.
+      tags:
+        - Server Runtime
+      responses:
+        '200':
+          description: List of JMS server runtimes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JMSServerRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverRuntime/applicationRuntimes:
+    get:
+      operationId: getApplicationRuntimes
+      summary: List all application runtimes
+      description: >-
+        Returns runtime information for all deployed applications on the
+        current server.
+      tags:
+        - Server Runtime
+      responses:
+        '200':
+          description: List of application runtimes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ApplicationRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /serverRuntime/applicationRuntimes/{appName}:
+    get:
+      operationId: getApplicationRuntime
+      summary: Get an application runtime
+      description: Returns runtime information for a specific deployed application.
+      tags:
+        - Server Runtime
+      parameters:
+        - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application runtime information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /lifecycle/latest/servers/{serverName}/shutdown:
+    post:
+      operationId: lifecycleShutdownServer
+      summary: Shut down a server via lifecycle API
+      description: >-
+        Shuts down the specified server using the lifecycle management
+        resource set.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeout:
+                  type: integer
+                  description: Timeout in seconds for graceful shutdown
+                ignoreSessions:
+                  type: boolean
+                  description: Whether to ignore active sessions
+                waitForAllSessions:
+                  type: boolean
+                  description: Whether to wait for all sessions to complete
+      responses:
+        '200':
+          description: Shutdown initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /lifecycle/latest/servers/{serverName}/start:
+    post:
+      operationId: lifecycleStartServer
+      summary: Start a server via lifecycle API
+      description: Starts the specified server using the lifecycle management resource set.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Start initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /lifecycle/latest/servers/{serverName}/suspend:
+    post:
+      operationId: lifecycleSuspendServer
+      summary: Suspend a server via lifecycle API
+      description: >-
+        Suspends the specified server using the lifecycle management resource
+        set.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Suspend initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /lifecycle/latest/servers/{serverName}/resume:
+    post:
+      operationId: lifecycleResumeServer
+      summary: Resume a server via lifecycle API
+      description: >-
+        Resumes the specified server using the lifecycle management resource
+        set.
+      tags:
+        - Lifecycle
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Resume initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: >-
+        WebLogic Server administrator credentials. Uses HTTP Basic
+        Authentication with the WebLogic admin username and password.
+  parameters:
+    serverName:
+      name: serverName
+      in: path
+      required: true
+      description: The name of the WebLogic Server instance
+      schema:
+        type: string
+    clusterName:
+      name: clusterName
+      in: path
+      required: true
+      description: The name of the WebLogic cluster
+      schema:
+        type: string
+    dataSourceName:
+      name: dataSourceName
+      in: path
+      required: true
+      description: The name of the JDBC data source
+      schema:
+        type: string
+    appName:
+      name: appName
+      in: path
+      required: true
+      description: The name of the deployed application
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Error type URI
+        title:
+          type: string
+          description: Short error title
+        status:
+          type: integer
+          description: HTTP status code
+        detail:
+          type: string
+          description: Detailed error message
+        o:errorPath:
+          type: string
+          description: Path to the field that caused the error
+    EditRoot:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Domain name
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        changeManager:
+          type: object
+          description: Reference to the change manager resource
+    ChangeManagerStatus:
+      type: object
+      properties:
+        locked:
+          type: boolean
+          description: Whether the configuration is locked for editing
+        lockOwner:
+          type: string
+          description: The user who holds the edit lock
+        hasChanges:
+          type: boolean
+          description: Whether there are pending changes
+        mergeNeeded:
+          type: boolean
+          description: Whether a merge is needed before activation
+    ActivationStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the activation
+          enum:
+            - ACTIVATED
+            - FAILED
+            - PENDING
+        activationTasks:
+          type: array
+          items:
+            type: object
+            properties:
+              server:
+                type: string
+              state:
+                type: string
+              error:
+                type: string
+    DomainConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Domain name
+        adminServerName:
+          type: string
+          description: Name of the administration server
+        domainVersion:
+          type: string
+          description: WebLogic Server domain version
+        productionModeEnabled:
+          type: boolean
+          description: Whether the domain is in production mode
+        configurationVersion:
+          type: string
+          description: Configuration version string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    ServerConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        listenAddress:
+          type: string
+          description: Listen address for the server
+        listenPort:
+          type: integer
+          description: Listen port for the server
+          default: 7001
+        SSLListenPort:
+          type: integer
+          description: SSL listen port
+        cluster:
+          type: string
+          description: Cluster this server belongs to
+        machine:
+          type: string
+          description: Machine this server is assigned to
+        listenPortEnabled:
+          type: boolean
+          description: Whether the plain-text listen port is enabled
+        clientCertProxyEnabled:
+          type: boolean
+          description: Whether client cert proxy is enabled
+        startupMode:
+          type: string
+          description: Server startup mode
+          enum:
+            - RUNNING
+            - STANDBY
+            - ADMIN
+        autoRestart:
+          type: boolean
+          description: Whether the server automatically restarts on failure
+        restartMax:
+          type: integer
+          description: Maximum number of restart attempts
+        javaCompiler:
+          type: string
+          description: Java compiler to use for JSP compilation
+        stagingMode:
+          type: string
+          description: Application staging mode
+          enum:
+            - stage
+            - nostage
+            - external_stage
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+        - name
+    ClusterConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Cluster name
+        clusterMessagingMode:
+          type: string
+          description: Messaging mode for the cluster
+          enum:
+            - unicast
+            - multicast
+        clusterBroadcastChannel:
+          type: string
+          description: Multicast channel for cluster communication
+        clusterAddress:
+          type: string
+          description: >-
+            Comma-separated list of address:port pairs for cluster members
+        defaultLoadAlgorithm:
+          type: string
+          description: Load balancing algorithm
+          enum:
+            - round-robin
+            - weight-based
+            - round-robin-affinity
+            - weight-based-affinity
+            - random
+        weblogicPluginEnabled:
+          type: boolean
+          description: Whether the WebLogic plugin is enabled
+        frontendHost:
+          type: string
+          description: Frontend host for the cluster
+        frontendHTTPPort:
+          type: integer
+          description: Frontend HTTP port
+        frontendHTTPSPort:
+          type: integer
+          description: Frontend HTTPS port
+        numberOfServersInClusterAddress:
+          type: integer
+          description: Number of servers in the cluster address
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+        - name
+    JDBCSystemResource:
+      type: object
+      properties:
+        name:
+          type: string
+          description: JDBC system resource name
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        descriptorFileName:
+          type: string
+          description: JDBC descriptor file name
+        JDBCResource:
+          type: object
+          properties:
+            name:
+              type: string
+            JDBCDataSourceParams:
+              type: object
+              properties:
+                JNDINames:
+                  type: array
+                  items:
+                    type: string
+                  description: JNDI names for the data source
+                globalTransactionsProtocol:
+                  type: string
+                  enum:
+                    - TwoPhaseCommit
+                    - LoggingLastResource
+                    - EmulateTwoPhaseCommit
+                    - OnePhaseCommit
+                    - None
+            JDBCDriverParams:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: JDBC connection URL
+                driverName:
+                  type: string
+                  description: JDBC driver class name
+                properties:
+                  type: object
+                  properties:
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+            JDBCConnectionPoolParams:
+              type: object
+              properties:
+                initialCapacity:
+                  type: integer
+                  description: Initial number of connections
+                maxCapacity:
+                  type: integer
+                  description: Maximum number of connections
+                minCapacity:
+                  type: integer
+                  description: Minimum number of connections
+                testTableName:
+                  type: string
+                  description: Table name used for connection testing
+                testConnectionsOnReserve:
+                  type: boolean
+                  description: Whether to test connections when reserved
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+        - name
+    JMSSystemResource:
+      type: object
+      properties:
+        name:
+          type: string
+          description: JMS system resource name
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        descriptorFileName:
+          type: string
+          description: JMS descriptor file name
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+        - name
+    AppDeployment:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name
+        sourcePath:
+          type: string
+          description: Path to the application source
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        moduleType:
+          type: string
+          description: Module type (ear, war, jar, etc.)
+        planPath:
+          type: string
+          description: Path to the deployment plan
+        stagingMode:
+          type: string
+          description: Staging mode
+          enum:
+            - stage
+            - nostage
+            - external_stage
+        securityDDModel:
+          type: string
+          description: Security deployment descriptor model
+          enum:
+            - DDOnly
+            - CustomRoles
+            - CustomRolesAndPolicies
+            - Advanced
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+        - name
+    SecurityConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+        realms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              authenticationProviders:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    type:
+                      type: string
+        crossDomainSecurityEnabled:
+          type: boolean
+        webAppFilesCaseInsensitive:
+          type: string
+          enum:
+            - os
+            - 'true'
+            - 'false'
+    DomainRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Domain name
+        activationTime:
+          type: integer
+          format: int64
+          description: Domain activation time in milliseconds
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    ServerLifecycleRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        state:
+          type: string
+          description: Current server lifecycle state
+          enum:
+            - SHUTDOWN
+            - STARTING
+            - STANDBY
+            - ADMIN
+            - RESUMING
+            - RUNNING
+            - SUSPENDING
+            - FORCE_SUSPENDING
+            - SHUTTING_DOWN
+            - FAILED
+            - UNKNOWN
+        nodeManagerRestartCount:
+          type: integer
+          description: Number of times node manager has restarted this server
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    ServerRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        state:
+          type: string
+          description: Current server state
+        listenAddress:
+          type: string
+          description: Current listen address
+        listenPort:
+          type: integer
+          description: Current listen port
+        SSLListenPort:
+          type: integer
+          description: Current SSL listen port
+        activationTime:
+          type: integer
+          format: int64
+          description: Server activation time in milliseconds since epoch
+        currentMachine:
+          type: string
+          description: Machine the server is running on
+        weblogicVersion:
+          type: string
+          description: WebLogic Server version string
+        openSocketsCurrentCount:
+          type: integer
+          description: Current number of open sockets
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+              enum:
+                - HEALTH_OK
+                - HEALTH_WARN
+                - HEALTH_CRITICAL
+                - HEALTH_FAILED
+                - HEALTH_OVERLOADED
+            subsystemName:
+              type: string
+            symptoms:
+              type: array
+              items:
+                type: string
+        restartRequired:
+          type: boolean
+          description: Whether a server restart is required
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    JVMRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+        heapSizeCurrent:
+          type: integer
+          format: int64
+          description: Current JVM heap size in bytes
+        heapSizeMax:
+          type: integer
+          format: int64
+          description: Maximum JVM heap size in bytes
+        heapFreeCurrent:
+          type: integer
+          format: int64
+          description: Current free heap memory in bytes
+        heapFreePercent:
+          type: number
+          format: double
+          description: Percentage of heap memory that is free
+        javaVersion:
+          type: string
+          description: Java version
+        javaVendor:
+          type: string
+          description: Java vendor name
+        osName:
+          type: string
+          description: Operating system name
+        osVersion:
+          type: string
+          description: Operating system version
+        uptime:
+          type: integer
+          format: int64
+          description: JVM uptime in milliseconds
+    ThreadPoolRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+        executeThreadTotalCount:
+          type: integer
+          description: Total number of execute threads
+        executeThreadIdleCount:
+          type: integer
+          description: Number of idle execute threads
+        hoggingThreadCount:
+          type: integer
+          description: Number of threads that are hogging resources
+        stuckThreadCount:
+          type: integer
+          description: Number of stuck threads
+        pendingUserRequestCount:
+          type: integer
+          description: Number of pending user requests in the queue
+        throughput:
+          type: number
+          format: double
+          description: Thread pool throughput
+        completedRequestCount:
+          type: integer
+          format: int64
+          description: Total number of completed requests
+        overloadRejectedRequestsCount:
+          type: integer
+          format: int64
+          description: Number of requests rejected due to overload
+        queueLength:
+          type: integer
+          description: Current queue length
+        sharedCapacityForWorkManagers:
+          type: integer
+          description: Shared capacity for work managers
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+    JDBCServiceRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+        JDBCDataSourceRuntimeMBeans:
+          type: array
+          items:
+            $ref: '#/components/schemas/JDBCDataSourceRuntime'
+    JDBCDataSourceRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Data source name
+        state:
+          type: string
+          description: Data source state
+          enum:
+            - Running
+            - Suspended
+            - Shutdown
+            - Overloaded
+            - Unknown
+        enabled:
+          type: boolean
+          description: Whether the data source is enabled
+        activeConnectionsCurrentCount:
+          type: integer
+          description: Current number of active connections
+        activeConnectionsHighCount:
+          type: integer
+          description: High watermark of active connections
+        activeConnectionsAverageCount:
+          type: integer
+          description: Average number of active connections
+        connectionsTotalCount:
+          type: integer
+          description: Total connections created
+        currCapacity:
+          type: integer
+          description: Current capacity of the connection pool
+        numAvailable:
+          type: integer
+          description: Number of available connections
+        numUnavailable:
+          type: integer
+          description: Number of unavailable connections
+        highestNumAvailable:
+          type: integer
+          description: Highest number of available connections
+        highestNumUnavailable:
+          type: integer
+          description: Highest number of unavailable connections
+        waitingForConnectionCurrentCount:
+          type: integer
+          description: Current number of threads waiting for a connection
+        waitingForConnectionHighCount:
+          type: integer
+          description: High watermark of threads waiting for a connection
+        waitSecondsHighCount:
+          type: integer
+          description: Highest wait time in seconds
+        connectionDelayTime:
+          type: integer
+          description: Average time to create a connection in milliseconds
+        failuresToReconnectCount:
+          type: integer
+          description: Number of failures to reconnect
+        leakedConnectionCount:
+          type: integer
+          description: Number of leaked connections
+        prepStmtCacheCurrentSize:
+          type: integer
+          description: Current size of the prepared statement cache
+    JMSRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+        connectionsCurrentCount:
+          type: integer
+          description: Current number of JMS connections
+        connectionsTotalCount:
+          type: integer
+          description: Total JMS connections created
+        connectionsHighCount:
+          type: integer
+          description: High watermark of JMS connections
+        JMSServersCurrentCount:
+          type: integer
+          description: Current number of JMS servers
+        JMSServersTotalCount:
+          type: integer
+          description: Total JMS servers created
+        JMSServersHighCount:
+          type: integer
+          description: High watermark of JMS servers
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+    JMSServerRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: JMS server name
+        messagesCurrentCount:
+          type: integer
+          format: int64
+          description: Current number of messages
+        messagesPendingCount:
+          type: integer
+          format: int64
+          description: Number of pending messages
+        messagesHighCount:
+          type: integer
+          format: int64
+          description: High watermark of messages
+        messagesReceivedCount:
+          type: integer
+          format: int64
+          description: Total messages received
+        bytesCurrentCount:
+          type: integer
+          format: int64
+          description: Current total bytes of all messages
+        bytesPendingCount:
+          type: integer
+          format: int64
+          description: Bytes of pending messages
+        consumersCurrentCount:
+          type: integer
+          format: int64
+          description: Current number of consumers
+        consumersHighCount:
+          type: integer
+          format: int64
+          description: High watermark of consumers
+        destinationsCurrentCount:
+          type: integer
+          format: int64
+          description: Current number of destinations
+        sessionPoolsCurrentCount:
+          type: integer
+          format: int64
+          description: Current number of session pools
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+    ApplicationRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name
+        applicationName:
+          type: string
+          description: Deployment name of the application
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+        overallHealthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+        activeVersionState:
+          type: string
+          description: Current version state of the application
+        componentRuntimes:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+              state:
+                type: string
+    DeploymentProgress:
+      type: object
+      properties:
+        name:
+          type: string
+        state:
+          type: string
+          description: Deployment state
+          enum:
+            - STATE_NEW
+            - STATE_PREPARING
+            - STATE_PREPARED
+            - STATE_ACTIVATING
+            - STATE_ACTIVE
+            - STATE_DEACTIVATING
+            - STATE_RETIRING
+            - STATE_RETIRED
+            - STATE_FAILED
+        progress:
+          type: string
+          description: Progress description
+        completed:
+          type: boolean
+          description: Whether the deployment operation is complete
+        failed:
+          type: boolean
+          description: Whether the deployment operation failed
+        targets:
+          type: array
+          items:
+            type: string
+    TaskStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Task status
+        progress:
+          type: string
+          description: Progress description
+        completed:
+          type: boolean
+          description: Whether the task is complete
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Link relation type
+        href:
+          type: string
+          format: uri
+          description: Link URI
+        title:
+          type: string
+          description: Link title

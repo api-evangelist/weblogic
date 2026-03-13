@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.oracle.com/weblogic/datasource-configuration",
+  "title": "WebLogic JDBC Data Source Configuration",
+  "description": "Configuration schema for an Oracle WebLogic Server JDBC system resource (data source) including connection pool settings, driver parameters, and transaction configuration.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "JDBC system resource name",
+      "minLength": 1
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Target servers or clusters where this data source is deployed"
+    },
+    "descriptorFileName": {
+      "type": "string",
+      "description": "JDBC module descriptor file name"
+    },
+    "JDBCResource": {
+      "type": "object",
+      "description": "The JDBC resource configuration",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "JDBC resource name"
+        },
+        "JDBCDataSourceParams": {
+          "type": "object",
+          "description": "Data source parameters including JNDI names and transaction settings",
+          "properties": {
+            "JNDINames": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "JNDI names used to look up this data source"
+            },
+            "globalTransactionsProtocol": {
+              "type": "string",
+              "description": "Protocol for handling global transactions",
+              "enum": [
+                "TwoPhaseCommit",
+                "LoggingLastResource",
+                "EmulateTwoPhaseCommit",
+                "OnePhaseCommit",
+                "None"
+              ],
+              "default": "TwoPhaseCommit"
+            },
+            "scope": {
+              "type": "string",
+              "description": "Scope of the data source",
+              "enum": ["Global", "Application"],
+              "default": "Global"
+            },
+            "rowPrefetch": {
+              "type": "boolean",
+              "description": "Whether to enable row prefetching",
+              "default": false
+            },
+            "rowPrefetchSize": {
+              "type": "integer",
+              "description": "Number of rows to prefetch",
+              "default": 48
+            },
+            "algorithmType": {
+              "type": "string",
+              "description": "Algorithm for multi-data source load balancing",
+              "enum": ["Failover", "Load-Balancing"]
+            }
+          }
+        },
+        "JDBCDriverParams": {
+          "type": "object",
+          "description": "JDBC driver parameters",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "JDBC connection URL"
+            },
+            "driverName": {
+              "type": "string",
+              "description": "Fully qualified JDBC driver class name"
+            },
+            "password-encrypted": {
+              "type": "string",
+              "description": "Encrypted database password"
+            },
+            "useXaDataSourceInterface": {
+              "type": "boolean",
+              "description": "Whether to use XA data source interface",
+              "default": true
+            },
+            "properties": {
+              "type": "object",
+              "description": "Additional JDBC driver properties",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Property name"
+                      },
+                      "value": {
+                        "type": "string",
+                        "description": "Property value"
+                      }
+                    },
+                    "required": ["name", "value"]
+                  }
+                }
+              }
+            }
+          },
+          "required": ["url", "driverName"]
+        },
+        "JDBCConnectionPoolParams": {
+          "type": "object",
+          "description": "Connection pool configuration",
+          "properties": {
+            "initialCapacity": {
+              "type": "integer",
+              "description": "Number of physical connections to create when the pool is initialized",
+              "default": 1,
+              "minimum": 0
+            },
+            "maxCapacity": {
+              "type": "integer",
+              "description": "Maximum number of physical connections the pool can contain",
+              "default": 15,
+              "minimum": 1
+            },
+            "minCapacity": {
+              "type": "integer",
+              "description": "Minimum number of physical connections the pool maintains",
+              "default": 1,
+              "minimum": 0
+            },
+            "capacityIncrement": {
+              "type": "integer",
+              "description": "Number of connections added when demand exceeds current capacity",
+              "default": 1,
+              "minimum": 1
+            },
+            "shrinkFrequencySeconds": {
+              "type": "integer",
+              "description": "Seconds between attempts to shrink the pool to minimum capacity",
+              "default": 900,
+              "minimum": 0
+            },
+            "testTableName": {
+              "type": "string",
+              "description": "Table name or SQL statement used for connection testing"
+            },
+            "testConnectionsOnReserve": {
+              "type": "boolean",
+              "description": "Whether connections are tested when reserved from the pool",
+              "default": false
+            },
+            "testFrequencySeconds": {
+              "type": "integer",
+              "description": "Seconds between tests of idle connections in the pool",
+              "default": 120,
+              "minimum": 0
+            },
+            "secondsToTrustAnIdlePoolConnection": {
+              "type": "integer",
+              "description": "Seconds a connection can remain idle before testing is required",
+              "default": 10,
+              "minimum": 0
+            },
+            "connectionCreationRetryFrequencySeconds": {
+              "type": "integer",
+              "description": "Seconds between connection creation retry attempts",
+              "default": 0,
+              "minimum": 0
+            },
+            "connectionReserveTimeoutSeconds": {
+              "type": "integer",
+              "description": "Seconds to wait for a connection before timing out",
+              "default": 10,
+              "minimum": -1
+            },
+            "inactiveConnectionTimeoutSeconds": {
+              "type": "integer",
+              "description": "Seconds a reserved connection can remain inactive before it is reclaimed",
+              "default": 0,
+              "minimum": 0
+            },
+            "statementCacheSize": {
+              "type": "integer",
+              "description": "Number of prepared and callable statements cached per connection",
+              "default": 10,
+              "minimum": 0
+            },
+            "statementCacheType": {
+              "type": "string",
+              "description": "Algorithm used for maintaining the statement cache",
+              "enum": ["LRU", "FIXED"],
+              "default": "LRU"
+            },
+            "removeInfectedConnections": {
+              "type": "boolean",
+              "description": "Whether connections are removed from the pool when an application exception occurs",
+              "default": true
+            },
+            "wrapTypes": {
+              "type": "boolean",
+              "description": "Whether to wrap data types returned by JDBC drivers",
+              "default": true
+            },
+            "statementTimeout": {
+              "type": "integer",
+              "description": "Timeout in seconds for JDBC statements",
+              "default": -1
+            }
+          }
+        },
+        "JDBCXAParams": {
+          "type": "object",
+          "description": "XA-specific parameters",
+          "properties": {
+            "keepXaConnTillTxComplete": {
+              "type": "boolean",
+              "description": "Whether to keep the XA connection until the transaction completes",
+              "default": true
+            },
+            "needTxCtxOnClose": {
+              "type": "boolean",
+              "description": "Whether a transaction context is needed when closing",
+              "default": false
+            },
+            "xaTransactionTimeout": {
+              "type": "integer",
+              "description": "XA transaction timeout in seconds",
+              "default": 0
+            },
+            "xaRetryDurationSeconds": {
+              "type": "integer",
+              "description": "Duration in seconds for XA call retries",
+              "default": 0
+            },
+            "xaRetryIntervalSeconds": {
+              "type": "integer",
+              "description": "Interval in seconds between XA call retries",
+              "default": 60
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["name"]
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.oracle.com/weblogic/application-deployment",
+  "title": "WebLogic Application Deployment",
+  "description": "Configuration schema for an Oracle WebLogic Server application deployment including source path, targets, staging mode, and security model.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Application deployment name",
+      "minLength": 1
+    },
+    "sourcePath": {
+      "type": "string",
+      "description": "Path to the application archive (EAR, WAR, JAR) or exploded directory on the administration server"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Target servers or clusters where this application is deployed"
+    },
+    "moduleType": {
+      "type": "string",
+      "description": "Type of the application module",
+      "enum": ["ear", "war", "jar", "rar"]
+    },
+    "planPath": {
+      "type": "string",
+      "description": "Path to the deployment plan XML file"
+    },
+    "planDir": {
+      "type": "string",
+      "description": "Root directory for the deployment plan"
+    },
+    "stagingMode": {
+      "type": "string",
+      "description": "How the application is staged on target servers",
+      "enum": ["stage", "nostage", "external_stage"]
+    },
+    "planStagingMode": {
+      "type": "string",
+      "description": "How the deployment plan is staged on target servers",
+      "enum": ["stage", "nostage", "external_stage"]
+    },
+    "securityDDModel": {
+      "type": "string",
+      "description": "Security deployment descriptor model that determines how security roles and policies are managed",
+      "enum": ["DDOnly", "CustomRoles", "CustomRolesAndPolicies", "Advanced"],
+      "default": "DDOnly"
+    },
+    "versionIdentifier": {
+      "type": "string",
+      "description": "Version identifier for the application used in production redeployment"
+    },
+    "deploymentOrder": {
+      "type": "integer",
+      "description": "Order in which this application is deployed relative to other deployments. Lower values are deployed first.",
+      "default": 100,
+      "minimum": 0
+    },
+    "deploymentPrincipalName": {
+      "type": "string",
+      "description": "Principal name used for deployment authorization"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes about the deployment"
+    },
+    "parallelDeployModules": {
+      "type": "boolean",
+      "description": "Whether modules within an EAR are deployed in parallel",
+      "default": false
+    },
+    "cacheInAppDirectory": {
+      "type": "boolean",
+      "description": "Whether compiled JSPs and generated classes are cached in the application directory",
+      "default": false
+    },
+    "validateDDSecurityData": {
+      "type": "boolean",
+      "description": "Whether to validate security data in deployment descriptors",
+      "default": false
+    }
+  },
+  "required": ["name", "sourcePath"]
+}

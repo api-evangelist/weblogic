@@ -1,0 +1,1149 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server Monitoring and Diagnostics API
+  description: >-
+    RESTful API for accessing runtime monitoring data, health metrics,
+    diagnostics information, and WebLogic Diagnostic Framework (WLDF)
+    resources. Provides read-only access to server health, performance
+    metrics, data source statistics, JMS statistics, and diagnostic
+    data collected through the WebLogic Diagnostic Framework.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+externalDocs:
+  description: WebLogic Server Monitoring and Diagnostics Documentation
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/monitor-and-tune.html
+servers:
+  - url: https://{host}:{port}/management/wls/latest
+    description: WebLogic Server Monitoring Endpoint
+    variables:
+      host:
+        default: localhost
+        description: Hostname of the WebLogic Server
+      port:
+        default: '7001'
+        description: Port of the WebLogic Server
+security:
+  - basicAuth: []
+tags:
+  - name: Servers
+    description: Server-level monitoring and health information
+  - name: Clusters
+    description: Cluster-level monitoring information
+  - name: Data Sources
+    description: JDBC data source monitoring and metrics
+  - name: JMS
+    description: JMS subsystem monitoring
+  - name: Applications
+    description: Application deployment monitoring
+  - name: Diagnostics
+    description: WebLogic Diagnostic Framework (WLDF) resources
+  - name: Health
+    description: Server and subsystem health checks
+paths:
+  /servers:
+    get:
+      operationId: getServers
+      summary: List all monitored servers
+      description: >-
+        Returns monitoring information for all servers in the domain including
+        their current state, health, and basic runtime metrics.
+      tags:
+        - Servers
+      responses:
+        '200':
+          description: List of monitored servers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServerMonitoring'
+                  links:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Link'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /servers/{serverName}:
+    get:
+      operationId: getServer
+      summary: Get server monitoring information
+      description: >-
+        Returns detailed monitoring information for a specific server including
+        state, health, JVM metrics, and subsystem runtimes.
+      tags:
+        - Servers
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server monitoring information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerMonitoring'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /servers/{serverName}/health:
+    get:
+      operationId: getServerHealth
+      summary: Get server health status
+      description: >-
+        Returns the overall health state of the specified server along with
+        health status of individual subsystems.
+      tags:
+        - Health
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server health information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerHealth'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /servers/{serverName}/jvm:
+    get:
+      operationId: getServerJVM
+      summary: Get server JVM metrics
+      description: >-
+        Returns JVM runtime metrics for the specified server including heap
+        usage, garbage collection statistics, and thread information.
+      tags:
+        - Servers
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: JVM metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JVMMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /servers/{serverName}/threadPool:
+    get:
+      operationId: getServerThreadPool
+      summary: Get server thread pool metrics
+      description: >-
+        Returns thread pool monitoring data for the specified server including
+        thread counts, queue lengths, and throughput.
+      tags:
+        - Servers
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Thread pool metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreadPoolMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /servers/{serverName}/workManagers:
+    get:
+      operationId: getServerWorkManagers
+      summary: List work managers on a server
+      description: >-
+        Returns monitoring information for all work managers on the specified
+        server.
+      tags:
+        - Servers
+      parameters:
+        - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: List of work manager metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkManagerMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /clusters:
+    get:
+      operationId: getClusters
+      summary: List all monitored clusters
+      description: >-
+        Returns monitoring information for all clusters in the domain including
+        member servers and cluster health.
+      tags:
+        - Clusters
+      responses:
+        '200':
+          description: List of monitored clusters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ClusterMonitoring'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /clusters/{clusterName}:
+    get:
+      operationId: getCluster
+      summary: Get cluster monitoring information
+      description: >-
+        Returns detailed monitoring information for a specific cluster
+        including member server states and cluster health.
+      tags:
+        - Clusters
+      parameters:
+        - $ref: '#/components/parameters/clusterName'
+      responses:
+        '200':
+          description: Cluster monitoring information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterMonitoring'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /dataSources:
+    get:
+      operationId: getDataSources
+      summary: List all data source metrics
+      description: >-
+        Returns monitoring metrics for all JDBC data sources across all
+        servers in the domain.
+      tags:
+        - Data Sources
+      responses:
+        '200':
+          description: List of data source metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DataSourceMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /dataSources/{dataSourceName}:
+    get:
+      operationId: getDataSource
+      summary: Get data source metrics
+      description: Returns detailed metrics for a specific JDBC data source.
+      tags:
+        - Data Sources
+      parameters:
+        - $ref: '#/components/parameters/dataSourceName'
+      responses:
+        '200':
+          description: Data source metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSourceMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /dataSources/{dataSourceName}/test:
+    post:
+      operationId: testDataSource
+      summary: Test a data source connection
+      description: >-
+        Tests the connection pool for the specified data source by reserving
+        and releasing a connection.
+      tags:
+        - Data Sources
+      parameters:
+        - $ref: '#/components/parameters/dataSourceName'
+      responses:
+        '200':
+          description: Data source test result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Test result status
+                  message:
+                    type: string
+                    description: Test result message
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /JMSServers:
+    get:
+      operationId: getJMSServers
+      summary: List all JMS server metrics
+      description: Returns monitoring metrics for all JMS servers in the domain.
+      tags:
+        - JMS
+      responses:
+        '200':
+          description: List of JMS server metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JMSServerMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /JMSServers/{jmsServerName}:
+    get:
+      operationId: getJMSServer
+      summary: Get JMS server metrics
+      description: Returns detailed metrics for a specific JMS server.
+      tags:
+        - JMS
+      parameters:
+        - $ref: '#/components/parameters/jmsServerName'
+      responses:
+        '200':
+          description: JMS server metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JMSServerMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /JMSServers/{jmsServerName}/destinations:
+    get:
+      operationId: getJMSDestinations
+      summary: List JMS destinations
+      description: Returns monitoring metrics for all destinations on a JMS server.
+      tags:
+        - JMS
+      parameters:
+        - $ref: '#/components/parameters/jmsServerName'
+      responses:
+        '200':
+          description: List of JMS destination metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JMSDestinationMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /deployments:
+    get:
+      operationId: getDeployments
+      summary: List all application deployment metrics
+      description: >-
+        Returns monitoring information for all deployed applications across
+        the domain.
+      tags:
+        - Applications
+      responses:
+        '200':
+          description: List of application deployment metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeploymentMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /deployments/{appName}:
+    get:
+      operationId: getDeployment
+      summary: Get application deployment metrics
+      description: Returns detailed monitoring information for a specific deployed application.
+      tags:
+        - Applications
+      parameters:
+        - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /deployments/{appName}/servlets:
+    get:
+      operationId: getDeploymentServlets
+      summary: List servlet metrics for an application
+      description: Returns servlet-level monitoring metrics for a deployed web application.
+      tags:
+        - Applications
+      parameters:
+        - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: List of servlet metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServletMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /diagnostics/WLDFSystemResources:
+    get:
+      operationId: getWLDFResources
+      summary: List WLDF system resources
+      description: >-
+        Returns a list of WebLogic Diagnostic Framework (WLDF) system
+        resources configured in the domain.
+      tags:
+        - Diagnostics
+      responses:
+        '200':
+          description: List of WLDF system resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WLDFSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /diagnostics/WLDFSystemResources/{resourceName}:
+    get:
+      operationId: getWLDFResource
+      summary: Get a WLDF system resource
+      description: Returns details of a specific WLDF system resource.
+      tags:
+        - Diagnostics
+      parameters:
+        - $ref: '#/components/parameters/resourceName'
+      responses:
+        '200':
+          description: WLDF system resource details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WLDFSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /diagnostics/dataAccessRuntimes:
+    get:
+      operationId: getDataAccessRuntimes
+      summary: List diagnostic data access runtimes
+      description: >-
+        Returns information about diagnostic data access runtimes that
+        provide access to collected diagnostic data.
+      tags:
+        - Diagnostics
+      responses:
+        '200':
+          description: List of data access runtimes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DataAccessRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /diagnostics/dataAccessRuntimes/{runtimeName}/query:
+    post:
+      operationId: queryDiagnosticData
+      summary: Query diagnostic data
+      description: >-
+        Executes a query against diagnostic data collected by the WebLogic
+        Diagnostic Framework. Supports querying harvested metrics, server
+        log entries, and other diagnostic data sources.
+      tags:
+        - Diagnostics
+      parameters:
+        - $ref: '#/components/parameters/runtimeName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: >-
+                    WLDF query expression to filter diagnostic data
+                beginTimestamp:
+                  type: integer
+                  format: int64
+                  description: Start timestamp for the query range (millis since epoch)
+                endTimestamp:
+                  type: integer
+                  format: int64
+                  description: End timestamp for the query range (millis since epoch)
+                maxRecords:
+                  type: integer
+                  description: Maximum number of records to return
+                  default: 100
+              required:
+                - query
+      responses:
+        '200':
+          description: Diagnostic data query results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiagnosticQueryResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+  parameters:
+    serverName:
+      name: serverName
+      in: path
+      required: true
+      description: The name of the WebLogic Server instance
+      schema:
+        type: string
+    clusterName:
+      name: clusterName
+      in: path
+      required: true
+      description: The name of the WebLogic cluster
+      schema:
+        type: string
+    dataSourceName:
+      name: dataSourceName
+      in: path
+      required: true
+      description: The name of the JDBC data source
+      schema:
+        type: string
+    appName:
+      name: appName
+      in: path
+      required: true
+      description: The name of the deployed application
+      schema:
+        type: string
+    jmsServerName:
+      name: jmsServerName
+      in: path
+      required: true
+      description: The name of the JMS server
+      schema:
+        type: string
+    resourceName:
+      name: resourceName
+      in: path
+      required: true
+      description: The name of the WLDF system resource
+      schema:
+        type: string
+    runtimeName:
+      name: runtimeName
+      in: path
+      required: true
+      description: The name of the data access runtime
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+    ServerMonitoring:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        state:
+          type: string
+          description: Current server state
+          enum:
+            - RUNNING
+            - ADMIN
+            - STANDBY
+            - SHUTDOWN
+            - STARTING
+            - SUSPENDING
+            - FAILED
+            - UNKNOWN
+        health:
+          type: string
+          description: Overall health state
+          enum:
+            - HEALTH_OK
+            - HEALTH_WARN
+            - HEALTH_CRITICAL
+            - HEALTH_FAILED
+            - HEALTH_OVERLOADED
+        clusterName:
+          type: string
+          description: Cluster this server belongs to
+        currentMachine:
+          type: string
+          description: Machine the server is running on
+        listenAddress:
+          type: string
+          description: Listen address
+        listenPort:
+          type: integer
+          description: Listen port
+        sslListenPort:
+          type: integer
+          description: SSL listen port
+        activationTime:
+          type: integer
+          format: int64
+          description: Activation time in milliseconds since epoch
+        openSocketsCurrentCount:
+          type: integer
+          description: Current number of open sockets
+        weblogicVersion:
+          type: string
+          description: WebLogic Server version
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    ServerHealth:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        overallHealth:
+          type: string
+          description: Overall health state
+          enum:
+            - HEALTH_OK
+            - HEALTH_WARN
+            - HEALTH_CRITICAL
+            - HEALTH_FAILED
+            - HEALTH_OVERLOADED
+        subsystemHealthStates:
+          type: array
+          description: Health states of individual subsystems
+          items:
+            type: object
+            properties:
+              subsystemName:
+                type: string
+                description: Name of the subsystem
+              state:
+                type: string
+                description: Health state
+                enum:
+                  - HEALTH_OK
+                  - HEALTH_WARN
+                  - HEALTH_CRITICAL
+                  - HEALTH_FAILED
+                  - HEALTH_OVERLOADED
+              symptoms:
+                type: array
+                items:
+                  type: string
+                description: Health symptoms or issues
+    JVMMetrics:
+      type: object
+      properties:
+        heapSizeCurrent:
+          type: integer
+          format: int64
+          description: Current heap size in bytes
+        heapSizeMax:
+          type: integer
+          format: int64
+          description: Maximum heap size in bytes
+        heapFreeCurrent:
+          type: integer
+          format: int64
+          description: Current free heap in bytes
+        heapFreePercent:
+          type: number
+          format: double
+          description: Percentage of heap that is free
+        javaVersion:
+          type: string
+          description: Java version
+        javaVendor:
+          type: string
+          description: Java vendor
+        osName:
+          type: string
+          description: Operating system name
+        osVersion:
+          type: string
+          description: Operating system version
+        uptime:
+          type: integer
+          format: int64
+          description: JVM uptime in milliseconds
+    ThreadPoolMetrics:
+      type: object
+      properties:
+        executeThreadTotalCount:
+          type: integer
+          description: Total execute threads
+        executeThreadIdleCount:
+          type: integer
+          description: Idle execute threads
+        hoggingThreadCount:
+          type: integer
+          description: Hogging threads
+        stuckThreadCount:
+          type: integer
+          description: Stuck threads
+        pendingUserRequestCount:
+          type: integer
+          description: Pending user requests
+        throughput:
+          type: number
+          format: double
+          description: Thread pool throughput
+        completedRequestCount:
+          type: integer
+          format: int64
+          description: Completed requests
+        queueLength:
+          type: integer
+          description: Current queue length
+    WorkManagerMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Work manager name
+        pendingRequests:
+          type: integer
+          description: Number of pending requests
+        completedRequests:
+          type: integer
+          format: int64
+          description: Number of completed requests
+        stuckThreadCount:
+          type: integer
+          description: Number of stuck threads
+    ClusterMonitoring:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Cluster name
+        servers:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              state:
+                type: string
+              health:
+                type: string
+          description: Cluster member servers and their states
+        aliveServerCount:
+          type: integer
+          description: Number of alive servers in the cluster
+        resendRequestsCount:
+          type: integer
+          format: int64
+          description: Number of resent requests
+        fragmentsReceivedCount:
+          type: integer
+          format: int64
+          description: Number of fragments received
+        fragmentsSentCount:
+          type: integer
+          format: int64
+          description: Number of fragments sent
+    DataSourceMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Data source name
+        state:
+          type: string
+          description: Data source state
+          enum:
+            - Running
+            - Suspended
+            - Shutdown
+            - Overloaded
+            - Unknown
+        enabled:
+          type: boolean
+          description: Whether the data source is enabled
+        activeConnectionsCurrentCount:
+          type: integer
+          description: Current active connections
+        activeConnectionsHighCount:
+          type: integer
+          description: High watermark of active connections
+        connectionsTotalCount:
+          type: integer
+          description: Total connections created
+        currCapacity:
+          type: integer
+          description: Current capacity
+        numAvailable:
+          type: integer
+          description: Available connections
+        numUnavailable:
+          type: integer
+          description: Unavailable connections
+        waitingForConnectionCurrentCount:
+          type: integer
+          description: Threads waiting for a connection
+        waitSecondsHighCount:
+          type: integer
+          description: Highest wait time in seconds
+        connectionDelayTime:
+          type: integer
+          description: Average connection creation time in ms
+        failuresToReconnectCount:
+          type: integer
+          description: Failed reconnection attempts
+        leakedConnectionCount:
+          type: integer
+          description: Leaked connections
+        prepStmtCacheCurrentSize:
+          type: integer
+          description: Prepared statement cache size
+        serverName:
+          type: string
+          description: Server hosting this data source instance
+    JMSServerMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: JMS server name
+        messagesCurrentCount:
+          type: integer
+          format: int64
+          description: Current messages
+        messagesPendingCount:
+          type: integer
+          format: int64
+          description: Pending messages
+        messagesHighCount:
+          type: integer
+          format: int64
+          description: High watermark of messages
+        messagesReceivedCount:
+          type: integer
+          format: int64
+          description: Total messages received
+        bytesCurrentCount:
+          type: integer
+          format: int64
+          description: Current bytes
+        bytesPendingCount:
+          type: integer
+          format: int64
+          description: Pending bytes
+        consumersCurrentCount:
+          type: integer
+          format: int64
+          description: Current consumers
+        consumersHighCount:
+          type: integer
+          format: int64
+          description: High watermark of consumers
+        destinationsCurrentCount:
+          type: integer
+          format: int64
+          description: Current destinations
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+    JMSDestinationMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Destination name
+        type:
+          type: string
+          description: Destination type
+          enum:
+            - Queue
+            - Topic
+        messagesCurrentCount:
+          type: integer
+          format: int64
+          description: Current messages in the destination
+        messagesPendingCount:
+          type: integer
+          format: int64
+          description: Pending messages
+        messagesHighCount:
+          type: integer
+          format: int64
+          description: High watermark of messages
+        messagesReceivedCount:
+          type: integer
+          format: int64
+          description: Total received messages
+        consumersCurrentCount:
+          type: integer
+          format: int64
+          description: Current consumers
+        consumersHighCount:
+          type: integer
+          format: int64
+          description: High watermark of consumers
+        consumersTotal:
+          type: integer
+          format: int64
+          description: Total consumers created
+        bytesCurrentCount:
+          type: integer
+          format: int64
+          description: Current total bytes
+        bytesPendingCount:
+          type: integer
+          format: int64
+          description: Pending bytes
+    DeploymentMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name
+        type:
+          type: string
+          description: Application type (ear, war, etc.)
+        state:
+          type: string
+          description: Deployment state
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        sessions:
+          type: object
+          properties:
+            openSessionsCurrentCount:
+              type: integer
+              description: Current open sessions
+            openSessionsHighCount:
+              type: integer
+              description: High watermark of open sessions
+            sessionsOpenedTotalCount:
+              type: integer
+              format: int64
+              description: Total sessions opened
+    ServletMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Servlet name
+        contextPath:
+          type: string
+          description: Servlet context path
+        invocationTotalCount:
+          type: integer
+          format: int64
+          description: Total invocations
+        executionTimeAverage:
+          type: integer
+          description: Average execution time in milliseconds
+        executionTimeTotal:
+          type: integer
+          format: int64
+          description: Total execution time in milliseconds
+        executionTimeHigh:
+          type: integer
+          description: Highest execution time in milliseconds
+        executionTimeLow:
+          type: integer
+          description: Lowest execution time in milliseconds
+        reloadTotalCount:
+          type: integer
+          description: Number of times the servlet was reloaded
+    WLDFSystemResource:
+      type: object
+      properties:
+        name:
+          type: string
+          description: WLDF system resource name
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        harvestor:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              description: Whether the harvester is enabled
+            samplePeriod:
+              type: integer
+              description: Sample period in milliseconds
+        instrumentation:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              description: Whether instrumentation is enabled
+        watchNotification:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              description: Whether watch and notification is enabled
+    DataAccessRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Data access runtime name
+        availableDataTypes:
+          type: array
+          items:
+            type: string
+          description: Types of diagnostic data available for querying
+    DiagnosticQueryResult:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+          description: Column definitions for the result set
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: Result rows
+        totalRecords:
+          type: integer
+          description: Total number of matching records
+        returnedRecords:
+          type: integer
+          description: Number of records returned

@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.oracle.com/weblogic/domain-configuration",
+  "title": "WebLogic Domain Configuration",
+  "description": "Configuration schema for an Oracle WebLogic Server domain including servers, clusters, data sources, JMS resources, and security configuration.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Domain name",
+      "minLength": 1
+    },
+    "adminServerName": {
+      "type": "string",
+      "description": "Name of the administration server for this domain"
+    },
+    "domainVersion": {
+      "type": "string",
+      "description": "WebLogic Server version of the domain"
+    },
+    "productionModeEnabled": {
+      "type": "boolean",
+      "description": "Whether the domain is running in production mode",
+      "default": false
+    },
+    "configurationVersion": {
+      "type": "string",
+      "description": "Configuration version string"
+    },
+    "administrationProtocol": {
+      "type": "string",
+      "description": "Protocol used for administration communication",
+      "enum": ["t3s", "https", "iiops"],
+      "default": "t3s"
+    },
+    "administrationPort": {
+      "type": "integer",
+      "description": "Administration port used when production mode is enabled",
+      "default": 9002,
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "administrationPortEnabled": {
+      "type": "boolean",
+      "description": "Whether the domain-wide administration port is enabled",
+      "default": false
+    },
+    "exalogicOptimizationsEnabled": {
+      "type": "boolean",
+      "description": "Whether Exalogic-specific optimizations are enabled",
+      "default": false
+    },
+    "configBackupEnabled": {
+      "type": "boolean",
+      "description": "Whether automatic configuration backup is enabled",
+      "default": false
+    },
+    "archiveConfigurationCount": {
+      "type": "integer",
+      "description": "Number of configuration archive files to maintain",
+      "default": 0,
+      "minimum": 0
+    },
+    "servers": {
+      "type": "array",
+      "description": "Server instances in the domain",
+      "items": {
+        "$ref": "weblogic-server-configuration.json"
+      }
+    },
+    "clusters": {
+      "type": "array",
+      "description": "Clusters in the domain",
+      "items": {
+        "$ref": "weblogic-cluster-configuration.json"
+      }
+    },
+    "JDBCSystemResources": {
+      "type": "array",
+      "description": "JDBC system resources (data sources) in the domain",
+      "items": {
+        "$ref": "weblogic-datasource-configuration.json"
+      }
+    },
+    "JMSSystemResources": {
+      "type": "array",
+      "description": "JMS system resources in the domain",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "JMS system resource name"
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Target servers or clusters"
+          },
+          "descriptorFileName": {
+            "type": "string",
+            "description": "JMS descriptor file name"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "appDeployments": {
+      "type": "array",
+      "description": "Application deployments in the domain",
+      "items": {
+        "$ref": "weblogic-application-deployment.json"
+      }
+    },
+    "securityConfiguration": {
+      "type": "object",
+      "description": "Domain security configuration",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "realms": {
+          "type": "array",
+          "description": "Security realms",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "authenticationProviders": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "crossDomainSecurityEnabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "webAppFilesCaseInsensitive": {
+          "type": "string",
+          "enum": ["os", "true", "false"],
+          "default": "os"
+        }
+      }
+    }
+  },
+  "required": ["name", "adminServerName"]
+}

@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.oracle.com/weblogic/server-runtime",
+  "title": "WebLogic Server Runtime",
+  "description": "Runtime data schema for an Oracle WebLogic Server instance including state, health, JVM metrics, thread pool statistics, and subsystem runtimes.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Server instance name"
+    },
+    "state": {
+      "type": "string",
+      "description": "Current server lifecycle state",
+      "enum": [
+        "SHUTDOWN",
+        "STARTING",
+        "STANDBY",
+        "ADMIN",
+        "RESUMING",
+        "RUNNING",
+        "SUSPENDING",
+        "FORCE_SUSPENDING",
+        "SHUTTING_DOWN",
+        "FAILED",
+        "UNKNOWN"
+      ]
+    },
+    "listenAddress": {
+      "type": "string",
+      "description": "Current listen address"
+    },
+    "listenPort": {
+      "type": "integer",
+      "description": "Current listen port"
+    },
+    "SSLListenPort": {
+      "type": "integer",
+      "description": "Current SSL listen port"
+    },
+    "adminServerHost": {
+      "type": "string",
+      "description": "Administration server hostname"
+    },
+    "adminServerListenPort": {
+      "type": "integer",
+      "description": "Administration server listen port"
+    },
+    "currentMachine": {
+      "type": "string",
+      "description": "Machine the server is currently running on"
+    },
+    "weblogicVersion": {
+      "type": "string",
+      "description": "WebLogic Server version string"
+    },
+    "activationTime": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Server activation time in milliseconds since epoch"
+    },
+    "openSocketsCurrentCount": {
+      "type": "integer",
+      "description": "Current number of open sockets"
+    },
+    "restartRequired": {
+      "type": "boolean",
+      "description": "Whether a server restart is required to apply pending changes"
+    },
+    "healthState": {
+      "$ref": "#/$defs/HealthState"
+    },
+    "overallHealthState": {
+      "$ref": "#/$defs/HealthState"
+    },
+    "JVMRuntime": {
+      "type": "object",
+      "description": "JVM runtime metrics",
+      "properties": {
+        "heapSizeCurrent": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Current JVM heap size in bytes"
+        },
+        "heapSizeMax": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Maximum JVM heap size in bytes"
+        },
+        "heapFreeCurrent": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Current free heap memory in bytes"
+        },
+        "heapFreePercent": {
+          "type": "number",
+          "format": "double",
+          "description": "Percentage of heap memory that is free"
+        },
+        "javaVersion": {
+          "type": "string",
+          "description": "Java version"
+        },
+        "javaVendor": {
+          "type": "string",
+          "description": "Java vendor"
+        },
+        "osName": {
+          "type": "string",
+          "description": "Operating system name"
+        },
+        "osVersion": {
+          "type": "string",
+          "description": "Operating system version"
+        },
+        "uptime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "JVM uptime in milliseconds"
+        }
+      }
+    },
+    "threadPoolRuntime": {
+      "type": "object",
+      "description": "Thread pool runtime metrics",
+      "properties": {
+        "executeThreadTotalCount": {
+          "type": "integer",
+          "description": "Total number of execute threads in the pool"
+        },
+        "executeThreadIdleCount": {
+          "type": "integer",
+          "description": "Number of idle execute threads"
+        },
+        "hoggingThreadCount": {
+          "type": "integer",
+          "description": "Number of threads hogging resources beyond the configured threshold"
+        },
+        "stuckThreadCount": {
+          "type": "integer",
+          "description": "Number of threads stuck beyond the configured stuck thread time"
+        },
+        "pendingUserRequestCount": {
+          "type": "integer",
+          "description": "Number of pending user requests in the queue"
+        },
+        "throughput": {
+          "type": "number",
+          "format": "double",
+          "description": "Thread pool throughput in requests per second"
+        },
+        "completedRequestCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total number of completed requests"
+        },
+        "overloadRejectedRequestsCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of requests rejected due to server overload"
+        },
+        "queueLength": {
+          "type": "integer",
+          "description": "Current length of the request queue"
+        }
+      }
+    },
+    "JDBCServiceRuntime": {
+      "type": "object",
+      "description": "JDBC service runtime",
+      "properties": {
+        "JDBCDataSourceRuntimeMBeans": {
+          "type": "array",
+          "description": "JDBC data source runtime instances",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string",
+                "enum": ["Running", "Suspended", "Shutdown", "Overloaded", "Unknown"]
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "activeConnectionsCurrentCount": {
+                "type": "integer"
+              },
+              "connectionsTotalCount": {
+                "type": "integer"
+              },
+              "currCapacity": {
+                "type": "integer"
+              },
+              "numAvailable": {
+                "type": "integer"
+              },
+              "numUnavailable": {
+                "type": "integer"
+              },
+              "waitingForConnectionCurrentCount": {
+                "type": "integer"
+              },
+              "leakedConnectionCount": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "JMSRuntime": {
+      "type": "object",
+      "description": "JMS runtime",
+      "properties": {
+        "connectionsCurrentCount": {
+          "type": "integer"
+        },
+        "connectionsTotalCount": {
+          "type": "integer"
+        },
+        "JMSServersCurrentCount": {
+          "type": "integer"
+        },
+        "healthState": {
+          "$ref": "#/$defs/HealthState"
+        }
+      }
+    },
+    "applicationRuntimes": {
+      "type": "array",
+      "description": "Runtime information for deployed applications",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "healthState": {
+            "$ref": "#/$defs/HealthState"
+          },
+          "overallHealthState": {
+            "$ref": "#/$defs/HealthState"
+          }
+        }
+      }
+    }
+  },
+  "required": ["name"],
+  "$defs": {
+    "HealthState": {
+      "type": "object",
+      "description": "Health state of a WebLogic Server component or subsystem",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "Health state value",
+          "enum": [
+            "HEALTH_OK",
+            "HEALTH_WARN",
+            "HEALTH_CRITICAL",
+            "HEALTH_FAILED",
+            "HEALTH_OVERLOADED"
+          ]
+        },
+        "subsystemName": {
+          "type": "string",
+          "description": "Name of the subsystem reporting this health state"
+        },
+        "symptoms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Symptoms or issues contributing to the health state"
+        }
+      }
+    }
+  }
+}

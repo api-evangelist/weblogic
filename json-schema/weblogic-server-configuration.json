@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.oracle.com/weblogic/server-configuration",
+  "title": "WebLogic Server Configuration",
+  "description": "Configuration schema for an Oracle WebLogic Server instance including listen ports, cluster membership, staging mode, and SSL settings.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique name of the server instance within the domain",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "listenAddress": {
+      "type": "string",
+      "description": "Network address on which the server listens for connections. Empty string means all available addresses.",
+      "default": ""
+    },
+    "listenPort": {
+      "type": "integer",
+      "description": "Non-SSL listen port for the server",
+      "default": 7001,
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "listenPortEnabled": {
+      "type": "boolean",
+      "description": "Whether the plain-text (non-SSL) listen port is enabled",
+      "default": true
+    },
+    "SSLListenPort": {
+      "type": "integer",
+      "description": "SSL listen port for the server",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "SSLEnabled": {
+      "type": "boolean",
+      "description": "Whether SSL is enabled for this server",
+      "default": false
+    },
+    "cluster": {
+      "type": ["string", "null"],
+      "description": "Name of the cluster this server belongs to, or null if standalone"
+    },
+    "machine": {
+      "type": ["string", "null"],
+      "description": "Name of the machine (Node Manager) this server is assigned to"
+    },
+    "startupMode": {
+      "type": "string",
+      "description": "The initial running state when the server starts",
+      "enum": ["RUNNING", "STANDBY", "ADMIN"],
+      "default": "RUNNING"
+    },
+    "autoRestart": {
+      "type": "boolean",
+      "description": "Whether the Node Manager should automatically restart this server if it fails",
+      "default": true
+    },
+    "restartMax": {
+      "type": "integer",
+      "description": "Maximum number of times Node Manager will attempt to restart this server",
+      "default": 2,
+      "minimum": 0
+    },
+    "restartIntervalSeconds": {
+      "type": "integer",
+      "description": "Interval in seconds within which restartMax restarts must occur to trigger failure",
+      "default": 3600,
+      "minimum": 0
+    },
+    "stagingMode": {
+      "type": "string",
+      "description": "How applications are staged on this server",
+      "enum": ["stage", "nostage", "external_stage"],
+      "default": "stage"
+    },
+    "stagingDirectoryName": {
+      "type": "string",
+      "description": "Directory used for staging deployed applications"
+    },
+    "uploadDirectoryName": {
+      "type": "string",
+      "description": "Directory used for uploaded deployment files"
+    },
+    "javaCompiler": {
+      "type": "string",
+      "description": "Java compiler to use for JSP compilation"
+    },
+    "clientCertProxyEnabled": {
+      "type": "boolean",
+      "description": "Whether the server should accept client certificate proxy headers from a web server plugin",
+      "default": false
+    },
+    "weblogicPluginEnabled": {
+      "type": "boolean",
+      "description": "Whether to use the WebLogic Plugin for proxy requests",
+      "default": false
+    },
+    "gracefulShutdownTimeout": {
+      "type": "integer",
+      "description": "Timeout in seconds for graceful shutdown",
+      "default": 0,
+      "minimum": 0
+    },
+    "log": {
+      "type": "object",
+      "description": "Server log configuration",
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "description": "Path to the server log file"
+        },
+        "fileMinSize": {
+          "type": "integer",
+          "description": "Minimum size in kilobytes before the log file is rotated",
+          "default": 5000
+        },
+        "rotationType": {
+          "type": "string",
+          "description": "Log rotation strategy",
+          "enum": ["bySize", "byTime", "none"],
+          "default": "bySize"
+        },
+        "numberOfFilesLimited": {
+          "type": "boolean",
+          "description": "Whether the number of rotated log files is limited",
+          "default": true
+        },
+        "fileCount": {
+          "type": "integer",
+          "description": "Maximum number of rotated log files to keep",
+          "default": 7
+        },
+        "rotateLogOnStartup": {
+          "type": "boolean",
+          "description": "Whether to rotate the log file when the server starts",
+          "default": true
+        },
+        "logFileSeverity": {
+          "type": "string",
+          "description": "Minimum severity of messages written to the log file",
+          "enum": ["Debug", "Info", "Notice", "Warning", "Error", "Critical", "Alert", "Emergency", "Off"],
+          "default": "Debug"
+        },
+        "stdoutSeverity": {
+          "type": "string",
+          "description": "Minimum severity of messages written to standard out",
+          "enum": ["Debug", "Info", "Notice", "Warning", "Error", "Critical", "Alert", "Emergency", "Off"],
+          "default": "Notice"
+        }
+      }
+    },
+    "SSL": {
+      "type": "object",
+      "description": "SSL/TLS configuration for the server",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "listenPort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "twoWaySSLEnabled": {
+          "type": "boolean",
+          "description": "Whether two-way (mutual) SSL is enabled",
+          "default": false
+        },
+        "clientCertificateEnforced": {
+          "type": "boolean",
+          "description": "Whether client certificates are enforced",
+          "default": false
+        },
+        "jSSEEnabled": {
+          "type": "boolean",
+          "description": "Whether JSSE SSL implementation is used",
+          "default": true
+        },
+        "minimumTLSProtocolVersion": {
+          "type": "string",
+          "description": "Minimum TLS protocol version allowed",
+          "enum": ["TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3"]
+        }
+      }
+    },
+    "networkAccessPoints": {
+      "type": "array",
+      "description": "Custom network channels configured on this server",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Channel name"
+          },
+          "protocol": {
+            "type": "string",
+            "description": "Protocol for the channel",
+            "enum": ["t3", "t3s", "http", "https", "iiop", "iiops", "admin"]
+          },
+          "listenAddress": {
+            "type": "string"
+          },
+          "listenPort": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": ["name", "protocol", "listenPort"]
+      }
+    }
+  },
+  "required": ["name"]
+}
