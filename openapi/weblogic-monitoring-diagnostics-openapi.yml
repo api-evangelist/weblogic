@@ -30,20 +30,20 @@ servers:
 security:
   - basicAuth: []
 tags:
-  - name: Servers
-    description: Server-level monitoring and health information
+  - name: Applications
+    description: Application deployment monitoring
   - name: Clusters
     description: Cluster-level monitoring information
   - name: Data Sources
     description: JDBC data source monitoring and metrics
-  - name: JMS
-    description: JMS subsystem monitoring
-  - name: Applications
-    description: Application deployment monitoring
   - name: Diagnostics
     description: WebLogic Diagnostic Framework (WLDF) resources
   - name: Health
     description: Server and subsystem health checks
+  - name: JMS
+    description: JMS subsystem monitoring
+  - name: Servers
+    description: Server-level monitoring and health information
 paths:
   /servers:
     get:

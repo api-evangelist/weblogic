@@ -34,32 +34,32 @@ servers:
 security:
   - basicAuth: []
 tags:
+  - name: Domain Configuration
+    description: >-
+      Read-only access to the domain-level configuration MBean tree including
+      servers, clusters, data sources, JMS resources, and security realms.
+  - name: Domain Runtime
+    description: >-
+      Access to domain-level runtime MBeans including server lifecycle
+      operations, deployment operations, and domain-wide monitoring data.
   - name: Edit
     description: >-
       Configuration editing operations. An edit session must be started before
       making changes to the domain configuration. Changes are staged and then
       activated.
-  - name: Domain Configuration
+  - name: Lifecycle
     description: >-
-      Read-only access to the domain-level configuration MBean tree including
-      servers, clusters, data sources, JMS resources, and security realms.
+      Server lifecycle management operations including starting, stopping,
+      suspending, and resuming servers.
   - name: Server Configuration
     description: >-
       Read-only access to the server-level configuration MBean tree for
       individual managed servers.
-  - name: Domain Runtime
-    description: >-
-      Access to domain-level runtime MBeans including server lifecycle
-      operations, deployment operations, and domain-wide monitoring data.
   - name: Server Runtime
     description: >-
       Access to server-level runtime MBeans providing monitoring data for
       individual server instances including thread pools, JDBC, JMS, and
       application runtimes.
-  - name: Lifecycle
-    description: >-
-      Server lifecycle management operations including starting, stopping,
-      suspending, and resuming servers.
 paths:
   /edit:
     get:

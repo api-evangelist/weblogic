@@ -34,12 +34,12 @@ tags:
     description: >-
       Deploy, undeploy, redeploy, and manage application configurations
       using the edit tree
-  - name: Library Deployments
-    description: Deploy and manage shared libraries
   - name: Deployment Operations
     description: >-
       Runtime deployment operations using the domain runtime deployment
       manager
+  - name: Library Deployments
+    description: Deploy and manage shared libraries
   - name: Upload
     description: Upload application archives to the administration server
 paths:
