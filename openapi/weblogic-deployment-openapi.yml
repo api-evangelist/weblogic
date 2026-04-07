@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: Oracle WebLogic Server Deployment API
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment API
   description: >-
     RESTful API for deploying, undeploying, redeploying, and managing
     applications and shared libraries on Oracle WebLogic Server. Supports
@@ -46,7 +46,7 @@ paths:
   /edit/appDeployments:
     get:
       operationId: listAppDeployments
-      summary: List all application deployments
+      summary: Oracle WebLogic Server APIs List all application deployments
       description: >-
         Returns all application deployment configurations in the domain.
         Requires an active edit session for modification operations.
@@ -68,7 +68,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createAppDeployment
-      summary: Create an application deployment
+      summary: Oracle WebLogic Server APIs Create an application deployment
       description: >-
         Creates a new application deployment configuration. Requires an
         active edit session. The application must be accessible from the
@@ -95,7 +95,7 @@ paths:
   /edit/appDeployments/{appName}:
     get:
       operationId: getAppDeployment
-      summary: Get an application deployment
+      summary: Oracle WebLogic Server APIs Get an application deployment
       description: Returns the configuration of a specific application deployment.
       tags:
         - Application Deployments
@@ -114,7 +114,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       operationId: updateAppDeployment
-      summary: Update an application deployment
+      summary: Oracle WebLogic Server APIs Update an application deployment
       description: >-
         Updates the configuration of a specific application deployment.
         Requires an active edit session.
@@ -143,7 +143,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteAppDeployment
-      summary: Remove an application deployment
+      summary: Oracle WebLogic Server APIs Remove an application deployment
       description: >-
         Removes an application deployment configuration from the domain.
         Requires an active edit session. This undeploys the application
@@ -162,7 +162,7 @@ paths:
   /edit/libraries:
     get:
       operationId: listLibraries
-      summary: List all shared library deployments
+      summary: Oracle WebLogic Server APIs List all shared library deployments
       description: >-
         Returns all shared library deployment configurations in the domain.
       tags:
@@ -183,7 +183,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createLibrary
-      summary: Create a shared library deployment
+      summary: Oracle WebLogic Server APIs Create a shared library deployment
       description: >-
         Creates a new shared library deployment. Requires an active edit session.
       tags:
@@ -208,7 +208,7 @@ paths:
   /edit/libraries/{libraryName}:
     get:
       operationId: getLibrary
-      summary: Get a shared library deployment
+      summary: Oracle WebLogic Server APIs Get a shared library deployment
       description: Returns the configuration of a specific shared library deployment.
       tags:
         - Library Deployments
@@ -227,7 +227,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteLibrary
-      summary: Remove a shared library deployment
+      summary: Oracle WebLogic Server APIs Remove a shared library deployment
       description: >-
         Removes a shared library deployment from the domain. Requires an
         active edit session.
@@ -245,7 +245,7 @@ paths:
   /domainRuntime/deploymentManager/deploy:
     post:
       operationId: deploy
-      summary: Deploy an application at runtime
+      summary: Oracle WebLogic Server APIs Deploy an application at runtime
       description: >-
         Deploys an application to the specified targets using the deployment
         manager. This is a runtime operation that does not require an edit
@@ -321,7 +321,7 @@ paths:
   /domainRuntime/deploymentManager/undeploy:
     post:
       operationId: undeploy
-      summary: Undeploy an application at runtime
+      summary: Oracle WebLogic Server APIs Undeploy an application at runtime
       description: >-
         Undeploys an application from the specified targets using the
         deployment manager.
@@ -370,7 +370,7 @@ paths:
   /domainRuntime/deploymentManager/redeploy:
     post:
       operationId: redeploy
-      summary: Redeploy an application
+      summary: Oracle WebLogic Server APIs Redeploy an application
       description: >-
         Redeploys an application, refreshing it from the source location.
         Can update the entire application or specific modules.
@@ -420,7 +420,7 @@ paths:
   /domainRuntime/deploymentManager/startApplication:
     post:
       operationId: startApplication
-      summary: Start a deployed application
+      summary: Oracle WebLogic Server APIs Start a deployed application
       description: >-
         Starts a deployed application that is currently in the prepared
         or admin state, transitioning it to the active state.
@@ -455,7 +455,7 @@ paths:
   /domainRuntime/deploymentManager/stopApplication:
     post:
       operationId: stopApplication
-      summary: Stop a deployed application
+      summary: Oracle WebLogic Server APIs Stop a deployed application
       description: >-
         Stops a deployed application, transitioning it to the prepared
         state where it no longer accepts client requests.
@@ -497,7 +497,7 @@ paths:
   /domainRuntime/deploymentManager/deploymentProgressObjects:
     get:
       operationId: listDeploymentProgress
-      summary: List all deployment progress objects
+      summary: Oracle WebLogic Server APIs List all deployment progress objects
       description: >-
         Returns progress information for all in-progress and recently
         completed deployment operations.
@@ -520,7 +520,7 @@ paths:
   /domainRuntime/deploymentManager/deploymentProgressObjects/{taskId}:
     get:
       operationId: getDeploymentProgress
-      summary: Get deployment progress
+      summary: Oracle WebLogic Server APIs Get deployment progress
       description: Returns progress information for a specific deployment operation.
       tags:
         - Deployment Operations
@@ -545,7 +545,7 @@ paths:
   /domainRuntime/deploymentManager/upload:
     post:
       operationId: uploadApplication
-      summary: Upload an application archive
+      summary: Oracle WebLogic Server APIs Upload an application archive
       description: >-
         Uploads an application archive (EAR, WAR, JAR) or deployment plan
         to the administration server upload directory for subsequent

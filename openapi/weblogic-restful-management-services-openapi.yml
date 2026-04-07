@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: Oracle WebLogic Server RESTful Management Services API
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API
   description: >-
     RESTful API for administering Oracle WebLogic Server domains including
     configuration management, editing domain configurations, server lifecycle
@@ -64,7 +64,7 @@ paths:
   /edit:
     get:
       operationId: getEditRoot
-      summary: Get edit configuration tree root
+      summary: Oracle WebLogic Server APIs Get edit configuration tree root
       description: >-
         Returns the root resource of the edit configuration tree. This provides
         links to all configurable resources in the domain.
@@ -82,7 +82,7 @@ paths:
   /edit/changeManager/startEdit:
     post:
       operationId: startEdit
-      summary: Start an edit session
+      summary: Oracle WebLogic Server APIs Start an edit session
       description: >-
         Starts a new configuration edit session. Only one edit session can be
         active per user. The edit session locks the domain configuration for
@@ -123,7 +123,7 @@ paths:
   /edit/changeManager/activate:
     post:
       operationId: activate
-      summary: Activate pending changes
+      summary: Oracle WebLogic Server APIs Activate pending changes
       description: >-
         Activates all pending configuration changes made during the current
         edit session. This distributes changes to all affected servers in the
@@ -144,7 +144,7 @@ paths:
   /edit/changeManager/cancelEdit:
     post:
       operationId: cancelEdit
-      summary: Cancel the current edit session
+      summary: Oracle WebLogic Server APIs Cancel the current edit session
       description: >-
         Cancels the current edit session and discards all pending configuration
         changes.
@@ -158,7 +158,7 @@ paths:
   /edit/changeManager/undoUnactivatedChanges:
     post:
       operationId: undoUnactivatedChanges
-      summary: Undo unactivated changes
+      summary: Oracle WebLogic Server APIs Undo unactivated changes
       description: >-
         Reverts all unactivated changes within the current edit session without
         ending the session.
@@ -172,7 +172,7 @@ paths:
   /edit/servers:
     get:
       operationId: getEditServers
-      summary: List all server configurations
+      summary: Oracle WebLogic Server APIs List all server configurations
       description: Returns all server configurations in the domain for editing.
       tags:
         - Edit
@@ -192,7 +192,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createEditServer
-      summary: Create a new server configuration
+      summary: Oracle WebLogic Server APIs Create a new server configuration
       description: Creates a new managed server configuration in the domain.
       tags:
         - Edit
@@ -216,7 +216,7 @@ paths:
   /edit/servers/{serverName}:
     get:
       operationId: getEditServer
-      summary: Get a server configuration
+      summary: Oracle WebLogic Server APIs Get a server configuration
       description: Returns the configuration of a specific server for editing.
       tags:
         - Edit
@@ -235,7 +235,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       operationId: updateEditServer
-      summary: Update a server configuration
+      summary: Oracle WebLogic Server APIs Update a server configuration
       description: Updates the configuration of a specific server.
       tags:
         - Edit
@@ -262,7 +262,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteEditServer
-      summary: Delete a server configuration
+      summary: Oracle WebLogic Server APIs Delete a server configuration
       description: Deletes a managed server configuration from the domain.
       tags:
         - Edit
@@ -278,7 +278,7 @@ paths:
   /edit/clusters:
     get:
       operationId: getEditClusters
-      summary: List all cluster configurations
+      summary: Oracle WebLogic Server APIs List all cluster configurations
       description: Returns all cluster configurations in the domain for editing.
       tags:
         - Edit
@@ -298,7 +298,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createEditCluster
-      summary: Create a new cluster configuration
+      summary: Oracle WebLogic Server APIs Create a new cluster configuration
       description: Creates a new cluster configuration in the domain.
       tags:
         - Edit
@@ -322,7 +322,7 @@ paths:
   /edit/clusters/{clusterName}:
     get:
       operationId: getEditCluster
-      summary: Get a cluster configuration
+      summary: Oracle WebLogic Server APIs Get a cluster configuration
       description: Returns the configuration of a specific cluster for editing.
       tags:
         - Edit
@@ -341,7 +341,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       operationId: updateEditCluster
-      summary: Update a cluster configuration
+      summary: Oracle WebLogic Server APIs Update a cluster configuration
       description: Updates the configuration of a specific cluster.
       tags:
         - Edit
@@ -364,7 +364,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteEditCluster
-      summary: Delete a cluster configuration
+      summary: Oracle WebLogic Server APIs Delete a cluster configuration
       description: Deletes a cluster configuration from the domain.
       tags:
         - Edit
@@ -380,7 +380,7 @@ paths:
   /edit/JDBCSystemResources:
     get:
       operationId: getEditDataSources
-      summary: List all JDBC system resource configurations
+      summary: Oracle WebLogic Server APIs List all JDBC system resource configurations
       description: Returns all JDBC system resource (data source) configurations in the domain.
       tags:
         - Edit
@@ -400,7 +400,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createEditDataSource
-      summary: Create a new JDBC system resource
+      summary: Oracle WebLogic Server APIs Create a new JDBC system resource
       description: Creates a new JDBC system resource (data source) configuration.
       tags:
         - Edit
@@ -424,7 +424,7 @@ paths:
   /edit/JDBCSystemResources/{dataSourceName}:
     get:
       operationId: getEditDataSource
-      summary: Get a JDBC system resource configuration
+      summary: Oracle WebLogic Server APIs Get a JDBC system resource configuration
       description: Returns the configuration of a specific JDBC system resource.
       tags:
         - Edit
@@ -443,7 +443,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteEditDataSource
-      summary: Delete a JDBC system resource
+      summary: Oracle WebLogic Server APIs Delete a JDBC system resource
       description: Deletes a JDBC system resource configuration from the domain.
       tags:
         - Edit
@@ -459,7 +459,7 @@ paths:
   /edit/JMSSystemResources:
     get:
       operationId: getEditJMSResources
-      summary: List all JMS system resource configurations
+      summary: Oracle WebLogic Server APIs List all JMS system resource configurations
       description: Returns all JMS system resource configurations in the domain.
       tags:
         - Edit
@@ -479,7 +479,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createEditJMSResource
-      summary: Create a new JMS system resource
+      summary: Oracle WebLogic Server APIs Create a new JMS system resource
       description: Creates a new JMS system resource configuration.
       tags:
         - Edit
@@ -499,7 +499,7 @@ paths:
   /edit/appDeployments:
     get:
       operationId: getEditAppDeployments
-      summary: List all application deployment configurations
+      summary: Oracle WebLogic Server APIs List all application deployment configurations
       description: Returns all application deployment configurations in the domain.
       tags:
         - Edit
@@ -519,7 +519,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createEditAppDeployment
-      summary: Create a new application deployment configuration
+      summary: Oracle WebLogic Server APIs Create a new application deployment configuration
       description: Creates a new application deployment configuration.
       tags:
         - Edit
@@ -539,7 +539,7 @@ paths:
   /edit/appDeployments/{appName}:
     get:
       operationId: getEditAppDeployment
-      summary: Get an application deployment configuration
+      summary: Oracle WebLogic Server APIs Get an application deployment configuration
       description: Returns the configuration of a specific application deployment.
       tags:
         - Edit
@@ -558,7 +558,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteEditAppDeployment
-      summary: Delete an application deployment configuration
+      summary: Oracle WebLogic Server APIs Delete an application deployment configuration
       description: Deletes an application deployment configuration.
       tags:
         - Edit
@@ -574,7 +574,7 @@ paths:
   /domainConfig:
     get:
       operationId: getDomainConfigRoot
-      summary: Get domain configuration tree root
+      summary: Oracle WebLogic Server APIs Get domain configuration tree root
       description: >-
         Returns the root resource of the read-only domain configuration tree,
         providing links to all configuration resources in the domain.
@@ -592,7 +592,7 @@ paths:
   /domainConfig/servers:
     get:
       operationId: getDomainConfigServers
-      summary: List all server configurations (read-only)
+      summary: Oracle WebLogic Server APIs List all server configurations (read-only)
       description: Returns all server configurations in the domain (read-only view).
       tags:
         - Domain Configuration
@@ -613,7 +613,7 @@ paths:
   /domainConfig/servers/{serverName}:
     get:
       operationId: getDomainConfigServer
-      summary: Get a server configuration (read-only)
+      summary: Oracle WebLogic Server APIs Get a server configuration (read-only)
       description: Returns the configuration of a specific server (read-only view).
       tags:
         - Domain Configuration
@@ -633,7 +633,7 @@ paths:
   /domainConfig/clusters:
     get:
       operationId: getDomainConfigClusters
-      summary: List all cluster configurations (read-only)
+      summary: Oracle WebLogic Server APIs List all cluster configurations (read-only)
       description: Returns all cluster configurations in the domain (read-only view).
       tags:
         - Domain Configuration
@@ -654,7 +654,7 @@ paths:
   /domainConfig/securityConfiguration:
     get:
       operationId: getDomainSecurityConfig
-      summary: Get domain security configuration
+      summary: Oracle WebLogic Server APIs Get domain security configuration
       description: Returns the security configuration of the domain including realms.
       tags:
         - Domain Configuration
@@ -670,7 +670,7 @@ paths:
   /domainRuntime:
     get:
       operationId: getDomainRuntimeRoot
-      summary: Get domain runtime tree root
+      summary: Oracle WebLogic Server APIs Get domain runtime tree root
       description: >-
         Returns the root resource of the domain runtime MBean tree, providing
         links to runtime monitoring data and lifecycle operations across all
@@ -689,7 +689,7 @@ paths:
   /domainRuntime/serverLifeCycleRuntimes:
     get:
       operationId: getServerLifecycleRuntimes
-      summary: List all server lifecycle runtimes
+      summary: Oracle WebLogic Server APIs List all server lifecycle runtimes
       description: >-
         Returns lifecycle runtime information for all servers in the domain,
         including current state and available lifecycle operations.
@@ -712,7 +712,7 @@ paths:
   /domainRuntime/serverLifeCycleRuntimes/{serverName}:
     get:
       operationId: getServerLifecycleRuntime
-      summary: Get a server lifecycle runtime
+      summary: Oracle WebLogic Server APIs Get a server lifecycle runtime
       description: >-
         Returns lifecycle runtime information for a specific server including
         its current state.
@@ -734,7 +734,7 @@ paths:
   /domainRuntime/serverLifeCycleRuntimes/{serverName}/start:
     post:
       operationId: startServer
-      summary: Start a managed server
+      summary: Oracle WebLogic Server APIs Start a managed server
       description: Starts the specified managed server.
       tags:
         - Lifecycle
@@ -754,7 +754,7 @@ paths:
   /domainRuntime/serverLifeCycleRuntimes/{serverName}/shutdown:
     post:
       operationId: shutdownServer
-      summary: Shut down a managed server
+      summary: Oracle WebLogic Server APIs Shut down a managed server
       description: >-
         Gracefully shuts down the specified managed server. In-flight work
         is completed before shutdown.
@@ -794,7 +794,7 @@ paths:
   /domainRuntime/serverLifeCycleRuntimes/{serverName}/forceShutdown:
     post:
       operationId: forceShutdownServer
-      summary: Force shut down a managed server
+      summary: Oracle WebLogic Server APIs Force shut down a managed server
       description: >-
         Forces an immediate shutdown of the specified managed server without
         waiting for in-flight work to complete.
@@ -816,7 +816,7 @@ paths:
   /domainRuntime/serverLifeCycleRuntimes/{serverName}/suspend:
     post:
       operationId: suspendServer
-      summary: Suspend a managed server
+      summary: Oracle WebLogic Server APIs Suspend a managed server
       description: >-
         Suspends the specified managed server, transitioning it to ADMIN state
         where it only accepts administrative requests.
@@ -848,7 +848,7 @@ paths:
   /domainRuntime/serverLifeCycleRuntimes/{serverName}/resume:
     post:
       operationId: resumeServer
-      summary: Resume a suspended managed server
+      summary: Oracle WebLogic Server APIs Resume a suspended managed server
       description: >-
         Resumes the specified managed server from ADMIN state back to RUNNING
         state, re-enabling it to accept client requests.
@@ -870,7 +870,7 @@ paths:
   /domainRuntime/serverLifeCycleRuntimes/{serverName}/restartSSL:
     post:
       operationId: restartSSL
-      summary: Restart SSL on a managed server
+      summary: Oracle WebLogic Server APIs Restart SSL on a managed server
       description: >-
         Restarts the SSL listen sockets on the specified managed server,
         reloading SSL certificates and keys.
@@ -892,7 +892,7 @@ paths:
   /domainRuntime/serverRuntimes:
     get:
       operationId: getDomainServerRuntimes
-      summary: List all server runtimes in the domain
+      summary: Oracle WebLogic Server APIs List all server runtimes in the domain
       description: >-
         Returns runtime information for all running servers in the domain,
         accessed from the administration server.
@@ -915,7 +915,7 @@ paths:
   /domainRuntime/serverRuntimes/{serverName}:
     get:
       operationId: getDomainServerRuntime
-      summary: Get a server runtime from the domain
+      summary: Oracle WebLogic Server APIs Get a server runtime from the domain
       description: Returns runtime information for a specific server in the domain.
       tags:
         - Domain Runtime
@@ -935,7 +935,7 @@ paths:
   /domainRuntime/deploymentManager/deploymentProgressObjects:
     get:
       operationId: getDeploymentProgressObjects
-      summary: List deployment progress objects
+      summary: Oracle WebLogic Server APIs List deployment progress objects
       description: >-
         Returns information about in-progress and completed deployment
         operations across the domain.
@@ -958,7 +958,7 @@ paths:
   /serverConfig:
     get:
       operationId: getServerConfigRoot
-      summary: Get server configuration tree root
+      summary: Oracle WebLogic Server APIs Get server configuration tree root
       description: >-
         Returns the root resource of the read-only server configuration tree
         for the server handling the request.
@@ -976,7 +976,7 @@ paths:
   /serverRuntime:
     get:
       operationId: getServerRuntimeRoot
-      summary: Get server runtime tree root
+      summary: Oracle WebLogic Server APIs Get server runtime tree root
       description: >-
         Returns the root resource of the server runtime MBean tree for the
         server handling the request.
@@ -994,7 +994,7 @@ paths:
   /serverRuntime/JVMRuntime:
     get:
       operationId: getJVMRuntime
-      summary: Get JVM runtime information
+      summary: Oracle WebLogic Server APIs Get JVM runtime information
       description: >-
         Returns JVM runtime information including heap usage, uptime, and
         Java version for the current server.
@@ -1012,7 +1012,7 @@ paths:
   /serverRuntime/threadPoolRuntime:
     get:
       operationId: getThreadPoolRuntime
-      summary: Get thread pool runtime information
+      summary: Oracle WebLogic Server APIs Get thread pool runtime information
       description: >-
         Returns thread pool runtime information including active threads,
         queue length, and throughput metrics for the current server.
@@ -1030,7 +1030,7 @@ paths:
   /serverRuntime/JDBCServiceRuntime:
     get:
       operationId: getJDBCServiceRuntime
-      summary: Get JDBC service runtime information
+      summary: Oracle WebLogic Server APIs Get JDBC service runtime information
       description: >-
         Returns JDBC service runtime information including data source
         runtimes and connection pool metrics.
@@ -1048,7 +1048,7 @@ paths:
   /serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans:
     get:
       operationId: getJDBCDataSourceRuntimes
-      summary: List all JDBC data source runtimes
+      summary: Oracle WebLogic Server APIs List all JDBC data source runtimes
       description: >-
         Returns runtime information for all JDBC data sources on the current
         server.
@@ -1071,7 +1071,7 @@ paths:
   /serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans/{dataSourceName}:
     get:
       operationId: getJDBCDataSourceRuntime
-      summary: Get a JDBC data source runtime
+      summary: Oracle WebLogic Server APIs Get a JDBC data source runtime
       description: Returns runtime information for a specific JDBC data source.
       tags:
         - Server Runtime
@@ -1091,7 +1091,7 @@ paths:
   /serverRuntime/JMSRuntime:
     get:
       operationId: getJMSRuntime
-      summary: Get JMS runtime information
+      summary: Oracle WebLogic Server APIs Get JMS runtime information
       description: >-
         Returns JMS runtime information including JMS server runtimes and
         connection statistics for the current server.
@@ -1109,7 +1109,7 @@ paths:
   /serverRuntime/JMSRuntime/JMSServers:
     get:
       operationId: getJMSServerRuntimes
-      summary: List all JMS server runtimes
+      summary: Oracle WebLogic Server APIs List all JMS server runtimes
       description: Returns runtime information for all JMS servers on the current server.
       tags:
         - Server Runtime
@@ -1130,7 +1130,7 @@ paths:
   /serverRuntime/applicationRuntimes:
     get:
       operationId: getApplicationRuntimes
-      summary: List all application runtimes
+      summary: Oracle WebLogic Server APIs List all application runtimes
       description: >-
         Returns runtime information for all deployed applications on the
         current server.
@@ -1153,7 +1153,7 @@ paths:
   /serverRuntime/applicationRuntimes/{appName}:
     get:
       operationId: getApplicationRuntime
-      summary: Get an application runtime
+      summary: Oracle WebLogic Server APIs Get an application runtime
       description: Returns runtime information for a specific deployed application.
       tags:
         - Server Runtime
@@ -1173,7 +1173,7 @@ paths:
   /lifecycle/latest/servers/{serverName}/shutdown:
     post:
       operationId: lifecycleShutdownServer
-      summary: Shut down a server via lifecycle API
+      summary: Oracle WebLogic Server APIs Shut down a server via lifecycle API
       description: >-
         Shuts down the specified server using the lifecycle management
         resource set.
@@ -1208,7 +1208,7 @@ paths:
   /lifecycle/latest/servers/{serverName}/start:
     post:
       operationId: lifecycleStartServer
-      summary: Start a server via lifecycle API
+      summary: Oracle WebLogic Server APIs Start a server via lifecycle API
       description: Starts the specified server using the lifecycle management resource set.
       tags:
         - Lifecycle
@@ -1226,7 +1226,7 @@ paths:
   /lifecycle/latest/servers/{serverName}/suspend:
     post:
       operationId: lifecycleSuspendServer
-      summary: Suspend a server via lifecycle API
+      summary: Oracle WebLogic Server APIs Suspend a server via lifecycle API
       description: >-
         Suspends the specified server using the lifecycle management resource
         set.
@@ -1246,7 +1246,7 @@ paths:
   /lifecycle/latest/servers/{serverName}/resume:
     post:
       operationId: lifecycleResumeServer
-      summary: Resume a server via lifecycle API
+      summary: Oracle WebLogic Server APIs Resume a server via lifecycle API
       description: >-
         Resumes the specified server using the lifecycle management resource
         set.

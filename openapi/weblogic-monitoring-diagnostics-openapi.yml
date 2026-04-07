@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: Oracle WebLogic Server Monitoring and Diagnostics API
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API
   description: >-
     RESTful API for accessing runtime monitoring data, health metrics,
     diagnostics information, and WebLogic Diagnostic Framework (WLDF)
@@ -48,7 +48,7 @@ paths:
   /servers:
     get:
       operationId: getServers
-      summary: List all monitored servers
+      summary: Oracle WebLogic Server APIs List all monitored servers
       description: >-
         Returns monitoring information for all servers in the domain including
         their current state, health, and basic runtime metrics.
@@ -75,7 +75,7 @@ paths:
   /servers/{serverName}:
     get:
       operationId: getServer
-      summary: Get server monitoring information
+      summary: Oracle WebLogic Server APIs Get server monitoring information
       description: >-
         Returns detailed monitoring information for a specific server including
         state, health, JVM metrics, and subsystem runtimes.
@@ -97,7 +97,7 @@ paths:
   /servers/{serverName}/health:
     get:
       operationId: getServerHealth
-      summary: Get server health status
+      summary: Oracle WebLogic Server APIs Get server health status
       description: >-
         Returns the overall health state of the specified server along with
         health status of individual subsystems.
@@ -119,7 +119,7 @@ paths:
   /servers/{serverName}/jvm:
     get:
       operationId: getServerJVM
-      summary: Get server JVM metrics
+      summary: Oracle WebLogic Server APIs Get server JVM metrics
       description: >-
         Returns JVM runtime metrics for the specified server including heap
         usage, garbage collection statistics, and thread information.
@@ -141,7 +141,7 @@ paths:
   /servers/{serverName}/threadPool:
     get:
       operationId: getServerThreadPool
-      summary: Get server thread pool metrics
+      summary: Oracle WebLogic Server APIs Get server thread pool metrics
       description: >-
         Returns thread pool monitoring data for the specified server including
         thread counts, queue lengths, and throughput.
@@ -163,7 +163,7 @@ paths:
   /servers/{serverName}/workManagers:
     get:
       operationId: getServerWorkManagers
-      summary: List work managers on a server
+      summary: Oracle WebLogic Server APIs List work managers on a server
       description: >-
         Returns monitoring information for all work managers on the specified
         server.
@@ -190,7 +190,7 @@ paths:
   /clusters:
     get:
       operationId: getClusters
-      summary: List all monitored clusters
+      summary: Oracle WebLogic Server APIs List all monitored clusters
       description: >-
         Returns monitoring information for all clusters in the domain including
         member servers and cluster health.
@@ -213,7 +213,7 @@ paths:
   /clusters/{clusterName}:
     get:
       operationId: getCluster
-      summary: Get cluster monitoring information
+      summary: Oracle WebLogic Server APIs Get cluster monitoring information
       description: >-
         Returns detailed monitoring information for a specific cluster
         including member server states and cluster health.
@@ -235,7 +235,7 @@ paths:
   /dataSources:
     get:
       operationId: getDataSources
-      summary: List all data source metrics
+      summary: Oracle WebLogic Server APIs List all data source metrics
       description: >-
         Returns monitoring metrics for all JDBC data sources across all
         servers in the domain.
@@ -258,7 +258,7 @@ paths:
   /dataSources/{dataSourceName}:
     get:
       operationId: getDataSource
-      summary: Get data source metrics
+      summary: Oracle WebLogic Server APIs Get data source metrics
       description: Returns detailed metrics for a specific JDBC data source.
       tags:
         - Data Sources
@@ -278,7 +278,7 @@ paths:
   /dataSources/{dataSourceName}/test:
     post:
       operationId: testDataSource
-      summary: Test a data source connection
+      summary: Oracle WebLogic Server APIs Test a data source connection
       description: >-
         Tests the connection pool for the specified data source by reserving
         and releasing a connection.
@@ -307,7 +307,7 @@ paths:
   /JMSServers:
     get:
       operationId: getJMSServers
-      summary: List all JMS server metrics
+      summary: Oracle WebLogic Server APIs List all JMS server metrics
       description: Returns monitoring metrics for all JMS servers in the domain.
       tags:
         - JMS
@@ -328,7 +328,7 @@ paths:
   /JMSServers/{jmsServerName}:
     get:
       operationId: getJMSServer
-      summary: Get JMS server metrics
+      summary: Oracle WebLogic Server APIs Get JMS server metrics
       description: Returns detailed metrics for a specific JMS server.
       tags:
         - JMS
@@ -348,7 +348,7 @@ paths:
   /JMSServers/{jmsServerName}/destinations:
     get:
       operationId: getJMSDestinations
-      summary: List JMS destinations
+      summary: Oracle WebLogic Server APIs List JMS destinations
       description: Returns monitoring metrics for all destinations on a JMS server.
       tags:
         - JMS
@@ -373,7 +373,7 @@ paths:
   /deployments:
     get:
       operationId: getDeployments
-      summary: List all application deployment metrics
+      summary: Oracle WebLogic Server APIs List all application deployment metrics
       description: >-
         Returns monitoring information for all deployed applications across
         the domain.
@@ -396,7 +396,7 @@ paths:
   /deployments/{appName}:
     get:
       operationId: getDeployment
-      summary: Get application deployment metrics
+      summary: Oracle WebLogic Server APIs Get application deployment metrics
       description: Returns detailed monitoring information for a specific deployed application.
       tags:
         - Applications
@@ -416,7 +416,7 @@ paths:
   /deployments/{appName}/servlets:
     get:
       operationId: getDeploymentServlets
-      summary: List servlet metrics for an application
+      summary: Oracle WebLogic Server APIs List servlet metrics for an application
       description: Returns servlet-level monitoring metrics for a deployed web application.
       tags:
         - Applications
@@ -441,7 +441,7 @@ paths:
   /diagnostics/WLDFSystemResources:
     get:
       operationId: getWLDFResources
-      summary: List WLDF system resources
+      summary: Oracle WebLogic Server APIs List WLDF system resources
       description: >-
         Returns a list of WebLogic Diagnostic Framework (WLDF) system
         resources configured in the domain.
@@ -464,7 +464,7 @@ paths:
   /diagnostics/WLDFSystemResources/{resourceName}:
     get:
       operationId: getWLDFResource
-      summary: Get a WLDF system resource
+      summary: Oracle WebLogic Server APIs Get a WLDF system resource
       description: Returns details of a specific WLDF system resource.
       tags:
         - Diagnostics
@@ -484,7 +484,7 @@ paths:
   /diagnostics/dataAccessRuntimes:
     get:
       operationId: getDataAccessRuntimes
-      summary: List diagnostic data access runtimes
+      summary: Oracle WebLogic Server APIs List diagnostic data access runtimes
       description: >-
         Returns information about diagnostic data access runtimes that
         provide access to collected diagnostic data.
@@ -507,7 +507,7 @@ paths:
   /diagnostics/dataAccessRuntimes/{runtimeName}/query:
     post:
       operationId: queryDiagnosticData
-      summary: Query diagnostic data
+      summary: Oracle WebLogic Server APIs Query diagnostic data
       description: >-
         Executes a query against diagnostic data collected by the WebLogic
         Diagnostic Framework. Supports querying harvested metrics, server
