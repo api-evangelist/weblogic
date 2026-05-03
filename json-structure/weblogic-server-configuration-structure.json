@@ -1,0 +1,91 @@
+{
+  "title": "Oracle WebLogic Server Configuration Structure",
+  "description": "Structure documentation for Oracle WebLogic Server configuration as returned by the RESTful Management Services API.",
+  "type": "object",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "Unique name of the managed server within the domain"
+    },
+    {
+      "name": "listenAddress",
+      "type": "string",
+      "required": false,
+      "description": "IP address or DNS name on which the server listens for requests"
+    },
+    {
+      "name": "listenPort",
+      "type": "integer",
+      "required": false,
+      "description": "Port number on which the server listens for non-SSL requests (default: 7001)"
+    },
+    {
+      "name": "sslListenPort",
+      "type": "integer",
+      "required": false,
+      "description": "Port number for SSL connections (default: 7002)"
+    },
+    {
+      "name": "cluster",
+      "type": "string",
+      "required": false,
+      "description": "Name of the cluster this server belongs to"
+    },
+    {
+      "name": "machine",
+      "type": "string",
+      "required": false,
+      "description": "Name of the machine (host) this server is configured to run on"
+    },
+    {
+      "name": "serverStartState",
+      "type": "string",
+      "required": false,
+      "description": "Desired startup state: RUNNING, STANDBY, ADMIN"
+    },
+    {
+      "name": "autoRestart",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether Node Manager should restart this server if it fails"
+    },
+    {
+      "name": "jvmArgs",
+      "type": "string",
+      "required": false,
+      "description": "JVM arguments passed to the server's Java process"
+    },
+    {
+      "name": "javaHome",
+      "type": "string",
+      "required": false,
+      "description": "Path to the Java home directory used by this server"
+    },
+    {
+      "name": "classpath",
+      "type": "string",
+      "required": false,
+      "description": "Additional classpath entries for the server"
+    },
+    {
+      "name": "tunnelingEnabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether HTTP tunneling is enabled for T3 protocol"
+    },
+    {
+      "name": "weblogicPluginEnabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether the WebLogic proxy plugin is enabled"
+    },
+    {
+      "name": "defaultInternalServletsDisabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether internal servlets are disabled on this server"
+    }
+  ]
+}

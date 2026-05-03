@@ -1,0 +1,40 @@
+{
+  "title": "WebLogic Deploy Application Example",
+  "description": "Example request and response for deploying an application via the WebLogic Deployment API",
+  "request": {
+    "method": "POST",
+    "url": "https://localhost:7001/management/weblogic/latest/edit/appDeployments",
+    "headers": {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "X-Requested-By": "MyClient"
+    },
+    "auth": {
+      "type": "basic",
+      "username": "weblogic",
+      "password": "welcome1"
+    },
+    "body": {
+      "name": "myapp",
+      "sourcePath": "/opt/oracle/deployments/myapp.war",
+      "targets": ["ManagedServer1", "ManagedServer2"],
+      "stagingMode": "stage",
+      "securityDDModel": "DDOnly"
+    }
+  },
+  "response": {
+    "statusCode": 201,
+    "headers": {
+      "Content-Type": "application/json",
+      "Location": "https://localhost:7001/management/weblogic/latest/edit/appDeployments/myapp"
+    },
+    "body": {
+      "identity": ["deployments", "myapp"],
+      "name": "myapp",
+      "sourcePath": "/opt/oracle/deployments/myapp.war",
+      "targets": ["ManagedServer1", "ManagedServer2"],
+      "stagingMode": "stage",
+      "deploymentState": "PREPARED"
+    }
+  }
+}

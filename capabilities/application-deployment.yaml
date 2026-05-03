@@ -1,0 +1,281 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Oracle WebLogic Application Deployment"
+  description: >-
+    Unified capability for managing Oracle WebLogic Server application deployments
+    and shared libraries. Combines the deployment API with monitoring to support
+    the full deploy-verify-manage lifecycle. Used by DevOps engineers and release
+    managers to deploy, redeploy, start, stop, and monitor Java EE applications.
+  tags:
+    - Oracle
+    - WebLogic
+    - Deployment
+    - Applications
+    - Libraries
+    - DevOps
+    - Java EE
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      WEBLOGIC_ADMIN_USER: WEBLOGIC_ADMIN_USER
+      WEBLOGIC_ADMIN_PASSWORD: WEBLOGIC_ADMIN_PASSWORD
+
+capability:
+  consumes:
+    - import: weblogic-deployment
+      location: ./shared/weblogic-deployment.yaml
+    - import: weblogic-monitoring
+      location: ./shared/weblogic-monitoring.yaml
+
+  exposes:
+    - type: rest
+      port: 8081
+      namespace: weblogic-deployment-workflow-api
+      description: "Unified REST API for Oracle WebLogic application deployment workflows."
+      resources:
+        - path: /v1/deployments
+          name: deployments
+          description: "Application deployment lifecycle management"
+          operations:
+            - method: GET
+              name: list-deployments
+              description: "List all application deployments"
+              call: "weblogic-deployment.list-deployments"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: deploy
+              description: "Deploy an application at runtime"
+              call: "weblogic-deployment.deploy"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/deployments/{deploymentName}
+          name: deployment
+          operations:
+            - method: GET
+              name: get-deployment
+              description: "Get an application deployment"
+              call: "weblogic-deployment.get-deployment"
+              with:
+                deploymentName: "rest.deploymentName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: DELETE
+              name: undeploy
+              description: "Undeploy an application"
+              call: "weblogic-deployment.undeploy"
+              with:
+                deploymentName: "rest.deploymentName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/deployments/{deploymentName}/redeploy
+          name: redeploy
+          operations:
+            - method: POST
+              name: redeploy
+              description: "Redeploy an application"
+              call: "weblogic-deployment.redeploy"
+              with:
+                deploymentName: "rest.deploymentName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/deployments/{deploymentName}/start
+          name: start-deployment
+          operations:
+            - method: POST
+              name: start-application
+              description: "Start a deployed application"
+              call: "weblogic-deployment.start-application"
+              with:
+                deploymentName: "rest.deploymentName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/deployments/{deploymentName}/stop
+          name: stop-deployment
+          operations:
+            - method: POST
+              name: stop-application
+              description: "Stop a deployed application"
+              call: "weblogic-deployment.stop-application"
+              with:
+                deploymentName: "rest.deploymentName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/deployments/{deploymentName}/metrics
+          name: deployment-metrics
+          operations:
+            - method: GET
+              name: get-deployment-metrics
+              description: "Get deployment metrics and servlet statistics"
+              call: "weblogic-monitoring.get-deployment"
+              with:
+                deploymentName: "rest.deploymentName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/libraries
+          name: libraries
+          description: "Shared library deployment management"
+          operations:
+            - method: GET
+              name: list-libraries
+              description: "List all shared library deployments"
+              call: "weblogic-deployment.list-libraries"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-library
+              description: "Create a shared library deployment"
+              call: "weblogic-deployment.create-library"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9091
+      namespace: weblogic-deployment-mcp
+      transport: http
+      description: "MCP server for AI-assisted Oracle WebLogic application deployment management."
+      tools:
+        - name: list-deployments
+          description: "List all application deployments on WebLogic"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "weblogic-deployment.list-deployments"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-deployment
+          description: "Get details for a specific application deployment"
+          hints:
+            readOnly: true
+          call: "weblogic-deployment.get-deployment"
+          with:
+            deploymentName: "tools.deploymentName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: deploy-application
+          description: "Deploy an application archive to WebLogic at runtime"
+          hints:
+            readOnly: false
+          call: "weblogic-deployment.deploy"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: undeploy-application
+          description: "Undeploy and remove an application from WebLogic"
+          hints:
+            destructive: true
+            idempotent: true
+          call: "weblogic-deployment.undeploy"
+          with:
+            deploymentName: "tools.deploymentName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: redeploy-application
+          description: "Redeploy an application (update in-place) on WebLogic"
+          hints:
+            readOnly: false
+            idempotent: false
+          call: "weblogic-deployment.redeploy"
+          with:
+            deploymentName: "tools.deploymentName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: start-application
+          description: "Start a stopped or prepared application on WebLogic"
+          hints:
+            readOnly: false
+          call: "weblogic-deployment.start-application"
+          with:
+            deploymentName: "tools.deploymentName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: stop-application
+          description: "Stop a running application on WebLogic (keeps it deployed)"
+          hints:
+            destructive: false
+          call: "weblogic-deployment.stop-application"
+          with:
+            deploymentName: "tools.deploymentName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-deployment-metrics
+          description: "Get runtime metrics for a deployed application"
+          hints:
+            readOnly: true
+          call: "weblogic-monitoring.get-deployment"
+          with:
+            deploymentName: "tools.deploymentName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-all-deployments-monitoring
+          description: "List all application deployments with their runtime metrics"
+          hints:
+            readOnly: true
+          call: "weblogic-monitoring.list-deployments"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-libraries
+          description: "List all shared library deployments on WebLogic"
+          hints:
+            readOnly: true
+          call: "weblogic-deployment.list-libraries"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: create-library
+          description: "Deploy a new shared library to WebLogic"
+          hints:
+            readOnly: false
+          call: "weblogic-deployment.create-library"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: delete-library
+          description: "Remove a shared library from WebLogic"
+          hints:
+            destructive: true
+          call: "weblogic-deployment.delete-library"
+          with:
+            libraryName: "tools.libraryName"
+          outputParameters:
+            - type: object
+              mapping: "$."

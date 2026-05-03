@@ -1,0 +1,164 @@
+aid: weblogic
+name: Oracle WebLogic Server Vocabulary
+description: >-
+  Vocabulary and terminology for Oracle WebLogic Server administration and management.
+  Covers domain components, configuration concepts, deployment lifecycle, monitoring
+  metrics, and administrative operations.
+modified: '2026-05-03'
+terms:
+
+  - term: Administration Server
+    definition: >-
+      The central server instance in a WebLogic domain that manages the domain's
+      configuration. All domain configuration changes are made through the Administration
+      Server, which distributes updates to Managed Servers. Runs on port 7001 by default.
+    tags:
+      - Domain Architecture
+      - Server Types
+
+  - term: Cluster
+    definition: >-
+      A group of WebLogic Server instances that work together to provide scalability
+      and high availability. Clustered servers share the same configuration and can
+      distribute workloads. Supports session replication and failover.
+    tags:
+      - Clustering
+      - High Availability
+
+  - term: Domain
+    definition: >-
+      The basic administrative unit in WebLogic Server. A domain contains one Administration
+      Server, zero or more Managed Servers, clusters, machines, and deployed applications.
+      The domain configuration is stored in config/config.xml.
+    tags:
+      - Domain Architecture
+
+  - term: Edit Session
+    definition: >-
+      A locking mechanism in WebLogic's change management system. Before modifying domain
+      configuration via the REST API, an edit session must be started (startEdit). Changes
+      are staged until activated (activate) or discarded (cancelEdit).
+    tags:
+      - Configuration Management
+
+  - term: Managed Server
+    definition: >-
+      A server instance in a WebLogic domain that is managed by the Administration Server.
+      Applications are deployed to Managed Servers. In production, all application workloads
+      run on Managed Servers, not the Administration Server.
+    tags:
+      - Domain Architecture
+      - Server Types
+
+  - term: MBean
+    definition: >-
+      Management Bean — a Java object that represents a manageable resource in WebLogic Server.
+      The WebLogic REST API exposes the MBean tree as RESTful resources. Configuration MBeans
+      represent settings; Runtime MBeans represent live metrics.
+    tags:
+      - JMX
+      - Management Model
+
+  - term: Node Manager
+    definition: >-
+      A Java utility that allows WebLogic Server to remotely start, stop, suspend, and restart
+      Managed Server instances. Required for production environments with Managed Servers running
+      on remote machines.
+    tags:
+      - Operations
+      - High Availability
+
+  - term: Deployment
+    definition: >-
+      The process of making an application available on WebLogic Server. WebLogic supports
+      deploying WAR (web apps), EAR (enterprise apps), JAR (EJB/library) files. The lifecycle
+      includes: PREPARED → ACTIVE → SUSPENDED → RETIRED.
+    tags:
+      - Deployment
+      - Application Lifecycle
+
+  - term: Activation
+    definition: >-
+      The process of committing staged configuration changes to the running domain. After
+      starting an edit session and making changes, activate() distributes the changes
+      to all affected servers. Part of the two-phase change management model.
+    tags:
+      - Configuration Management
+
+  - term: Data Source
+    definition: >-
+      A WebLogic resource that provides database connections to applications via JDBC.
+      WebLogic supports Generic Data Sources, Multi Data Sources, Active GridLink Data Sources,
+      and UCP Data Sources. Configured as JDBCSystemResource in the domain.
+    tags:
+      - JDBC
+      - Database
+
+  - term: JMS Server
+    definition: >-
+      A WebLogic component that manages JMS (Java Message Service) destinations (queues and topics).
+      JMS Servers are hosted on specific WebLogic Servers or clusters and maintain message stores.
+    tags:
+      - JMS
+      - Messaging
+
+  - term: Work Manager
+    definition: >-
+      A WebLogic feature for managing thread and request execution priorities. Work Managers
+      define constraints (min threads, max threads, capacity) and priorities to control
+      how requests are scheduled in the server's thread pool.
+    tags:
+      - Performance
+      - Thread Management
+
+  - term: WLDF
+    definition: >-
+      WebLogic Diagnostic Framework — a monitoring and diagnostic infrastructure for WebLogic
+      Server. Provides harvesting of runtime metrics, rule-based diagnostic actions, and
+      diagnostic images. Accessible via the Monitoring and Diagnostics REST API.
+    tags:
+      - Monitoring
+      - Diagnostics
+
+  - term: Health State
+    definition: >-
+      A runtime indicator of a server's operational health. States include: HEALTH_OK,
+      HEALTH_WARN, HEALTH_CRITICAL, HEALTH_FAILED, HEALTH_OVERLOADED. Monitored via
+      the REST API's server health endpoints.
+    tags:
+      - Monitoring
+      - Health
+
+  - term: T3 Protocol
+    definition: >-
+      WebLogic's proprietary remote method invocation protocol that extends Java's RMI
+      protocol. Used for communication between WebLogic instances, EJB remote calls,
+      and Java clients connecting to WebLogic. Listens on the same port as HTTP by default.
+    tags:
+      - Protocols
+      - Connectivity
+
+  - term: Deployment Targets
+    definition: >-
+      The servers, clusters, or virtual hosts to which an application or resource is deployed.
+      When deploying via the REST API, targets specify which WebLogic Server instances will
+      run the application.
+    tags:
+      - Deployment
+
+  - term: Staging Mode
+    definition: >-
+      Determines how application files are distributed to target servers during deployment.
+      Options: stage (server copies files), nostage (servers access from source location),
+      external_stage (files pre-staged by administrator).
+    tags:
+      - Deployment
+
+  - term: Thread Pool
+    definition: >-
+      WebLogic's unified thread pool that handles incoming requests. The self-tuning thread
+      pool dynamically adjusts the number of threads based on workload. Metrics include
+      throughput, queue length, and stuck thread count.
+    tags:
+      - Performance
+      - Thread Management

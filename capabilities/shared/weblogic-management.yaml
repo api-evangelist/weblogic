@@ -1,0 +1,331 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Oracle WebLogic RESTful Management Services"
+  description: >-
+    RESTful API for administering Oracle WebLogic Server domains including
+    configuration management, editing domain configurations, server lifecycle
+    management, and domain runtime monitoring.
+  tags:
+    - Oracle
+    - WebLogic
+    - Domain Management
+    - Server Administration
+    - Java EE
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      WEBLOGIC_ADMIN_USER: WEBLOGIC_ADMIN_USER
+      WEBLOGIC_ADMIN_PASSWORD: WEBLOGIC_ADMIN_PASSWORD
+
+capability:
+  consumes:
+    - type: http
+      namespace: weblogic-management
+      baseUri: https://{host}:7001/management/weblogic/latest
+      description: "WebLogic Server RESTful Management API"
+      authentication:
+        type: basic
+        username: "{{WEBLOGIC_ADMIN_USER}}"
+        password: "{{WEBLOGIC_ADMIN_PASSWORD}}"
+      resources:
+        - name: edit-session
+          path: /edit/changeManager
+          description: "Configuration edit session management"
+          operations:
+            - name: start-edit
+              method: POST
+              description: "Start an edit session"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: activate
+              method: POST
+              description: "Activate pending configuration changes"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: cancel-edit
+              method: POST
+              description: "Cancel the current edit session"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: edit-servers
+          path: /edit/servers
+          description: "Server configuration management"
+          operations:
+            - name: list-edit-servers
+              method: GET
+              description: "List all server configurations"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: create-edit-server
+              method: POST
+              description: "Create a new server configuration"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+                  listenAddress: "{{tools.listenAddress}}"
+                  listenPort: "{{tools.listenPort}}"
+
+            - name: get-edit-server
+              method: GET
+              description: "Get a server configuration"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: update-edit-server
+              method: POST
+              description: "Update a server configuration"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: delete-edit-server
+              method: DELETE
+              description: "Delete a server configuration"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: edit-clusters
+          path: /edit/clusters
+          description: "Cluster configuration management"
+          operations:
+            - name: list-edit-clusters
+              method: GET
+              description: "List all cluster configurations"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: create-edit-cluster
+              method: POST
+              description: "Create a new cluster configuration"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: domain-config
+          path: /domainConfig
+          description: "Read-only domain configuration"
+          operations:
+            - name: get-domain-config
+              method: GET
+              description: "Get domain configuration tree root"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: list-domain-servers
+              method: GET
+              description: "List all server configurations (read-only)"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: server-lifecycle
+          path: /domainRuntime/serverLifeCycleRuntimes
+          description: "Server lifecycle operations"
+          operations:
+            - name: list-server-lifecycle
+              method: GET
+              description: "List all server lifecycle runtimes"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: start-server
+              method: POST
+              description: "Start a managed server"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the managed server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: shutdown-server
+              method: POST
+              description: "Shut down a managed server"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the managed server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: suspend-server
+              method: POST
+              description: "Suspend a managed server"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the managed server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: resume-server
+              method: POST
+              description: "Resume a suspended managed server"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the managed server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: weblogic-management-api
+      resources:
+        - path: /v1/servers
+          name: servers
+          operations:
+            - method: GET
+              name: list-servers
+              description: "List all server configurations"
+              call: "weblogic-management.list-edit-servers"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-server
+              description: "Create a new server configuration"
+              call: "weblogic-management.create-edit-server"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/servers/{serverName}/lifecycle
+          name: server-lifecycle
+          operations:
+            - method: POST
+              name: start-server
+              description: "Start a managed server"
+              call: "weblogic-management.start-server"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: weblogic-management-mcp
+      transport: http
+      tools:
+        - name: list-servers
+          description: "List all WebLogic server configurations"
+          hints:
+            readOnly: true
+          call: "weblogic-management.list-edit-servers"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-server
+          description: "Get a specific WebLogic server configuration"
+          hints:
+            readOnly: true
+          call: "weblogic-management.get-edit-server"
+          with:
+            serverName: "tools.serverName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: start-server
+          description: "Start a managed WebLogic server"
+          hints:
+            destructive: false
+          call: "weblogic-management.start-server"
+          with:
+            serverName: "tools.serverName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: shutdown-server
+          description: "Shut down a managed WebLogic server"
+          hints:
+            destructive: true
+          call: "weblogic-management.shutdown-server"
+          with:
+            serverName: "tools.serverName"
+          outputParameters:
+            - type: object
+              mapping: "$."

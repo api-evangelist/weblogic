@@ -1,0 +1,36 @@
+{
+  "title": "WebLogic Start Managed Server Example",
+  "description": "Example request and response for starting a managed server via the WebLogic RESTful Management Services API",
+  "request": {
+    "method": "POST",
+    "url": "https://localhost:7001/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/ManagedServer1/startServer",
+    "headers": {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "X-Requested-By": "MyClient"
+    },
+    "auth": {
+      "type": "basic",
+      "username": "weblogic",
+      "password": "welcome1"
+    },
+    "body": {}
+  },
+  "response": {
+    "statusCode": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "taskId": "4",
+      "taskStatus": "COMPLETED",
+      "serverName": "ManagedServer1",
+      "state": "RUNNING",
+      "healthState": {
+        "state": "HEALTH_OK",
+        "subsystemName": "WebLogic Server",
+        "partitionName": "DOMAIN"
+      }
+    }
+  }
+}

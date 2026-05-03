@@ -1,0 +1,273 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Oracle WebLogic Monitoring and Diagnostics"
+  description: >-
+    RESTful API for accessing runtime monitoring data, health metrics, diagnostics
+    information, and WebLogic Diagnostic Framework (WLDF) resources.
+  tags:
+    - Oracle
+    - WebLogic
+    - Monitoring
+    - Diagnostics
+    - Metrics
+    - Health
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      WEBLOGIC_ADMIN_USER: WEBLOGIC_ADMIN_USER
+      WEBLOGIC_ADMIN_PASSWORD: WEBLOGIC_ADMIN_PASSWORD
+
+capability:
+  consumes:
+    - type: http
+      namespace: weblogic-monitoring
+      baseUri: https://{host}:7001/management/wls/latest
+      description: "WebLogic Server Monitoring and Diagnostics API"
+      authentication:
+        type: basic
+        username: "{{WEBLOGIC_ADMIN_USER}}"
+        password: "{{WEBLOGIC_ADMIN_PASSWORD}}"
+      resources:
+        - name: servers
+          path: /servers
+          description: "Server monitoring information"
+          operations:
+            - name: list-servers
+              method: GET
+              description: "List all monitored servers"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: get-server
+              method: GET
+              description: "Get server monitoring information"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: get-server-health
+              method: GET
+              description: "Get server health status"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: get-server-jvm
+              method: GET
+              description: "Get server JVM metrics"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: get-server-thread-pool
+              method: GET
+              description: "Get server thread pool metrics"
+              inputParameters:
+                - name: serverName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Name of the server"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: data-sources
+          path: /datasources
+          description: "JDBC data source monitoring"
+          operations:
+            - name: list-data-sources
+              method: GET
+              description: "List all data source metrics"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: get-data-source
+              method: GET
+              description: "Get data source metrics"
+              inputParameters:
+                - name: dsName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Data source name"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: test-data-source
+              method: POST
+              description: "Test a data source connection"
+              inputParameters:
+                - name: dsName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Data source name"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: diagnostics
+          path: /diagnostics
+          description: "WebLogic Diagnostic Framework resources"
+          operations:
+            - name: list-wldf-resources
+              method: GET
+              description: "List WLDF system resources"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: query-diagnostic-data
+              method: POST
+              description: "Query diagnostic data"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  query: "{{tools.query}}"
+
+  exposes:
+    - type: rest
+      port: 8101
+      namespace: weblogic-monitoring-api
+      resources:
+        - path: /v1/servers
+          name: servers
+          operations:
+            - method: GET
+              name: list-servers
+              description: "List monitored servers"
+              call: "weblogic-monitoring.list-servers"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/data-sources
+          name: data-sources
+          operations:
+            - method: GET
+              name: list-data-sources
+              description: "List data source metrics"
+              call: "weblogic-monitoring.list-data-sources"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9101
+      namespace: weblogic-monitoring-mcp
+      transport: http
+      tools:
+        - name: list-servers
+          description: "List all monitored WebLogic servers"
+          hints:
+            readOnly: true
+          call: "weblogic-monitoring.list-servers"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-server-health
+          description: "Get health status for a WebLogic server"
+          hints:
+            readOnly: true
+          call: "weblogic-monitoring.get-server-health"
+          with:
+            serverName: "tools.serverName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-server-jvm
+          description: "Get JVM metrics for a WebLogic server"
+          hints:
+            readOnly: true
+          call: "weblogic-monitoring.get-server-jvm"
+          with:
+            serverName: "tools.serverName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-server-threads
+          description: "Get thread pool metrics for a WebLogic server"
+          hints:
+            readOnly: true
+          call: "weblogic-monitoring.get-server-thread-pool"
+          with:
+            serverName: "tools.serverName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-data-sources
+          description: "List JDBC data source metrics"
+          hints:
+            readOnly: true
+          call: "weblogic-monitoring.list-data-sources"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: test-data-source
+          description: "Test a JDBC data source connection"
+          hints:
+            readOnly: false
+          call: "weblogic-monitoring.test-data-source"
+          with:
+            dsName: "tools.dsName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: query-diagnostics
+          description: "Query WebLogic diagnostic data"
+          hints:
+            readOnly: true
+          call: "weblogic-monitoring.query-diagnostic-data"
+          with:
+            query: "tools.query"
+          outputParameters:
+            - type: object
+              mapping: "$."

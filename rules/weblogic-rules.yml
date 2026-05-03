@@ -1,0 +1,136 @@
+extends: spectral:oas
+rules:
+
+  # WebLogic summaries must follow: "Oracle WebLogic Server APIs {Title Case Summary}"
+  weblogic-summary-prefix:
+    description: Operation summaries must start with "Oracle WebLogic Server APIs"
+    message: Summary "{{value}}" must begin with "Oracle WebLogic Server APIs "
+    severity: warn
+    given: "$.paths[*][*].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^Oracle WebLogic Server APIs "
+
+  # All operation summaries must use Title Case after the prefix
+  weblogic-summary-title-case:
+    description: Operation summary after the prefix must use Title Case
+    message: Summary "{{value}}" must use Title Case for each significant word
+    severity: warn
+    given: "$.paths[*][*].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^Oracle WebLogic Server APIs [A-Z]"
+
+  # All operationIds must be camelCase
+  weblogic-operation-id-camel-case:
+    description: operationId must use camelCase naming
+    message: operationId "{{value}}" must use camelCase (e.g., getServer, createCluster)
+    severity: warn
+    given: "$.paths[*][*].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  # Operations must have an operationId
+  weblogic-operation-id-required:
+    description: All operations must have an operationId
+    message: Operation is missing an operationId
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete,head,options]"
+    then:
+      field: operationId
+      function: truthy
+
+  # Operations must have a description
+  weblogic-operation-description-required:
+    description: All operations must have a description
+    message: Operation is missing a description
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete,head,options]"
+    then:
+      field: description
+      function: truthy
+
+  # Operations must have at least one tag
+  weblogic-operation-tags-required:
+    description: All operations must have at least one tag
+    message: Operation is missing tags
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete,head,options]"
+    then:
+      field: tags
+      function: truthy
+
+  # Responses must define 200/201 success and 401 unauthorized
+  weblogic-response-401-required:
+    description: Operations must define a 401 Unauthorized response
+    message: Operation is missing a 401 Unauthorized response definition
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].responses"
+    then:
+      field: "401"
+      function: truthy
+
+  # Path parameters must have descriptions
+  weblogic-path-parameter-description:
+    description: Path parameters must have a description
+    message: Path parameter "{{value}}" is missing a description
+    severity: warn
+    given: "$.paths[*][*].parameters[?(@.in == 'path')]"
+    then:
+      field: description
+      function: truthy
+
+  # Schema components must have descriptions
+  weblogic-schema-description:
+    description: Named schemas in components must have a description
+    message: Schema "{{path}}" is missing a description
+    severity: warn
+    given: "$.components.schemas[*]"
+    then:
+      field: description
+      function: truthy
+
+  # API must define a security scheme
+  weblogic-security-defined:
+    description: API must define at least one security scheme
+    message: No security schemes defined in components
+    severity: error
+    given: "$"
+    then:
+      field: "components.securitySchemes"
+      function: truthy
+
+  # Paths must use kebab-case
+  weblogic-path-kebab-case:
+    description: Path segments must use kebab-case (lowercase, hyphens)
+    message: Path "{{value}}" contains uppercase letters or non-hyphen separators
+    severity: warn
+    given: "$.paths[*]~"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(/[a-z0-9{}-]+)*$"
+
+  # Info must have contact
+  weblogic-info-contact:
+    description: API info must include contact information
+    message: API is missing contact information in info section
+    severity: warn
+    given: "$.info"
+    then:
+      field: contact
+      function: truthy
+
+  # Info must have license
+  weblogic-info-license:
+    description: API info must include license information
+    message: API is missing license information in info section
+    severity: warn
+    given: "$.info"
+    then:
+      field: license
+      function: truthy
