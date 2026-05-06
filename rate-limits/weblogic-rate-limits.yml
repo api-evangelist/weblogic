@@ -4,108 +4,33 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Oracle WebLogic Server APIs
 providerId: weblogic
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Application Server
   - Enterprise
   - Java EE
   - Middleware
-  - Oracle
-  - WebLogic
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Oracle WebLogic Server APIs API surface.
-  Captures per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold
-  values to be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
-responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  - Contact Sales
+description: Oracle WebLogic Server runs inside the customer's data center / OCI tenancy; the management,
+  JMX, and REST APIs it exposes are not subject to a centrally published rate-limit policy. Throughput,
+  concurrency, work-manager constraints, and throttling are all configured by the deploying organization
+  via WebLogic's tuning surface.
+notes: oracle.com 403 on automated fetch. Limits are deployment-tunable, not provider-published.
+sources:
+  - https://www.oracle.com/java/weblogic/
+responseCodes: {}
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - WebLogic RESTful Management Services API
-      - WebLogic Monitoring and Diagnostics API
-      - WebLogic Deployment API
-      - WebLogic WLST (WebLogic Scripting Tool) API
-      - WebLogic JMX API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - WebLogic RESTful Management Services API
-      - WebLogic Monitoring and Diagnostics API
-      - WebLogic Deployment API
-      - WebLogic WLST (WebLogic Scripting Tool) API
-      - WebLogic JMX API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - WebLogic RESTful Management Services API
-      - WebLogic Monitoring and Diagnostics API
-      - WebLogic Deployment API
-      - WebLogic WLST (WebLogic Scripting Tool) API
-      - WebLogic JMX API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - WebLogic RESTful Management Services API
-      - WebLogic Monitoring and Diagnostics API
-      - WebLogic Deployment API
-      - WebLogic WLST (WebLogic Scripting Tool) API
-      - WebLogic JMX API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - WebLogic RESTful Management Services API
-      - WebLogic Monitoring and Diagnostics API
-      - WebLogic Deployment API
-      - WebLogic WLST (WebLogic Scripting Tool) API
-      - WebLogic JMX API
+  - name: Deployment-Tuned Throughput
+    scope: deployment
+    metric: varies
+    limit: configured per WebLogic domain / work-manager
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Self-Tuned Limits
+    description: WebLogic exposes work managers, max-threads-constraint, capacity, and request classes
+      that the operator configures. There is no public per-call quota imposed by Oracle on customer
+      deployments.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
-    url: https://apievangelist.com

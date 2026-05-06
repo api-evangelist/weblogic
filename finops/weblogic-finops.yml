@@ -1,5 +1,6 @@
 specification: FinOps Framework
 specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
 alignedWith:
   framework: FinOps Foundation Framework
   frameworkUrl: https://www.finops.org/framework/
@@ -8,173 +9,62 @@ alignedWith:
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
 provider: Oracle WebLogic Server APIs
 providerId: weblogic
-publisherName: Oracle WebLogic Server APIs
-serviceCategory: API
+publisherName: Oracle Corporation
+serviceCategory: Application Server / Middleware
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Application Server
   - Enterprise
   - Java EE
   - Middleware
-  - Oracle
-  - WebLogic
   - FinOps
-  - Cost Management
   - FOCUS
-description: FinOps framework definition for the Oracle WebLogic Server APIs API surface. Provides a FOCUS-aligned
-  mapping for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
-principles:
-  - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
-  - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
-  - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
-  - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
-domains:
-  - name: Understand Usage and Cost
-    capabilities:
-      - Data Ingestion
-      - Allocation
-      - Reporting and Analytics
-      - Anomaly Management
-  - name: Quantify Business Value
-    capabilities:
-      - Planning and Estimating
-      - Forecasting
-      - Budgeting
-      - Benchmarking
-      - Unit Economics
-  - name: Optimize Usage and Cost
-    capabilities:
-      - Architecting for Cloud
-      - Rate Optimization
-      - Workload Optimization
-      - Cloud Sustainability
-      - Licensing and SaaS
-  - name: Manage the FinOps Practice
-    capabilities:
-      - FinOps Practice Operations
-      - FinOps Education and Enablement
-      - Invoicing and Chargeback
-      - Onboarding Workloads
-      - Intersecting Disciplines
+  - Contact Sales
+description: FinOps placement for Oracle WebLogic Server. WebLogic is sold as a perpetual / subscription
+  software license (per processor / OCPU / Named User Plus), so spend tracks license counts, support
+  renewals, and underlying infrastructure rather than a metered API surface.
+notes: oracle.com pricing 403 on fetch. FOCUS mapping reflects software-license shape; no usage-API
+  meters available.
+sources:
+  - https://www.oracle.com/java/weblogic/
 billingModel:
-  pricingCategory: Usage-Based
-  billingFrequency: Monthly
+  pricingCategory: Software License + Support
+  billingFrequency: Annual
   billingCurrency: USD
   chargeCategories:
-    - Usage
     - Purchase
-    - Tax
-    - Credit
-    - Adjustment
-  chargeFrequency: Recurring
 focusColumns:
-  ServiceName: Oracle WebLogic Server APIs
-  ServiceCategory: Developer Tools / API
-  ProviderName: Oracle WebLogic Server APIs
-  PublisherName: Oracle WebLogic Server APIs
-  InvoiceIssuerName: Oracle WebLogic Server APIs
-  PricingCategory: Usage-Based
-  PricingUnit: request
+  ServiceName: Oracle WebLogic Server
+  ServiceCategory: Application Server / Middleware
+  ProviderName: Oracle
+  PublisherName: Oracle Corporation
+  InvoiceIssuerName: Oracle Corporation
   BillingCurrency: USD
-  ChargeCategory: Usage
 meters:
-  - name: api_requests
-    description: Count of billable API requests
-    unit: request
+  - name: weblogic_license
+    description: Oracle WebLogic Server license entitlement, sized per processor / OCPU / Named User
+      Plus per Oracle Technology Price List.
+    unit: varies
     aggregation: sum
-    dimensions:
-      - api
-      - endpoint
-      - tier
-      - region
-      - consumer
-  - name: data_egress
-    description: Bytes returned over the network in API responses
-    unit: GB
+  - name: weblogic_support
+    description: Oracle technical support and updates renewal on the WebLogic license.
+    unit: month
     aggregation: sum
-    dimensions:
-      - api
-      - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
-    aggregation: sum
-    dimensions:
-      - api
-      - endpoint
-      - tier
-apis:
-  - name: WebLogic RESTful Management Services API
-    baseURL: ''
-    tags:
-      - Administration
-      - Clusters
-      - Configuration
-      - Data Sources
-      - JMS
-      - Management
-      - Monitoring
-      - REST
-      - Server Lifecycle
-    serviceName: WebLogic RESTful Management Services API
-    serviceCategory: API
-  - name: WebLogic Monitoring and Diagnostics API
-    baseURL: ''
-    tags:
-      - Diagnostics
-      - Health
-      - JMX
-      - Metrics
-      - Monitoring
-      - Performance
-      - WLDF
-    serviceName: WebLogic Monitoring and Diagnostics API
-    serviceCategory: API
-  - name: WebLogic Deployment API
-    baseURL: ''
-    tags:
-      - Applications
-      - Deployment
-      - DevOps
-      - Libraries
-      - Resources
-    serviceName: WebLogic Deployment API
-    serviceCategory: API
-  - name: WebLogic WLST (WebLogic Scripting Tool) API
-    baseURL: ''
-    tags:
-      - Automation
-      - CLI
-      - Python
-      - Scripting
-    serviceName: WebLogic WLST (WebLogic Scripting Tool) API
-    serviceCategory: API
-  - name: WebLogic JMX API
-    baseURL: ''
-    tags:
-      - Java
-      - JMX
-      - Management
-      - MBeans
-    serviceName: WebLogic JMX API
-    serviceCategory: API
-unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
-    target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
-    target: TBD
+principles:
+  - name: Visibility
+    description: Spend visibility comes from Oracle order documents and the customer's License
+      Management Service (LMS) records, not a public usage API.
+  - name: Allocation
+    description: Allocate WebLogic spend by domain, business unit, or hosted application using internal
+      CMDB / cost-center tags on the licensed processors and managed servers.
+  - name: Optimization
+    description: Cost levers are processor-count consolidation, soft-partitioning where Oracle-approved,
+      Named-User-Plus modeling, and renegotiation of ULAs at renewal.
+  - name: Accountability
+    description: Middleware platform owners and Oracle license-management leads coordinate renewals
+      and true-ups with Oracle account management.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
-    url: https://apievangelist.com
