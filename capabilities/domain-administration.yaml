@@ -1,408 +1,723 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "Oracle WebLogic Domain Administration"
-  description: >-
-    Unified capability for Oracle WebLogic Server domain administration combining
-    domain configuration management, server lifecycle control, and monitoring.
-    Used by WebLogic administrators to manage entire domains, start/stop servers,
+  label: Oracle WebLogic Domain Administration
+  description: Unified capability for Oracle WebLogic Server domain administration combining domain configuration management,
+    server lifecycle control, and monitoring. Used by WebLogic administrators to manage entire domains, start/stop servers,
     configure clusters, and manage data sources and JMS resources.
   tags:
-    - Oracle
-    - WebLogic
-    - Domain Administration
-    - Server Lifecycle
-    - Cluster Management
-    - JDBC
-    - JMS
-  created: "2026-05-03"
-  modified: "2026-05-03"
-
+  - Oracle
+  - WebLogic
+  - Domain Administration
+  - Server Lifecycle
+  - Cluster Management
+  - JDBC
+  - JMS
+  created: '2026-05-03'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      WEBLOGIC_ADMIN_USER: WEBLOGIC_ADMIN_USER
-      WEBLOGIC_ADMIN_PASSWORD: WEBLOGIC_ADMIN_PASSWORD
-
+- namespace: env
+  keys:
+    WEBLOGIC_ADMIN_USER: WEBLOGIC_ADMIN_USER
+    WEBLOGIC_ADMIN_PASSWORD: WEBLOGIC_ADMIN_PASSWORD
 capability:
   consumes:
-    - import: weblogic-management
-      location: ./shared/weblogic-management.yaml
-    - import: weblogic-monitoring
-      location: ./shared/weblogic-monitoring.yaml
-
+  - type: http
+    namespace: weblogic-management
+    baseUri: https://{host}:7001/management/weblogic/latest
+    description: WebLogic Server RESTful Management API
+    authentication:
+      type: basic
+      username: '{{WEBLOGIC_ADMIN_USER}}'
+      password: '{{WEBLOGIC_ADMIN_PASSWORD}}'
+    resources:
+    - name: edit-session
+      path: /edit/changeManager
+      description: Configuration edit session management
+      operations:
+      - name: start-edit
+        method: POST
+        description: Start an edit session
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: activate
+        method: POST
+        description: Activate pending configuration changes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: cancel-edit
+        method: POST
+        description: Cancel the current edit session
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: edit-servers
+      path: /edit/servers
+      description: Server configuration management
+      operations:
+      - name: list-edit-servers
+        method: GET
+        description: List all server configurations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-edit-server
+        method: POST
+        description: Create a new server configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            listenAddress: '{{tools.listenAddress}}'
+            listenPort: '{{tools.listenPort}}'
+      - name: get-edit-server
+        method: GET
+        description: Get a server configuration
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: update-edit-server
+        method: POST
+        description: Update a server configuration
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: delete-edit-server
+        method: DELETE
+        description: Delete a server configuration
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: edit-clusters
+      path: /edit/clusters
+      description: Cluster configuration management
+      operations:
+      - name: list-edit-clusters
+        method: GET
+        description: List all cluster configurations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-edit-cluster
+        method: POST
+        description: Create a new cluster configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: domain-config
+      path: /domainConfig
+      description: Read-only domain configuration
+      operations:
+      - name: get-domain-config
+        method: GET
+        description: Get domain configuration tree root
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: list-domain-servers
+        method: GET
+        description: List all server configurations (read-only)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: server-lifecycle
+      path: /domainRuntime/serverLifeCycleRuntimes
+      description: Server lifecycle operations
+      operations:
+      - name: list-server-lifecycle
+        method: GET
+        description: List all server lifecycle runtimes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: start-server
+        method: POST
+        description: Start a managed server
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the managed server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: shutdown-server
+        method: POST
+        description: Shut down a managed server
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the managed server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: suspend-server
+        method: POST
+        description: Suspend a managed server
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the managed server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: resume-server
+        method: POST
+        description: Resume a suspended managed server
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the managed server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: weblogic-monitoring
+    baseUri: https://{host}:7001/management/wls/latest
+    description: WebLogic Server Monitoring and Diagnostics API
+    authentication:
+      type: basic
+      username: '{{WEBLOGIC_ADMIN_USER}}'
+      password: '{{WEBLOGIC_ADMIN_PASSWORD}}'
+    resources:
+    - name: servers
+      path: /servers
+      description: Server monitoring information
+      operations:
+      - name: list-servers
+        method: GET
+        description: List all monitored servers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-server
+        method: GET
+        description: Get server monitoring information
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-server-health
+        method: GET
+        description: Get server health status
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-server-jvm
+        method: GET
+        description: Get server JVM metrics
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-server-thread-pool
+        method: GET
+        description: Get server thread pool metrics
+        inputParameters:
+        - name: serverName
+          in: path
+          type: string
+          required: true
+          description: Name of the server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: data-sources
+      path: /datasources
+      description: JDBC data source monitoring
+      operations:
+      - name: list-data-sources
+        method: GET
+        description: List all data source metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-data-source
+        method: GET
+        description: Get data source metrics
+        inputParameters:
+        - name: dsName
+          in: path
+          type: string
+          required: true
+          description: Data source name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: test-data-source
+        method: POST
+        description: Test a data source connection
+        inputParameters:
+        - name: dsName
+          in: path
+          type: string
+          required: true
+          description: Data source name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: diagnostics
+      path: /diagnostics
+      description: WebLogic Diagnostic Framework resources
+      operations:
+      - name: list-wldf-resources
+        method: GET
+        description: List WLDF system resources
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: query-diagnostic-data
+        method: POST
+        description: Query diagnostic data
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            query: '{{tools.query}}'
   exposes:
-    - type: rest
-      port: 8080
-      namespace: weblogic-domain-api
-      description: "Unified REST API for Oracle WebLogic domain administration."
-      resources:
-        - path: /v1/servers
-          name: servers
-          description: "Managed server configuration and lifecycle"
-          operations:
-            - method: GET
-              name: list-servers
-              description: "List all server configurations in the domain"
-              call: "weblogic-management.list-edit-servers"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: POST
-              name: create-server
-              description: "Create a new managed server configuration"
-              call: "weblogic-management.create-edit-server"
-              with:
-                name: "rest.name"
-                listenAddress: "rest.listenAddress"
-                listenPort: "rest.listenPort"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/servers/{serverName}
-          name: server
-          operations:
-            - method: GET
-              name: get-server
-              description: "Get server configuration"
-              call: "weblogic-management.get-edit-server"
-              with:
-                serverName: "rest.serverName"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: DELETE
-              name: delete-server
-              description: "Delete a server configuration"
-              call: "weblogic-management.delete-edit-server"
-              with:
-                serverName: "rest.serverName"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/servers/{serverName}/start
-          name: server-start
-          operations:
-            - method: POST
-              name: start-server
-              description: "Start a managed server"
-              call: "weblogic-management.start-server"
-              with:
-                serverName: "rest.serverName"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/servers/{serverName}/stop
-          name: server-stop
-          operations:
-            - method: POST
-              name: stop-server
-              description: "Shut down a managed server"
-              call: "weblogic-management.shutdown-server"
-              with:
-                serverName: "rest.serverName"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/servers/{serverName}/health
-          name: server-health
-          operations:
-            - method: GET
-              name: get-server-health
-              description: "Get server health status"
-              call: "weblogic-monitoring.get-server-health"
-              with:
-                serverName: "rest.serverName"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/servers/{serverName}/metrics
-          name: server-metrics
-          operations:
-            - method: GET
-              name: get-server-metrics
-              description: "Get server JVM and thread pool metrics"
-              call: "weblogic-monitoring.get-server-jvm"
-              with:
-                serverName: "rest.serverName"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/clusters
-          name: clusters
-          description: "Cluster configuration management"
-          operations:
-            - method: GET
-              name: list-clusters
-              description: "List all cluster configurations"
-              call: "weblogic-management.list-edit-clusters"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: POST
-              name: create-cluster
-              description: "Create a new cluster configuration"
-              call: "weblogic-management.create-edit-cluster"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/data-sources
-          name: data-sources
-          description: "JDBC data source management and monitoring"
-          operations:
-            - method: GET
-              name: list-data-sources
-              description: "List all JDBC data source metrics"
-              call: "weblogic-monitoring.list-data-sources"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/data-sources/{dsName}/test
-          name: data-source-test
-          operations:
-            - method: POST
-              name: test-data-source
-              description: "Test a JDBC data source connection"
-              call: "weblogic-monitoring.test-data-source"
-              with:
-                dsName: "rest.dsName"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/edit/start
-          name: edit-start
-          operations:
-            - method: POST
-              name: start-edit
-              description: "Start a configuration edit session"
-              call: "weblogic-management.start-edit"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/edit/activate
-          name: edit-activate
-          operations:
-            - method: POST
-              name: activate-changes
-              description: "Activate pending configuration changes"
-              call: "weblogic-management.activate"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/edit/cancel
-          name: edit-cancel
-          operations:
-            - method: POST
-              name: cancel-edit
-              description: "Cancel the current edit session"
-              call: "weblogic-management.cancel-edit"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-    - type: mcp
-      port: 9090
-      namespace: weblogic-domain-mcp
-      transport: http
-      description: "MCP server for AI-assisted Oracle WebLogic domain administration."
-      tools:
-        - name: list-servers
-          description: "List all managed servers in the WebLogic domain"
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "weblogic-management.list-edit-servers"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-server
-          description: "Get configuration for a specific WebLogic managed server"
-          hints:
-            readOnly: true
-          call: "weblogic-management.get-edit-server"
-          with:
-            serverName: "tools.serverName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: create-server
-          description: "Create a new managed server configuration in the domain"
-          hints:
-            readOnly: false
-          call: "weblogic-management.create-edit-server"
-          with:
-            name: "tools.name"
-            listenAddress: "tools.listenAddress"
-            listenPort: "tools.listenPort"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: delete-server
-          description: "Delete a managed server configuration from the domain"
-          hints:
-            destructive: true
-            idempotent: true
-          call: "weblogic-management.delete-edit-server"
-          with:
-            serverName: "tools.serverName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: start-server
-          description: "Start a managed server in the WebLogic domain"
-          hints:
-            readOnly: false
-          call: "weblogic-management.start-server"
-          with:
-            serverName: "tools.serverName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: shutdown-server
-          description: "Gracefully shut down a managed server"
-          hints:
-            destructive: true
-          call: "weblogic-management.shutdown-server"
-          with:
-            serverName: "tools.serverName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: suspend-server
-          description: "Suspend a managed server (pause new requests)"
-          hints:
-            destructive: false
-          call: "weblogic-management.suspend-server"
-          with:
-            serverName: "tools.serverName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: resume-server
-          description: "Resume a suspended managed server"
-          hints:
-            readOnly: false
-          call: "weblogic-management.resume-server"
-          with:
-            serverName: "tools.serverName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-server-health
-          description: "Get health status of a WebLogic server"
-          hints:
-            readOnly: true
-          call: "weblogic-monitoring.get-server-health"
-          with:
-            serverName: "tools.serverName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-server-jvm-metrics
-          description: "Get JVM heap and garbage collection metrics for a server"
-          hints:
-            readOnly: true
-          call: "weblogic-monitoring.get-server-jvm"
-          with:
-            serverName: "tools.serverName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-server-thread-pool
-          description: "Get thread pool throughput and queue metrics for a server"
-          hints:
-            readOnly: true
-          call: "weblogic-monitoring.get-server-thread-pool"
-          with:
-            serverName: "tools.serverName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: list-clusters
-          description: "List all clusters in the WebLogic domain"
-          hints:
-            readOnly: true
-          call: "weblogic-management.list-edit-clusters"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: list-data-sources
-          description: "List all JDBC data source configurations and metrics"
-          hints:
-            readOnly: true
-          call: "weblogic-monitoring.list-data-sources"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: test-data-source
-          description: "Test connectivity for a JDBC data source"
-          hints:
-            readOnly: false
-          call: "weblogic-monitoring.test-data-source"
-          with:
-            dsName: "tools.dsName"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: start-edit-session
-          description: "Start a configuration edit session to make domain changes"
-          hints:
-            readOnly: false
-          call: "weblogic-management.start-edit"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: activate-changes
-          description: "Activate pending configuration changes across the domain"
-          hints:
-            readOnly: false
-          call: "weblogic-management.activate"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: cancel-edit-session
-          description: "Cancel the current edit session and discard changes"
-          hints:
-            destructive: true
-          call: "weblogic-management.cancel-edit"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: query-diagnostics
-          description: "Query WebLogic diagnostic data using WLDF"
-          hints:
-            readOnly: true
-          call: "weblogic-monitoring.query-diagnostic-data"
-          with:
-            query: "tools.query"
-          outputParameters:
-            - type: object
-              mapping: "$."
+  - type: rest
+    port: 8080
+    namespace: weblogic-domain-api
+    description: Unified REST API for Oracle WebLogic domain administration.
+    resources:
+    - path: /v1/servers
+      name: servers
+      description: Managed server configuration and lifecycle
+      operations:
+      - method: GET
+        name: list-servers
+        description: List all server configurations in the domain
+        call: weblogic-management.list-edit-servers
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-server
+        description: Create a new managed server configuration
+        call: weblogic-management.create-edit-server
+        with:
+          name: rest.name
+          listenAddress: rest.listenAddress
+          listenPort: rest.listenPort
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{serverName}
+      name: server
+      operations:
+      - method: GET
+        name: get-server
+        description: Get server configuration
+        call: weblogic-management.get-edit-server
+        with:
+          serverName: rest.serverName
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: delete-server
+        description: Delete a server configuration
+        call: weblogic-management.delete-edit-server
+        with:
+          serverName: rest.serverName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{serverName}/start
+      name: server-start
+      operations:
+      - method: POST
+        name: start-server
+        description: Start a managed server
+        call: weblogic-management.start-server
+        with:
+          serverName: rest.serverName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{serverName}/stop
+      name: server-stop
+      operations:
+      - method: POST
+        name: stop-server
+        description: Shut down a managed server
+        call: weblogic-management.shutdown-server
+        with:
+          serverName: rest.serverName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{serverName}/health
+      name: server-health
+      operations:
+      - method: GET
+        name: get-server-health
+        description: Get server health status
+        call: weblogic-monitoring.get-server-health
+        with:
+          serverName: rest.serverName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{serverName}/metrics
+      name: server-metrics
+      operations:
+      - method: GET
+        name: get-server-metrics
+        description: Get server JVM and thread pool metrics
+        call: weblogic-monitoring.get-server-jvm
+        with:
+          serverName: rest.serverName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/clusters
+      name: clusters
+      description: Cluster configuration management
+      operations:
+      - method: GET
+        name: list-clusters
+        description: List all cluster configurations
+        call: weblogic-management.list-edit-clusters
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-cluster
+        description: Create a new cluster configuration
+        call: weblogic-management.create-edit-cluster
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/data-sources
+      name: data-sources
+      description: JDBC data source management and monitoring
+      operations:
+      - method: GET
+        name: list-data-sources
+        description: List all JDBC data source metrics
+        call: weblogic-monitoring.list-data-sources
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/data-sources/{dsName}/test
+      name: data-source-test
+      operations:
+      - method: POST
+        name: test-data-source
+        description: Test a JDBC data source connection
+        call: weblogic-monitoring.test-data-source
+        with:
+          dsName: rest.dsName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/edit/start
+      name: edit-start
+      operations:
+      - method: POST
+        name: start-edit
+        description: Start a configuration edit session
+        call: weblogic-management.start-edit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/edit/activate
+      name: edit-activate
+      operations:
+      - method: POST
+        name: activate-changes
+        description: Activate pending configuration changes
+        call: weblogic-management.activate
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/edit/cancel
+      name: edit-cancel
+      operations:
+      - method: POST
+        name: cancel-edit
+        description: Cancel the current edit session
+        call: weblogic-management.cancel-edit
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: weblogic-domain-mcp
+    transport: http
+    description: MCP server for AI-assisted Oracle WebLogic domain administration.
+    tools:
+    - name: list-servers
+      description: List all managed servers in the WebLogic domain
+      hints:
+        readOnly: true
+        openWorld: true
+      call: weblogic-management.list-edit-servers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-server
+      description: Get configuration for a specific WebLogic managed server
+      hints:
+        readOnly: true
+      call: weblogic-management.get-edit-server
+      with:
+        serverName: tools.serverName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-server
+      description: Create a new managed server configuration in the domain
+      hints:
+        readOnly: false
+      call: weblogic-management.create-edit-server
+      with:
+        name: tools.name
+        listenAddress: tools.listenAddress
+        listenPort: tools.listenPort
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-server
+      description: Delete a managed server configuration from the domain
+      hints:
+        destructive: true
+        idempotent: true
+      call: weblogic-management.delete-edit-server
+      with:
+        serverName: tools.serverName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: start-server
+      description: Start a managed server in the WebLogic domain
+      hints:
+        readOnly: false
+      call: weblogic-management.start-server
+      with:
+        serverName: tools.serverName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: shutdown-server
+      description: Gracefully shut down a managed server
+      hints:
+        destructive: true
+      call: weblogic-management.shutdown-server
+      with:
+        serverName: tools.serverName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: suspend-server
+      description: Suspend a managed server (pause new requests)
+      hints:
+        destructive: false
+      call: weblogic-management.suspend-server
+      with:
+        serverName: tools.serverName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: resume-server
+      description: Resume a suspended managed server
+      hints:
+        readOnly: false
+      call: weblogic-management.resume-server
+      with:
+        serverName: tools.serverName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-server-health
+      description: Get health status of a WebLogic server
+      hints:
+        readOnly: true
+      call: weblogic-monitoring.get-server-health
+      with:
+        serverName: tools.serverName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-server-jvm-metrics
+      description: Get JVM heap and garbage collection metrics for a server
+      hints:
+        readOnly: true
+      call: weblogic-monitoring.get-server-jvm
+      with:
+        serverName: tools.serverName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-server-thread-pool
+      description: Get thread pool throughput and queue metrics for a server
+      hints:
+        readOnly: true
+      call: weblogic-monitoring.get-server-thread-pool
+      with:
+        serverName: tools.serverName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-clusters
+      description: List all clusters in the WebLogic domain
+      hints:
+        readOnly: true
+      call: weblogic-management.list-edit-clusters
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-data-sources
+      description: List all JDBC data source configurations and metrics
+      hints:
+        readOnly: true
+      call: weblogic-monitoring.list-data-sources
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: test-data-source
+      description: Test connectivity for a JDBC data source
+      hints:
+        readOnly: false
+      call: weblogic-monitoring.test-data-source
+      with:
+        dsName: tools.dsName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: start-edit-session
+      description: Start a configuration edit session to make domain changes
+      hints:
+        readOnly: false
+      call: weblogic-management.start-edit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: activate-changes
+      description: Activate pending configuration changes across the domain
+      hints:
+        readOnly: false
+      call: weblogic-management.activate
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cancel-edit-session
+      description: Cancel the current edit session and discard changes
+      hints:
+        destructive: true
+      call: weblogic-management.cancel-edit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: query-diagnostics
+      description: Query WebLogic diagnostic data using WLDF
+      hints:
+        readOnly: true
+      call: weblogic-monitoring.query-diagnostic-data
+      with:
+        query: tools.query
+      outputParameters:
+      - type: object
+        mapping: $.
