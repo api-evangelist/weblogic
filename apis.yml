@@ -126,13 +126,13 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/jmxcu/
-      - type: API Reference
+      - type: APIReference
         url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlmbr/
 
 common:
   - type: Portal
     url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/
-  - type: Getting Started
+  - type: GettingStarted
     url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/intro/
   - type: Downloads
     url: https://www.oracle.com/middleware/technologies/weblogic-server-downloads.html
@@ -144,17 +144,17 @@ common:
     url: https://blogs.oracle.com/weblogicserver/
   - type: Website
     url: https://www.oracle.com/middleware/technologies/weblogic.html
-  - type: Terms of Service
+  - type: TermsOfService
     url: https://www.oracle.com/legal/terms.html
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://www.oracle.com/legal/privacy/
-  - type: GitHub Organization
+  - type: GitHubOrganization
     url: https://github.com/oracle
-  - type: Stack Overflow
+  - type: StackOverflow
     url: https://stackoverflow.com/questions/tagged/weblogic
   - type: YouTube
     url: https://www.youtube.com/@OracleDevelopers
-  - type: Status
+  - type: StatusPage
     url: https://ocistatus.oraclecloud.com/
   - type: Vocabulary
     url: vocabulary/weblogic-vocabulary.yml
