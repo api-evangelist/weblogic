@@ -1,0 +1,201 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Servers
+  description: 'Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Servers. 5 operations.
+    Lead operation: Oracle WebLogic Server APIs List all monitored servers. Self-contained Naftiko capability covering one
+    Weblogic business surface.'
+  tags:
+  - Weblogic
+  - Servers
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEBLOGIC_API_KEY: WEBLOGIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: monitoring-diagnostics-servers
+    baseUri: https://{host}:{port}/management/wls/latest
+    description: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Servers business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: servers
+      path: /servers
+      operations:
+      - name: getservers
+        method: GET
+        description: Oracle WebLogic Server APIs List all monitored servers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: servers-serverName
+      path: /servers/{serverName}
+      operations:
+      - name: getserver
+        method: GET
+        description: Oracle WebLogic Server APIs Get server monitoring information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: servers-serverName-jvm
+      path: /servers/{serverName}/jvm
+      operations:
+      - name: getserverjvm
+        method: GET
+        description: Oracle WebLogic Server APIs Get server JVM metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: servers-serverName-threadPool
+      path: /servers/{serverName}/threadPool
+      operations:
+      - name: getserverthreadpool
+        method: GET
+        description: Oracle WebLogic Server APIs Get server thread pool metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: servers-serverName-workManagers
+      path: /servers/{serverName}/workManagers
+      operations:
+      - name: getserverworkmanagers
+        method: GET
+        description: Oracle WebLogic Server APIs List work managers on a server
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.WEBLOGIC_USER}}'
+      password: '{{env.WEBLOGIC_PASS}}'
+  exposes:
+  - type: rest
+    namespace: monitoring-diagnostics-servers-rest
+    port: 8080
+    description: REST adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Servers.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/servers
+      name: servers
+      description: REST surface for servers.
+      operations:
+      - method: GET
+        name: getservers
+        description: Oracle WebLogic Server APIs List all monitored servers
+        call: monitoring-diagnostics-servers.getservers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{servername}
+      name: servers-servername
+      description: REST surface for servers-serverName.
+      operations:
+      - method: GET
+        name: getserver
+        description: Oracle WebLogic Server APIs Get server monitoring information
+        call: monitoring-diagnostics-servers.getserver
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{servername}/jvm
+      name: servers-servername-jvm
+      description: REST surface for servers-serverName-jvm.
+      operations:
+      - method: GET
+        name: getserverjvm
+        description: Oracle WebLogic Server APIs Get server JVM metrics
+        call: monitoring-diagnostics-servers.getserverjvm
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{servername}/threadpool
+      name: servers-servername-threadpool
+      description: REST surface for servers-serverName-threadPool.
+      operations:
+      - method: GET
+        name: getserverthreadpool
+        description: Oracle WebLogic Server APIs Get server thread pool metrics
+        call: monitoring-diagnostics-servers.getserverthreadpool
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/servers/{servername}/workmanagers
+      name: servers-servername-workmanagers
+      description: REST surface for servers-serverName-workManagers.
+      operations:
+      - method: GET
+        name: getserverworkmanagers
+        description: Oracle WebLogic Server APIs List work managers on a server
+        call: monitoring-diagnostics-servers.getserverworkmanagers
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: monitoring-diagnostics-servers-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Servers.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: oracle-weblogic-server-apis-list
+      description: Oracle WebLogic Server APIs List all monitored servers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-servers.getservers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get
+      description: Oracle WebLogic Server APIs Get server monitoring information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-servers.getserver
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get-2
+      description: Oracle WebLogic Server APIs Get server JVM metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-servers.getserverjvm
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get-3
+      description: Oracle WebLogic Server APIs Get server thread pool metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-servers.getserverthreadpool
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-list-2
+      description: Oracle WebLogic Server APIs List work managers on a server
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-servers.getserverworkmanagers
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,137 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — JMS
+  description: 'Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — JMS. 3 operations. Lead
+    operation: Oracle WebLogic Server APIs List all JMS server metrics. Self-contained Naftiko capability covering one Weblogic
+    business surface.'
+  tags:
+  - Weblogic
+  - JMS
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEBLOGIC_API_KEY: WEBLOGIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: monitoring-diagnostics-jms
+    baseUri: https://{host}:{port}/management/wls/latest
+    description: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — JMS business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: JMSServers
+      path: /JMSServers
+      operations:
+      - name: getjmsservers
+        method: GET
+        description: Oracle WebLogic Server APIs List all JMS server metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: JMSServers-jmsServerName
+      path: /JMSServers/{jmsServerName}
+      operations:
+      - name: getjmsserver
+        method: GET
+        description: Oracle WebLogic Server APIs Get JMS server metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: JMSServers-jmsServerName-destinations
+      path: /JMSServers/{jmsServerName}/destinations
+      operations:
+      - name: getjmsdestinations
+        method: GET
+        description: Oracle WebLogic Server APIs List JMS destinations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.WEBLOGIC_USER}}'
+      password: '{{env.WEBLOGIC_PASS}}'
+  exposes:
+  - type: rest
+    namespace: monitoring-diagnostics-jms-rest
+    port: 8080
+    description: REST adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — JMS.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/jmsservers
+      name: jmsservers
+      description: REST surface for JMSServers.
+      operations:
+      - method: GET
+        name: getjmsservers
+        description: Oracle WebLogic Server APIs List all JMS server metrics
+        call: monitoring-diagnostics-jms.getjmsservers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/jmsservers/{jmsservername}
+      name: jmsservers-jmsservername
+      description: REST surface for JMSServers-jmsServerName.
+      operations:
+      - method: GET
+        name: getjmsserver
+        description: Oracle WebLogic Server APIs Get JMS server metrics
+        call: monitoring-diagnostics-jms.getjmsserver
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/jmsservers/{jmsservername}/destinations
+      name: jmsservers-jmsservername-destinations
+      description: REST surface for JMSServers-jmsServerName-destinations.
+      operations:
+      - method: GET
+        name: getjmsdestinations
+        description: Oracle WebLogic Server APIs List JMS destinations
+        call: monitoring-diagnostics-jms.getjmsdestinations
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: monitoring-diagnostics-jms-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — JMS.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: oracle-weblogic-server-apis-list
+      description: Oracle WebLogic Server APIs List all JMS server metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-jms.getjmsservers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get
+      description: Oracle WebLogic Server APIs Get JMS server metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-jms.getjmsserver
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-list-2
+      description: Oracle WebLogic Server APIs List JMS destinations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-jms.getjmsdestinations
+      outputParameters:
+      - type: object
+        mapping: $.

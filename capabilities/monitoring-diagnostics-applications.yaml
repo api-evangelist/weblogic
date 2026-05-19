@@ -1,0 +1,137 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Applications
+  description: 'Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Applications. 3 operations.
+    Lead operation: Oracle WebLogic Server APIs List all application deployment metrics. Self-contained Naftiko capability
+    covering one Weblogic business surface.'
+  tags:
+  - Weblogic
+  - Applications
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEBLOGIC_API_KEY: WEBLOGIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: monitoring-diagnostics-applications
+    baseUri: https://{host}:{port}/management/wls/latest
+    description: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Applications business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: deployments
+      path: /deployments
+      operations:
+      - name: getdeployments
+        method: GET
+        description: Oracle WebLogic Server APIs List all application deployment metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deployments-appName
+      path: /deployments/{appName}
+      operations:
+      - name: getdeployment
+        method: GET
+        description: Oracle WebLogic Server APIs Get application deployment metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deployments-appName-servlets
+      path: /deployments/{appName}/servlets
+      operations:
+      - name: getdeploymentservlets
+        method: GET
+        description: Oracle WebLogic Server APIs List servlet metrics for an application
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.WEBLOGIC_USER}}'
+      password: '{{env.WEBLOGIC_PASS}}'
+  exposes:
+  - type: rest
+    namespace: monitoring-diagnostics-applications-rest
+    port: 8080
+    description: REST adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Applications.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/deployments
+      name: deployments
+      description: REST surface for deployments.
+      operations:
+      - method: GET
+        name: getdeployments
+        description: Oracle WebLogic Server APIs List all application deployment metrics
+        call: monitoring-diagnostics-applications.getdeployments
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deployments/{appname}
+      name: deployments-appname
+      description: REST surface for deployments-appName.
+      operations:
+      - method: GET
+        name: getdeployment
+        description: Oracle WebLogic Server APIs Get application deployment metrics
+        call: monitoring-diagnostics-applications.getdeployment
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deployments/{appname}/servlets
+      name: deployments-appname-servlets
+      description: REST surface for deployments-appName-servlets.
+      operations:
+      - method: GET
+        name: getdeploymentservlets
+        description: Oracle WebLogic Server APIs List servlet metrics for an application
+        call: monitoring-diagnostics-applications.getdeploymentservlets
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: monitoring-diagnostics-applications-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Applications.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: oracle-weblogic-server-apis-list
+      description: Oracle WebLogic Server APIs List all application deployment metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-applications.getdeployments
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get
+      description: Oracle WebLogic Server APIs Get application deployment metrics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-applications.getdeployment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-list-2
+      description: Oracle WebLogic Server APIs List servlet metrics for an application
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-applications.getdeploymentservlets
+      outputParameters:
+      - type: object
+        mapping: $.

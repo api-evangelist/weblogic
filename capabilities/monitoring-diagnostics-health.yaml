@@ -1,0 +1,73 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Health
+  description: 'Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Health. 1 operations.
+    Lead operation: Oracle WebLogic Server APIs Get server health status. Self-contained Naftiko capability covering one Weblogic
+    business surface.'
+  tags:
+  - Weblogic
+  - Health
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEBLOGIC_API_KEY: WEBLOGIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: monitoring-diagnostics-health
+    baseUri: https://{host}:{port}/management/wls/latest
+    description: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Health business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: servers-serverName-health
+      path: /servers/{serverName}/health
+      operations:
+      - name: getserverhealth
+        method: GET
+        description: Oracle WebLogic Server APIs Get server health status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.WEBLOGIC_USER}}'
+      password: '{{env.WEBLOGIC_PASS}}'
+  exposes:
+  - type: rest
+    namespace: monitoring-diagnostics-health-rest
+    port: 8080
+    description: REST adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Health.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/servers/{servername}/health
+      name: servers-servername-health
+      description: REST surface for servers-serverName-health.
+      operations:
+      - method: GET
+        name: getserverhealth
+        description: Oracle WebLogic Server APIs Get server health status
+        call: monitoring-diagnostics-health.getserverhealth
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: monitoring-diagnostics-health-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Health.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: oracle-weblogic-server-apis-get
+      description: Oracle WebLogic Server APIs Get server health status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-health.getserverhealth
+      outputParameters:
+      - type: object
+        mapping: $.

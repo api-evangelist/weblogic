@@ -1,0 +1,73 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server Configuration
+  description: 'Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server Configuration.
+    1 operations. Lead operation: Oracle WebLogic Server APIs Get server configuration tree root. Self-contained Naftiko capability
+    covering one Weblogic business surface.'
+  tags:
+  - Weblogic
+  - Server Configuration
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEBLOGIC_API_KEY: WEBLOGIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: restful-management-services-server-configuration
+    baseUri: https://{host}:{port}/management/weblogic/latest
+    description: Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server Configuration
+      business capability. Self-contained, no shared references.
+    resources:
+    - name: serverConfig
+      path: /serverConfig
+      operations:
+      - name: getserverconfigroot
+        method: GET
+        description: Oracle WebLogic Server APIs Get server configuration tree root
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.WEBLOGIC_USER}}'
+      password: '{{env.WEBLOGIC_PASS}}'
+  exposes:
+  - type: rest
+    namespace: restful-management-services-server-configuration-rest
+    port: 8080
+    description: REST adapter for Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server
+      Configuration. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/serverconfig
+      name: serverconfig
+      description: REST surface for serverConfig.
+      operations:
+      - method: GET
+        name: getserverconfigroot
+        description: Oracle WebLogic Server APIs Get server configuration tree root
+        call: restful-management-services-server-configuration.getserverconfigroot
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: restful-management-services-server-configuration-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server
+      Configuration. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: oracle-weblogic-server-apis-get
+      description: Oracle WebLogic Server APIs Get server configuration tree root
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-configuration.getserverconfigroot
+      outputParameters:
+      - type: object
+        mapping: $.

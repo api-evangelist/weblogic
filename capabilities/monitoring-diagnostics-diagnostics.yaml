@@ -1,0 +1,179 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Diagnostics
+  description: 'Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Diagnostics. 4 operations.
+    Lead operation: Oracle WebLogic Server APIs List WLDF system resources. Self-contained Naftiko capability covering one
+    Weblogic business surface.'
+  tags:
+  - Weblogic
+  - Diagnostics
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEBLOGIC_API_KEY: WEBLOGIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: monitoring-diagnostics-diagnostics
+    baseUri: https://{host}:{port}/management/wls/latest
+    description: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Diagnostics business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: diagnostics-WLDFSystemResources
+      path: /diagnostics/WLDFSystemResources
+      operations:
+      - name: getwldfresources
+        method: GET
+        description: Oracle WebLogic Server APIs List WLDF system resources
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: diagnostics-WLDFSystemResources-resourceName
+      path: /diagnostics/WLDFSystemResources/{resourceName}
+      operations:
+      - name: getwldfresource
+        method: GET
+        description: Oracle WebLogic Server APIs Get a WLDF system resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: diagnostics-dataAccessRuntimes
+      path: /diagnostics/dataAccessRuntimes
+      operations:
+      - name: getdataaccessruntimes
+        method: GET
+        description: Oracle WebLogic Server APIs List diagnostic data access runtimes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: diagnostics-dataAccessRuntimes-runtimeName-query
+      path: /diagnostics/dataAccessRuntimes/{runtimeName}/query
+      operations:
+      - name: querydiagnosticdata
+        method: POST
+        description: Oracle WebLogic Server APIs Query diagnostic data
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.WEBLOGIC_USER}}'
+      password: '{{env.WEBLOGIC_PASS}}'
+  exposes:
+  - type: rest
+    namespace: monitoring-diagnostics-diagnostics-rest
+    port: 8080
+    description: REST adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Diagnostics.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/diagnostics/wldfsystemresources
+      name: diagnostics-wldfsystemresources
+      description: REST surface for diagnostics-WLDFSystemResources.
+      operations:
+      - method: GET
+        name: getwldfresources
+        description: Oracle WebLogic Server APIs List WLDF system resources
+        call: monitoring-diagnostics-diagnostics.getwldfresources
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/diagnostics/wldfsystemresources/{resourcename}
+      name: diagnostics-wldfsystemresources-resourcename
+      description: REST surface for diagnostics-WLDFSystemResources-resourceName.
+      operations:
+      - method: GET
+        name: getwldfresource
+        description: Oracle WebLogic Server APIs Get a WLDF system resource
+        call: monitoring-diagnostics-diagnostics.getwldfresource
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/diagnostics/dataaccessruntimes
+      name: diagnostics-dataaccessruntimes
+      description: REST surface for diagnostics-dataAccessRuntimes.
+      operations:
+      - method: GET
+        name: getdataaccessruntimes
+        description: Oracle WebLogic Server APIs List diagnostic data access runtimes
+        call: monitoring-diagnostics-diagnostics.getdataaccessruntimes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/diagnostics/dataaccessruntimes/{runtimename}/query
+      name: diagnostics-dataaccessruntimes-runtimename-query
+      description: REST surface for diagnostics-dataAccessRuntimes-runtimeName-query.
+      operations:
+      - method: POST
+        name: querydiagnosticdata
+        description: Oracle WebLogic Server APIs Query diagnostic data
+        call: monitoring-diagnostics-diagnostics.querydiagnosticdata
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: monitoring-diagnostics-diagnostics-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Diagnostics.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: oracle-weblogic-server-apis-list
+      description: Oracle WebLogic Server APIs List WLDF system resources
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-diagnostics.getwldfresources
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get
+      description: Oracle WebLogic Server APIs Get a WLDF system resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-diagnostics.getwldfresource
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-list-2
+      description: Oracle WebLogic Server APIs List diagnostic data access runtimes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-diagnostics.getdataaccessruntimes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-query
+      description: Oracle WebLogic Server APIs Query diagnostic data
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: monitoring-diagnostics-diagnostics.querydiagnosticdata
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

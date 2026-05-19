@@ -1,0 +1,361 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server Runtime
+  description: 'Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server Runtime. 10 operations.
+    Lead operation: Oracle WebLogic Server APIs Get server runtime tree root. Self-contained Naftiko capability covering one
+    Weblogic business surface.'
+  tags:
+  - Weblogic
+  - Server Runtime
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEBLOGIC_API_KEY: WEBLOGIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: restful-management-services-server-runtime
+    baseUri: https://{host}:{port}/management/weblogic/latest
+    description: Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server Runtime business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: serverRuntime
+      path: /serverRuntime
+      operations:
+      - name: getserverruntimeroot
+        method: GET
+        description: Oracle WebLogic Server APIs Get server runtime tree root
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: serverRuntime-JDBCServiceRuntime
+      path: /serverRuntime/JDBCServiceRuntime
+      operations:
+      - name: getjdbcserviceruntime
+        method: GET
+        description: Oracle WebLogic Server APIs Get JDBC service runtime information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: serverRuntime-JDBCServiceRuntime-JDBCDataSourceRuntimeMBeans
+      path: /serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans
+      operations:
+      - name: getjdbcdatasourceruntimes
+        method: GET
+        description: Oracle WebLogic Server APIs List all JDBC data source runtimes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: serverRuntime-JDBCServiceRuntime-JDBCDataSourceRuntimeMBeans-dataSourceName
+      path: /serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans/{dataSourceName}
+      operations:
+      - name: getjdbcdatasourceruntime
+        method: GET
+        description: Oracle WebLogic Server APIs Get a JDBC data source runtime
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: serverRuntime-JMSRuntime
+      path: /serverRuntime/JMSRuntime
+      operations:
+      - name: getjmsruntime
+        method: GET
+        description: Oracle WebLogic Server APIs Get JMS runtime information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: serverRuntime-JMSRuntime-JMSServers
+      path: /serverRuntime/JMSRuntime/JMSServers
+      operations:
+      - name: getjmsserverruntimes
+        method: GET
+        description: Oracle WebLogic Server APIs List all JMS server runtimes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: serverRuntime-JVMRuntime
+      path: /serverRuntime/JVMRuntime
+      operations:
+      - name: getjvmruntime
+        method: GET
+        description: Oracle WebLogic Server APIs Get JVM runtime information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: serverRuntime-applicationRuntimes
+      path: /serverRuntime/applicationRuntimes
+      operations:
+      - name: getapplicationruntimes
+        method: GET
+        description: Oracle WebLogic Server APIs List all application runtimes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: serverRuntime-applicationRuntimes-appName
+      path: /serverRuntime/applicationRuntimes/{appName}
+      operations:
+      - name: getapplicationruntime
+        method: GET
+        description: Oracle WebLogic Server APIs Get an application runtime
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: serverRuntime-threadPoolRuntime
+      path: /serverRuntime/threadPoolRuntime
+      operations:
+      - name: getthreadpoolruntime
+        method: GET
+        description: Oracle WebLogic Server APIs Get thread pool runtime information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.WEBLOGIC_USER}}'
+      password: '{{env.WEBLOGIC_PASS}}'
+  exposes:
+  - type: rest
+    namespace: restful-management-services-server-runtime-rest
+    port: 8080
+    description: REST adapter for Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server
+      Runtime. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/serverruntime
+      name: serverruntime
+      description: REST surface for serverRuntime.
+      operations:
+      - method: GET
+        name: getserverruntimeroot
+        description: Oracle WebLogic Server APIs Get server runtime tree root
+        call: restful-management-services-server-runtime.getserverruntimeroot
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serverruntime/jdbcserviceruntime
+      name: serverruntime-jdbcserviceruntime
+      description: REST surface for serverRuntime-JDBCServiceRuntime.
+      operations:
+      - method: GET
+        name: getjdbcserviceruntime
+        description: Oracle WebLogic Server APIs Get JDBC service runtime information
+        call: restful-management-services-server-runtime.getjdbcserviceruntime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serverruntime/jdbcserviceruntime/jdbcdatasourceruntimembeans
+      name: serverruntime-jdbcserviceruntime-jdbcdatasourceruntimembeans
+      description: REST surface for serverRuntime-JDBCServiceRuntime-JDBCDataSourceRuntimeMBeans.
+      operations:
+      - method: GET
+        name: getjdbcdatasourceruntimes
+        description: Oracle WebLogic Server APIs List all JDBC data source runtimes
+        call: restful-management-services-server-runtime.getjdbcdatasourceruntimes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serverruntime/jdbcserviceruntime/jdbcdatasourceruntimembeans/{datasourcename}
+      name: serverruntime-jdbcserviceruntime-jdbcdatasourceruntimembeans-datasourcename
+      description: REST surface for serverRuntime-JDBCServiceRuntime-JDBCDataSourceRuntimeMBeans-dataSourceName.
+      operations:
+      - method: GET
+        name: getjdbcdatasourceruntime
+        description: Oracle WebLogic Server APIs Get a JDBC data source runtime
+        call: restful-management-services-server-runtime.getjdbcdatasourceruntime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serverruntime/jmsruntime
+      name: serverruntime-jmsruntime
+      description: REST surface for serverRuntime-JMSRuntime.
+      operations:
+      - method: GET
+        name: getjmsruntime
+        description: Oracle WebLogic Server APIs Get JMS runtime information
+        call: restful-management-services-server-runtime.getjmsruntime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serverruntime/jmsruntime/jmsservers
+      name: serverruntime-jmsruntime-jmsservers
+      description: REST surface for serverRuntime-JMSRuntime-JMSServers.
+      operations:
+      - method: GET
+        name: getjmsserverruntimes
+        description: Oracle WebLogic Server APIs List all JMS server runtimes
+        call: restful-management-services-server-runtime.getjmsserverruntimes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serverruntime/jvmruntime
+      name: serverruntime-jvmruntime
+      description: REST surface for serverRuntime-JVMRuntime.
+      operations:
+      - method: GET
+        name: getjvmruntime
+        description: Oracle WebLogic Server APIs Get JVM runtime information
+        call: restful-management-services-server-runtime.getjvmruntime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serverruntime/applicationruntimes
+      name: serverruntime-applicationruntimes
+      description: REST surface for serverRuntime-applicationRuntimes.
+      operations:
+      - method: GET
+        name: getapplicationruntimes
+        description: Oracle WebLogic Server APIs List all application runtimes
+        call: restful-management-services-server-runtime.getapplicationruntimes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serverruntime/applicationruntimes/{appname}
+      name: serverruntime-applicationruntimes-appname
+      description: REST surface for serverRuntime-applicationRuntimes-appName.
+      operations:
+      - method: GET
+        name: getapplicationruntime
+        description: Oracle WebLogic Server APIs Get an application runtime
+        call: restful-management-services-server-runtime.getapplicationruntime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serverruntime/threadpoolruntime
+      name: serverruntime-threadpoolruntime
+      description: REST surface for serverRuntime-threadPoolRuntime.
+      operations:
+      - method: GET
+        name: getthreadpoolruntime
+        description: Oracle WebLogic Server APIs Get thread pool runtime information
+        call: restful-management-services-server-runtime.getthreadpoolruntime
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: restful-management-services-server-runtime-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API — Server
+      Runtime. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: oracle-weblogic-server-apis-get
+      description: Oracle WebLogic Server APIs Get server runtime tree root
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getserverruntimeroot
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get-2
+      description: Oracle WebLogic Server APIs Get JDBC service runtime information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getjdbcserviceruntime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-list
+      description: Oracle WebLogic Server APIs List all JDBC data source runtimes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getjdbcdatasourceruntimes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get-3
+      description: Oracle WebLogic Server APIs Get a JDBC data source runtime
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getjdbcdatasourceruntime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get-4
+      description: Oracle WebLogic Server APIs Get JMS runtime information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getjmsruntime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-list-2
+      description: Oracle WebLogic Server APIs List all JMS server runtimes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getjmsserverruntimes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get-5
+      description: Oracle WebLogic Server APIs Get JVM runtime information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getjvmruntime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-list-3
+      description: Oracle WebLogic Server APIs List all application runtimes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getapplicationruntimes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get-6
+      description: Oracle WebLogic Server APIs Get an application runtime
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getapplicationruntime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get-7
+      description: Oracle WebLogic Server APIs Get thread pool runtime information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: restful-management-services-server-runtime.getthreadpoolruntime
+      outputParameters:
+      - type: object
+        mapping: $.

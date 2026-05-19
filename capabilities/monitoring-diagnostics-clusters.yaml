@@ -1,0 +1,105 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Clusters
+  description: 'Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Clusters. 2 operations.
+    Lead operation: Oracle WebLogic Server APIs List all monitored clusters. Self-contained Naftiko capability covering one
+    Weblogic business surface.'
+  tags:
+  - Weblogic
+  - Clusters
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEBLOGIC_API_KEY: WEBLOGIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: monitoring-diagnostics-clusters
+    baseUri: https://{host}:{port}/management/wls/latest
+    description: Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Clusters business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: clusters
+      path: /clusters
+      operations:
+      - name: getclusters
+        method: GET
+        description: Oracle WebLogic Server APIs List all monitored clusters
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: clusters-clusterName
+      path: /clusters/{clusterName}
+      operations:
+      - name: getcluster
+        method: GET
+        description: Oracle WebLogic Server APIs Get cluster monitoring information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.WEBLOGIC_USER}}'
+      password: '{{env.WEBLOGIC_PASS}}'
+  exposes:
+  - type: rest
+    namespace: monitoring-diagnostics-clusters-rest
+    port: 8080
+    description: REST adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Clusters.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/clusters
+      name: clusters
+      description: REST surface for clusters.
+      operations:
+      - method: GET
+        name: getclusters
+        description: Oracle WebLogic Server APIs List all monitored clusters
+        call: monitoring-diagnostics-clusters.getclusters
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/clusters/{clustername}
+      name: clusters-clustername
+      description: REST surface for clusters-clusterName.
+      operations:
+      - method: GET
+        name: getcluster
+        description: Oracle WebLogic Server APIs Get cluster monitoring information
+        call: monitoring-diagnostics-clusters.getcluster
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: monitoring-diagnostics-clusters-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API — Clusters.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: oracle-weblogic-server-apis-list
+      description: Oracle WebLogic Server APIs List all monitored clusters
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-clusters.getclusters
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: oracle-weblogic-server-apis-get
+      description: Oracle WebLogic Server APIs Get cluster monitoring information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitoring-diagnostics-clusters.getcluster
+      outputParameters:
+      - type: object
+        mapping: $.
