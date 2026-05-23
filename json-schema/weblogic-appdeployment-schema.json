@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AppDeployment",
+  "title": "AppDeployment",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Application name"
+    },
+    "sourcePath": {
+      "type": "string",
+      "description": "Path to the application archive or exploded directory"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Target servers or clusters"
+    },
+    "moduleType": {
+      "type": "string",
+      "description": "Module type",
+      "enum": [
+        "ear",
+        "war",
+        "jar",
+        "rar"
+      ]
+    },
+    "planPath": {
+      "type": "string",
+      "description": "Path to the deployment plan"
+    },
+    "stagingMode": {
+      "type": "string",
+      "description": "Application staging mode",
+      "enum": [
+        "stage",
+        "nostage",
+        "external_stage"
+      ]
+    },
+    "securityDDModel": {
+      "type": "string",
+      "description": "Security deployment descriptor model",
+      "enum": [
+        "DDOnly",
+        "CustomRoles",
+        "CustomRolesAndPolicies",
+        "Advanced"
+      ]
+    },
+    "versionIdentifier": {
+      "type": "string",
+      "description": "Application version identifier"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes about the deployment"
+    },
+    "deploymentOrder": {
+      "type": "integer",
+      "description": "Order in which this application is deployed relative to other deployments. Lower values deploy first.",
+      "default": 100
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      }
+    }
+  }
+}

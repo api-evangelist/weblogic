@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ThreadPoolMetrics",
+  "title": "ThreadPoolMetrics",
+  "type": "object",
+  "properties": {
+    "executeThreadTotalCount": {
+      "type": "integer",
+      "description": "Total execute threads"
+    },
+    "executeThreadIdleCount": {
+      "type": "integer",
+      "description": "Idle execute threads"
+    },
+    "hoggingThreadCount": {
+      "type": "integer",
+      "description": "Hogging threads"
+    },
+    "stuckThreadCount": {
+      "type": "integer",
+      "description": "Stuck threads"
+    },
+    "pendingUserRequestCount": {
+      "type": "integer",
+      "description": "Pending user requests"
+    },
+    "throughput": {
+      "type": "number",
+      "format": "double",
+      "description": "Thread pool throughput"
+    },
+    "completedRequestCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Completed requests"
+    },
+    "queueLength": {
+      "type": "integer",
+      "description": "Current queue length"
+    }
+  }
+}

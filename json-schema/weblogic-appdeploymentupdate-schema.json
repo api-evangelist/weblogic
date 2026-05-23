@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AppDeploymentUpdate",
+  "title": "AppDeploymentUpdate",
+  "type": "object",
+  "properties": {
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Updated target servers or clusters"
+    },
+    "planPath": {
+      "type": "string",
+      "description": "Updated deployment plan path"
+    },
+    "stagingMode": {
+      "type": "string",
+      "enum": [
+        "stage",
+        "nostage",
+        "external_stage"
+      ]
+    },
+    "securityDDModel": {
+      "type": "string",
+      "enum": [
+        "DDOnly",
+        "CustomRoles",
+        "CustomRolesAndPolicies",
+        "Advanced"
+      ]
+    },
+    "deploymentOrder": {
+      "type": "integer"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DeploymentTaskStatus",
+  "title": "DeploymentTaskStatus",
+  "type": "object",
+  "properties": {
+    "taskId": {
+      "type": "string",
+      "description": "Unique identifier for the deployment task"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the deployment task",
+      "enum": [
+        "INITIATED",
+        "IN_PROGRESS",
+        "COMPLETED",
+        "FAILED",
+        "CANCELLED"
+      ]
+    },
+    "progress": {
+      "type": "string",
+      "description": "Progress description"
+    },
+    "completed": {
+      "type": "boolean",
+      "description": "Whether the task is complete"
+    },
+    "failed": {
+      "type": "boolean",
+      "description": "Whether the task failed"
+    },
+    "message": {
+      "type": "string",
+      "description": "Status or error message"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ThreadPoolRuntime",
+  "title": "ThreadPoolRuntime",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "executeThreadTotalCount": {
+      "type": "integer",
+      "description": "Total number of execute threads"
+    },
+    "executeThreadIdleCount": {
+      "type": "integer",
+      "description": "Number of idle execute threads"
+    },
+    "hoggingThreadCount": {
+      "type": "integer",
+      "description": "Number of threads that are hogging resources"
+    },
+    "stuckThreadCount": {
+      "type": "integer",
+      "description": "Number of stuck threads"
+    },
+    "pendingUserRequestCount": {
+      "type": "integer",
+      "description": "Number of pending user requests in the queue"
+    },
+    "throughput": {
+      "type": "number",
+      "format": "double",
+      "description": "Thread pool throughput"
+    },
+    "completedRequestCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Total number of completed requests"
+    },
+    "overloadRejectedRequestsCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Number of requests rejected due to overload"
+    },
+    "queueLength": {
+      "type": "integer",
+      "description": "Current queue length"
+    },
+    "sharedCapacityForWorkManagers": {
+      "type": "integer",
+      "description": "Shared capacity for work managers"
+    },
+    "healthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string"
+        },
+        "subsystemName": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

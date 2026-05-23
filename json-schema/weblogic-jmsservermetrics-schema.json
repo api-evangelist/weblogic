@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JMSServerMetrics",
+  "title": "JMSServerMetrics",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "JMS server name"
+    },
+    "messagesCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current messages"
+    },
+    "messagesPendingCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Pending messages"
+    },
+    "messagesHighCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "High watermark of messages"
+    },
+    "messagesReceivedCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Total messages received"
+    },
+    "bytesCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current bytes"
+    },
+    "bytesPendingCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Pending bytes"
+    },
+    "consumersCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current consumers"
+    },
+    "consumersHighCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "High watermark of consumers"
+    },
+    "destinationsCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current destinations"
+    },
+    "healthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string"
+        },
+        "subsystemName": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServerMonitoring",
+  "title": "ServerMonitoring",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Server name"
+    },
+    "state": {
+      "type": "string",
+      "description": "Current server state",
+      "enum": [
+        "RUNNING",
+        "ADMIN",
+        "STANDBY",
+        "SHUTDOWN",
+        "STARTING",
+        "SUSPENDING",
+        "FAILED",
+        "UNKNOWN"
+      ]
+    },
+    "health": {
+      "type": "string",
+      "description": "Overall health state",
+      "enum": [
+        "HEALTH_OK",
+        "HEALTH_WARN",
+        "HEALTH_CRITICAL",
+        "HEALTH_FAILED",
+        "HEALTH_OVERLOADED"
+      ]
+    },
+    "clusterName": {
+      "type": "string",
+      "description": "Cluster this server belongs to"
+    },
+    "currentMachine": {
+      "type": "string",
+      "description": "Machine the server is running on"
+    },
+    "listenAddress": {
+      "type": "string",
+      "description": "Listen address"
+    },
+    "listenPort": {
+      "type": "integer",
+      "description": "Listen port"
+    },
+    "sslListenPort": {
+      "type": "integer",
+      "description": "SSL listen port"
+    },
+    "activationTime": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Activation time in milliseconds since epoch"
+    },
+    "openSocketsCurrentCount": {
+      "type": "integer",
+      "description": "Current number of open sockets"
+    },
+    "weblogicVersion": {
+      "type": "string",
+      "description": "WebLogic Server version"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      }
+    }
+  }
+}

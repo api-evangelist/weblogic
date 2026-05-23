@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServerConfiguration",
+  "title": "ServerConfiguration",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Server name"
+    },
+    "listenAddress": {
+      "type": "string",
+      "description": "Listen address for the server"
+    },
+    "listenPort": {
+      "type": "integer",
+      "description": "Listen port for the server",
+      "default": 7001
+    },
+    "SSLListenPort": {
+      "type": "integer",
+      "description": "SSL listen port"
+    },
+    "cluster": {
+      "type": "string",
+      "description": "Cluster this server belongs to"
+    },
+    "machine": {
+      "type": "string",
+      "description": "Machine this server is assigned to"
+    },
+    "listenPortEnabled": {
+      "type": "boolean",
+      "description": "Whether the plain-text listen port is enabled"
+    },
+    "clientCertProxyEnabled": {
+      "type": "boolean",
+      "description": "Whether client cert proxy is enabled"
+    },
+    "startupMode": {
+      "type": "string",
+      "description": "Server startup mode",
+      "enum": [
+        "RUNNING",
+        "STANDBY",
+        "ADMIN"
+      ]
+    },
+    "autoRestart": {
+      "type": "boolean",
+      "description": "Whether the server automatically restarts on failure"
+    },
+    "restartMax": {
+      "type": "integer",
+      "description": "Maximum number of restart attempts"
+    },
+    "javaCompiler": {
+      "type": "string",
+      "description": "Java compiler to use for JSP compilation"
+    },
+    "stagingMode": {
+      "type": "string",
+      "description": "Application staging mode",
+      "enum": [
+        "stage",
+        "nostage",
+        "external_stage"
+      ]
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

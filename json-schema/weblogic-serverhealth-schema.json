@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServerHealth",
+  "title": "ServerHealth",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Server name"
+    },
+    "overallHealth": {
+      "type": "string",
+      "description": "Overall health state",
+      "enum": [
+        "HEALTH_OK",
+        "HEALTH_WARN",
+        "HEALTH_CRITICAL",
+        "HEALTH_FAILED",
+        "HEALTH_OVERLOADED"
+      ]
+    },
+    "subsystemHealthStates": {
+      "type": "array",
+      "description": "Health states of individual subsystems",
+      "items": {
+        "type": "object",
+        "properties": {
+          "subsystemName": {
+            "type": "string",
+            "description": "Name of the subsystem"
+          },
+          "state": {
+            "type": "string",
+            "description": "Health state",
+            "enum": [
+              "HEALTH_OK",
+              "HEALTH_WARN",
+              "HEALTH_CRITICAL",
+              "HEALTH_FAILED",
+              "HEALTH_OVERLOADED"
+            ]
+          },
+          "symptoms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Health symptoms or issues"
+          }
+        }
+      }
+    }
+  }
+}

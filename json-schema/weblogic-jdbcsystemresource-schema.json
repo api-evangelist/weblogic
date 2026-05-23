@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JDBCSystemResource",
+  "title": "JDBCSystemResource",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "JDBC system resource name"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Target servers or clusters"
+    },
+    "descriptorFileName": {
+      "type": "string",
+      "description": "JDBC descriptor file name"
+    },
+    "JDBCResource": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "JDBCDataSourceParams": {
+          "type": "object",
+          "properties": {
+            "JNDINames": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "JNDI names for the data source"
+            },
+            "globalTransactionsProtocol": {
+              "type": "string",
+              "enum": [
+                "TwoPhaseCommit",
+                "LoggingLastResource",
+                "EmulateTwoPhaseCommit",
+                "OnePhaseCommit",
+                "None"
+              ]
+            }
+          }
+        },
+        "JDBCDriverParams": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "JDBC connection URL"
+            },
+            "driverName": {
+              "type": "string",
+              "description": "JDBC driver class name"
+            },
+            "properties": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "JDBCConnectionPoolParams": {
+          "type": "object",
+          "properties": {
+            "initialCapacity": {
+              "type": "integer",
+              "description": "Initial number of connections"
+            },
+            "maxCapacity": {
+              "type": "integer",
+              "description": "Maximum number of connections"
+            },
+            "minCapacity": {
+              "type": "integer",
+              "description": "Minimum number of connections"
+            },
+            "testTableName": {
+              "type": "string",
+              "description": "Table name used for connection testing"
+            },
+            "testConnectionsOnReserve": {
+              "type": "boolean",
+              "description": "Whether to test connections when reserved"
+            }
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

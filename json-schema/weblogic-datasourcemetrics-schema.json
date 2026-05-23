@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DataSourceMetrics",
+  "title": "DataSourceMetrics",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Data source name"
+    },
+    "state": {
+      "type": "string",
+      "description": "Data source state",
+      "enum": [
+        "Running",
+        "Suspended",
+        "Shutdown",
+        "Overloaded",
+        "Unknown"
+      ]
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether the data source is enabled"
+    },
+    "activeConnectionsCurrentCount": {
+      "type": "integer",
+      "description": "Current active connections"
+    },
+    "activeConnectionsHighCount": {
+      "type": "integer",
+      "description": "High watermark of active connections"
+    },
+    "connectionsTotalCount": {
+      "type": "integer",
+      "description": "Total connections created"
+    },
+    "currCapacity": {
+      "type": "integer",
+      "description": "Current capacity"
+    },
+    "numAvailable": {
+      "type": "integer",
+      "description": "Available connections"
+    },
+    "numUnavailable": {
+      "type": "integer",
+      "description": "Unavailable connections"
+    },
+    "waitingForConnectionCurrentCount": {
+      "type": "integer",
+      "description": "Threads waiting for a connection"
+    },
+    "waitSecondsHighCount": {
+      "type": "integer",
+      "description": "Highest wait time in seconds"
+    },
+    "connectionDelayTime": {
+      "type": "integer",
+      "description": "Average connection creation time in ms"
+    },
+    "failuresToReconnectCount": {
+      "type": "integer",
+      "description": "Failed reconnection attempts"
+    },
+    "leakedConnectionCount": {
+      "type": "integer",
+      "description": "Leaked connections"
+    },
+    "prepStmtCacheCurrentSize": {
+      "type": "integer",
+      "description": "Prepared statement cache size"
+    },
+    "serverName": {
+      "type": "string",
+      "description": "Server hosting this data source instance"
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DeploymentProgress",
+  "title": "DeploymentProgress",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Deployment task name"
+    },
+    "state": {
+      "type": "string",
+      "description": "Current deployment state",
+      "enum": [
+        "STATE_NEW",
+        "STATE_PREPARING",
+        "STATE_PREPARED",
+        "STATE_ACTIVATING",
+        "STATE_ACTIVE",
+        "STATE_DEACTIVATING",
+        "STATE_RETIRING",
+        "STATE_RETIRED",
+        "STATE_FAILED"
+      ]
+    },
+    "progress": {
+      "type": "string",
+      "description": "Progress description"
+    },
+    "completed": {
+      "type": "boolean",
+      "description": "Whether the operation is complete"
+    },
+    "failed": {
+      "type": "boolean",
+      "description": "Whether the operation failed"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DataAccessRuntime",
+  "title": "DataAccessRuntime",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Data access runtime name"
+    },
+    "availableDataTypes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Types of diagnostic data available for querying"
+    }
+  }
+}

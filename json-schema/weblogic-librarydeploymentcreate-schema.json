@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/LibraryDeploymentCreate",
+  "title": "LibraryDeploymentCreate",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Library name"
+    },
+    "sourcePath": {
+      "type": "string",
+      "description": "Path to the library archive"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Target servers or clusters"
+    },
+    "moduleType": {
+      "type": "string",
+      "enum": [
+        "ear",
+        "war",
+        "jar"
+      ]
+    },
+    "stagingMode": {
+      "type": "string",
+      "enum": [
+        "stage",
+        "nostage",
+        "external_stage"
+      ]
+    },
+    "deploymentOrder": {
+      "type": "integer",
+      "default": 100
+    }
+  },
+  "required": [
+    "name",
+    "sourcePath",
+    "targets"
+  ]
+}

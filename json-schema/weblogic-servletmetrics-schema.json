@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServletMetrics",
+  "title": "ServletMetrics",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Servlet name"
+    },
+    "contextPath": {
+      "type": "string",
+      "description": "Servlet context path"
+    },
+    "invocationTotalCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Total invocations"
+    },
+    "executionTimeAverage": {
+      "type": "integer",
+      "description": "Average execution time in milliseconds"
+    },
+    "executionTimeTotal": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Total execution time in milliseconds"
+    },
+    "executionTimeHigh": {
+      "type": "integer",
+      "description": "Highest execution time in milliseconds"
+    },
+    "executionTimeLow": {
+      "type": "integer",
+      "description": "Lowest execution time in milliseconds"
+    },
+    "reloadTotalCount": {
+      "type": "integer",
+      "description": "Number of times the servlet was reloaded"
+    }
+  }
+}

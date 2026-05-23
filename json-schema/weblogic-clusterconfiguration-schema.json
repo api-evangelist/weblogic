@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ClusterConfiguration",
+  "title": "ClusterConfiguration",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Cluster name"
+    },
+    "clusterMessagingMode": {
+      "type": "string",
+      "description": "Messaging mode for the cluster",
+      "enum": [
+        "unicast",
+        "multicast"
+      ]
+    },
+    "clusterBroadcastChannel": {
+      "type": "string",
+      "description": "Multicast channel for cluster communication"
+    },
+    "clusterAddress": {
+      "type": "string",
+      "description": "Comma-separated list of address:port pairs for cluster members"
+    },
+    "defaultLoadAlgorithm": {
+      "type": "string",
+      "description": "Load balancing algorithm",
+      "enum": [
+        "round-robin",
+        "weight-based",
+        "round-robin-affinity",
+        "weight-based-affinity",
+        "random"
+      ]
+    },
+    "weblogicPluginEnabled": {
+      "type": "boolean",
+      "description": "Whether the WebLogic plugin is enabled"
+    },
+    "frontendHost": {
+      "type": "string",
+      "description": "Frontend host for the cluster"
+    },
+    "frontendHTTPPort": {
+      "type": "integer",
+      "description": "Frontend HTTP port"
+    },
+    "frontendHTTPSPort": {
+      "type": "integer",
+      "description": "Frontend HTTPS port"
+    },
+    "numberOfServersInClusterAddress": {
+      "type": "integer",
+      "description": "Number of servers in the cluster address"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

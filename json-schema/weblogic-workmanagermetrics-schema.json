@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/WorkManagerMetrics",
+  "title": "WorkManagerMetrics",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Work manager name"
+    },
+    "pendingRequests": {
+      "type": "integer",
+      "description": "Number of pending requests"
+    },
+    "completedRequests": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Number of completed requests"
+    },
+    "stuckThreadCount": {
+      "type": "integer",
+      "description": "Number of stuck threads"
+    }
+  }
+}

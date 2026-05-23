@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ApplicationRuntime",
+  "title": "ApplicationRuntime",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Application name"
+    },
+    "applicationName": {
+      "type": "string",
+      "description": "Deployment name of the application"
+    },
+    "healthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string"
+        },
+        "subsystemName": {
+          "type": "string"
+        }
+      }
+    },
+    "overallHealthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string"
+        },
+        "subsystemName": {
+          "type": "string"
+        }
+      }
+    },
+    "activeVersionState": {
+      "type": "string",
+      "description": "Current version state of the application"
+    },
+    "componentRuntimes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

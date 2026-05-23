@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DiagnosticQueryResult",
+  "title": "DiagnosticQueryResult",
+  "type": "object",
+  "properties": {
+    "columns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Column definitions for the result set"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "description": "Result rows"
+    },
+    "totalRecords": {
+      "type": "integer",
+      "description": "Total number of matching records"
+    },
+    "returnedRecords": {
+      "type": "integer",
+      "description": "Number of records returned"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/LibraryDeployment",
+  "title": "LibraryDeployment",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Library name"
+    },
+    "sourcePath": {
+      "type": "string",
+      "description": "Path to the library archive"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Target servers or clusters"
+    },
+    "specificationVersion": {
+      "type": "string",
+      "description": "Library specification version"
+    },
+    "implementationVersion": {
+      "type": "string",
+      "description": "Library implementation version"
+    },
+    "moduleType": {
+      "type": "string",
+      "description": "Module type",
+      "enum": [
+        "ear",
+        "war",
+        "jar"
+      ]
+    },
+    "stagingMode": {
+      "type": "string",
+      "enum": [
+        "stage",
+        "nostage",
+        "external_stage"
+      ]
+    },
+    "deploymentOrder": {
+      "type": "integer",
+      "default": 100
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      }
+    }
+  }
+}

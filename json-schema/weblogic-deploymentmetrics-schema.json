@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DeploymentMetrics",
+  "title": "DeploymentMetrics",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Application name"
+    },
+    "type": {
+      "type": "string",
+      "description": "Application type (ear, war, etc.)"
+    },
+    "state": {
+      "type": "string",
+      "description": "Deployment state"
+    },
+    "healthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string"
+        },
+        "subsystemName": {
+          "type": "string"
+        }
+      }
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Target servers or clusters"
+    },
+    "sessions": {
+      "type": "object",
+      "properties": {
+        "openSessionsCurrentCount": {
+          "type": "integer",
+          "description": "Current open sessions"
+        },
+        "openSessionsHighCount": {
+          "type": "integer",
+          "description": "High watermark of open sessions"
+        },
+        "sessionsOpenedTotalCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total sessions opened"
+        }
+      }
+    }
+  }
+}

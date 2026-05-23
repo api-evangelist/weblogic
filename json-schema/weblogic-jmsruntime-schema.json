@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JMSRuntime",
+  "title": "JMSRuntime",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "connectionsCurrentCount": {
+      "type": "integer",
+      "description": "Current number of JMS connections"
+    },
+    "connectionsTotalCount": {
+      "type": "integer",
+      "description": "Total JMS connections created"
+    },
+    "connectionsHighCount": {
+      "type": "integer",
+      "description": "High watermark of JMS connections"
+    },
+    "JMSServersCurrentCount": {
+      "type": "integer",
+      "description": "Current number of JMS servers"
+    },
+    "JMSServersTotalCount": {
+      "type": "integer",
+      "description": "Total JMS servers created"
+    },
+    "JMSServersHighCount": {
+      "type": "integer",
+      "description": "High watermark of JMS servers"
+    },
+    "healthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string"
+        },
+        "subsystemName": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

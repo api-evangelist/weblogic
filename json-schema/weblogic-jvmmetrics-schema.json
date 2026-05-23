@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JVMMetrics",
+  "title": "JVMMetrics",
+  "type": "object",
+  "properties": {
+    "heapSizeCurrent": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current heap size in bytes"
+    },
+    "heapSizeMax": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Maximum heap size in bytes"
+    },
+    "heapFreeCurrent": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current free heap in bytes"
+    },
+    "heapFreePercent": {
+      "type": "number",
+      "format": "double",
+      "description": "Percentage of heap that is free"
+    },
+    "javaVersion": {
+      "type": "string",
+      "description": "Java version"
+    },
+    "javaVendor": {
+      "type": "string",
+      "description": "Java vendor"
+    },
+    "osName": {
+      "type": "string",
+      "description": "Operating system name"
+    },
+    "osVersion": {
+      "type": "string",
+      "description": "Operating system version"
+    },
+    "uptime": {
+      "type": "integer",
+      "format": "int64",
+      "description": "JVM uptime in milliseconds"
+    }
+  }
+}

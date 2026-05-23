@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JDBCDataSourceRuntime",
+  "title": "JDBCDataSourceRuntime",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Data source name"
+    },
+    "state": {
+      "type": "string",
+      "description": "Data source state",
+      "enum": [
+        "Running",
+        "Suspended",
+        "Shutdown",
+        "Overloaded",
+        "Unknown"
+      ]
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether the data source is enabled"
+    },
+    "activeConnectionsCurrentCount": {
+      "type": "integer",
+      "description": "Current number of active connections"
+    },
+    "activeConnectionsHighCount": {
+      "type": "integer",
+      "description": "High watermark of active connections"
+    },
+    "activeConnectionsAverageCount": {
+      "type": "integer",
+      "description": "Average number of active connections"
+    },
+    "connectionsTotalCount": {
+      "type": "integer",
+      "description": "Total connections created"
+    },
+    "currCapacity": {
+      "type": "integer",
+      "description": "Current capacity of the connection pool"
+    },
+    "numAvailable": {
+      "type": "integer",
+      "description": "Number of available connections"
+    },
+    "numUnavailable": {
+      "type": "integer",
+      "description": "Number of unavailable connections"
+    },
+    "highestNumAvailable": {
+      "type": "integer",
+      "description": "Highest number of available connections"
+    },
+    "highestNumUnavailable": {
+      "type": "integer",
+      "description": "Highest number of unavailable connections"
+    },
+    "waitingForConnectionCurrentCount": {
+      "type": "integer",
+      "description": "Current number of threads waiting for a connection"
+    },
+    "waitingForConnectionHighCount": {
+      "type": "integer",
+      "description": "High watermark of threads waiting for a connection"
+    },
+    "waitSecondsHighCount": {
+      "type": "integer",
+      "description": "Highest wait time in seconds"
+    },
+    "connectionDelayTime": {
+      "type": "integer",
+      "description": "Average time to create a connection in milliseconds"
+    },
+    "failuresToReconnectCount": {
+      "type": "integer",
+      "description": "Number of failures to reconnect"
+    },
+    "leakedConnectionCount": {
+      "type": "integer",
+      "description": "Number of leaked connections"
+    },
+    "prepStmtCacheCurrentSize": {
+      "type": "integer",
+      "description": "Current size of the prepared statement cache"
+    }
+  }
+}

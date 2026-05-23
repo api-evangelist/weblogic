@@ -1,0 +1,679 @@
+{
+  "provider": "Oracle WebLogic Server APIs",
+  "providerId": "weblogic",
+  "kind": "json-structure",
+  "description": "Structural overview of the Oracle WebLogic Server APIs API surface; extracted from openapi/.",
+  "schemaCount": 24,
+  "operationCount": 57,
+  "schemas": [
+    {
+      "name": "Error",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "EditRoot",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "ChangeManagerStatus",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "ActivationStatus",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "DomainConfiguration",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "ServerConfiguration",
+      "type": "object",
+      "propertyCount": 14,
+      "required": [
+        "name"
+      ]
+    },
+    {
+      "name": "ClusterConfiguration",
+      "type": "object",
+      "propertyCount": 11,
+      "required": [
+        "name"
+      ]
+    },
+    {
+      "name": "JDBCSystemResource",
+      "type": "object",
+      "propertyCount": 5,
+      "required": [
+        "name"
+      ]
+    },
+    {
+      "name": "JMSSystemResource",
+      "type": "object",
+      "propertyCount": 4,
+      "required": [
+        "name"
+      ]
+    },
+    {
+      "name": "AppDeployment",
+      "type": "object",
+      "propertyCount": 8,
+      "required": [
+        "name"
+      ]
+    },
+    {
+      "name": "SecurityConfiguration",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "DomainRuntime",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "ServerLifecycleRuntime",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "ServerRuntime",
+      "type": "object",
+      "propertyCount": 12,
+      "required": []
+    },
+    {
+      "name": "JVMRuntime",
+      "type": "object",
+      "propertyCount": 10,
+      "required": []
+    },
+    {
+      "name": "ThreadPoolRuntime",
+      "type": "object",
+      "propertyCount": 12,
+      "required": []
+    },
+    {
+      "name": "JDBCServiceRuntime",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "JDBCDataSourceRuntime",
+      "type": "object",
+      "propertyCount": 19,
+      "required": []
+    },
+    {
+      "name": "JMSRuntime",
+      "type": "object",
+      "propertyCount": 8,
+      "required": []
+    },
+    {
+      "name": "JMSServerRuntime",
+      "type": "object",
+      "propertyCount": 12,
+      "required": []
+    },
+    {
+      "name": "ApplicationRuntime",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "DeploymentProgress",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "TaskStatus",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "Link",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    }
+  ],
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/edit",
+      "operationId": "getEditRoot",
+      "summary": "Oracle WebLogic Server APIs Get edit configuration tree root",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/changeManager/startEdit",
+      "operationId": "startEdit",
+      "summary": "Oracle WebLogic Server APIs Start an edit session",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/changeManager/activate",
+      "operationId": "activate",
+      "summary": "Oracle WebLogic Server APIs Activate pending changes",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/changeManager/cancelEdit",
+      "operationId": "cancelEdit",
+      "summary": "Oracle WebLogic Server APIs Cancel the current edit session",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/changeManager/undoUnactivatedChanges",
+      "operationId": "undoUnactivatedChanges",
+      "summary": "Oracle WebLogic Server APIs Undo unactivated changes",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/edit/servers",
+      "operationId": "getEditServers",
+      "summary": "Oracle WebLogic Server APIs List all server configurations",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/servers",
+      "operationId": "createEditServer",
+      "summary": "Oracle WebLogic Server APIs Create a new server configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/edit/servers/{serverName}",
+      "operationId": "getEditServer",
+      "summary": "Oracle WebLogic Server APIs Get a server configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/servers/{serverName}",
+      "operationId": "updateEditServer",
+      "summary": "Oracle WebLogic Server APIs Update a server configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/edit/servers/{serverName}",
+      "operationId": "deleteEditServer",
+      "summary": "Oracle WebLogic Server APIs Delete a server configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/edit/clusters",
+      "operationId": "getEditClusters",
+      "summary": "Oracle WebLogic Server APIs List all cluster configurations",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/clusters",
+      "operationId": "createEditCluster",
+      "summary": "Oracle WebLogic Server APIs Create a new cluster configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/edit/clusters/{clusterName}",
+      "operationId": "getEditCluster",
+      "summary": "Oracle WebLogic Server APIs Get a cluster configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/clusters/{clusterName}",
+      "operationId": "updateEditCluster",
+      "summary": "Oracle WebLogic Server APIs Update a cluster configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/edit/clusters/{clusterName}",
+      "operationId": "deleteEditCluster",
+      "summary": "Oracle WebLogic Server APIs Delete a cluster configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/edit/JDBCSystemResources",
+      "operationId": "getEditDataSources",
+      "summary": "Oracle WebLogic Server APIs List all JDBC system resource configurations",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/JDBCSystemResources",
+      "operationId": "createEditDataSource",
+      "summary": "Oracle WebLogic Server APIs Create a new JDBC system resource",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/edit/JDBCSystemResources/{dataSourceName}",
+      "operationId": "getEditDataSource",
+      "summary": "Oracle WebLogic Server APIs Get a JDBC system resource configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/edit/JDBCSystemResources/{dataSourceName}",
+      "operationId": "deleteEditDataSource",
+      "summary": "Oracle WebLogic Server APIs Delete a JDBC system resource",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/edit/JMSSystemResources",
+      "operationId": "getEditJMSResources",
+      "summary": "Oracle WebLogic Server APIs List all JMS system resource configurations",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/JMSSystemResources",
+      "operationId": "createEditJMSResource",
+      "summary": "Oracle WebLogic Server APIs Create a new JMS system resource",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/edit/appDeployments",
+      "operationId": "getEditAppDeployments",
+      "summary": "Oracle WebLogic Server APIs List all application deployment configurations",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/edit/appDeployments",
+      "operationId": "createEditAppDeployment",
+      "summary": "Oracle WebLogic Server APIs Create a new application deployment configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/edit/appDeployments/{appName}",
+      "operationId": "getEditAppDeployment",
+      "summary": "Oracle WebLogic Server APIs Get an application deployment configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/edit/appDeployments/{appName}",
+      "operationId": "deleteEditAppDeployment",
+      "summary": "Oracle WebLogic Server APIs Delete an application deployment configuration",
+      "tags": [
+        "Edit"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainConfig",
+      "operationId": "getDomainConfigRoot",
+      "summary": "Oracle WebLogic Server APIs Get domain configuration tree root",
+      "tags": [
+        "Domain Configuration"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainConfig/servers",
+      "operationId": "getDomainConfigServers",
+      "summary": "Oracle WebLogic Server APIs List all server configurations (read-only)",
+      "tags": [
+        "Domain Configuration"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainConfig/servers/{serverName}",
+      "operationId": "getDomainConfigServer",
+      "summary": "Oracle WebLogic Server APIs Get a server configuration (read-only)",
+      "tags": [
+        "Domain Configuration"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainConfig/clusters",
+      "operationId": "getDomainConfigClusters",
+      "summary": "Oracle WebLogic Server APIs List all cluster configurations (read-only)",
+      "tags": [
+        "Domain Configuration"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainConfig/securityConfiguration",
+      "operationId": "getDomainSecurityConfig",
+      "summary": "Oracle WebLogic Server APIs Get domain security configuration",
+      "tags": [
+        "Domain Configuration"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainRuntime",
+      "operationId": "getDomainRuntimeRoot",
+      "summary": "Oracle WebLogic Server APIs Get domain runtime tree root",
+      "tags": [
+        "Domain Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainRuntime/serverLifeCycleRuntimes",
+      "operationId": "getServerLifecycleRuntimes",
+      "summary": "Oracle WebLogic Server APIs List all server lifecycle runtimes",
+      "tags": [
+        "Domain Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainRuntime/serverLifeCycleRuntimes/{serverName}",
+      "operationId": "getServerLifecycleRuntime",
+      "summary": "Oracle WebLogic Server APIs Get a server lifecycle runtime",
+      "tags": [
+        "Domain Runtime"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/domainRuntime/serverLifeCycleRuntimes/{serverName}/start",
+      "operationId": "startServer",
+      "summary": "Oracle WebLogic Server APIs Start a managed server",
+      "tags": [
+        "Lifecycle"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/domainRuntime/serverLifeCycleRuntimes/{serverName}/shutdown",
+      "operationId": "shutdownServer",
+      "summary": "Oracle WebLogic Server APIs Shut down a managed server",
+      "tags": [
+        "Lifecycle"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/domainRuntime/serverLifeCycleRuntimes/{serverName}/forceShutdown",
+      "operationId": "forceShutdownServer",
+      "summary": "Oracle WebLogic Server APIs Force shut down a managed server",
+      "tags": [
+        "Lifecycle"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/domainRuntime/serverLifeCycleRuntimes/{serverName}/suspend",
+      "operationId": "suspendServer",
+      "summary": "Oracle WebLogic Server APIs Suspend a managed server",
+      "tags": [
+        "Lifecycle"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/domainRuntime/serverLifeCycleRuntimes/{serverName}/resume",
+      "operationId": "resumeServer",
+      "summary": "Oracle WebLogic Server APIs Resume a suspended managed server",
+      "tags": [
+        "Lifecycle"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/domainRuntime/serverLifeCycleRuntimes/{serverName}/restartSSL",
+      "operationId": "restartSSL",
+      "summary": "Oracle WebLogic Server APIs Restart SSL on a managed server",
+      "tags": [
+        "Lifecycle"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainRuntime/serverRuntimes",
+      "operationId": "getDomainServerRuntimes",
+      "summary": "Oracle WebLogic Server APIs List all server runtimes in the domain",
+      "tags": [
+        "Domain Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainRuntime/serverRuntimes/{serverName}",
+      "operationId": "getDomainServerRuntime",
+      "summary": "Oracle WebLogic Server APIs Get a server runtime from the domain",
+      "tags": [
+        "Domain Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/domainRuntime/deploymentManager/deploymentProgressObjects",
+      "operationId": "getDeploymentProgressObjects",
+      "summary": "Oracle WebLogic Server APIs List deployment progress objects",
+      "tags": [
+        "Domain Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverConfig",
+      "operationId": "getServerConfigRoot",
+      "summary": "Oracle WebLogic Server APIs Get server configuration tree root",
+      "tags": [
+        "Server Configuration"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime",
+      "operationId": "getServerRuntimeRoot",
+      "summary": "Oracle WebLogic Server APIs Get server runtime tree root",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime/JVMRuntime",
+      "operationId": "getJVMRuntime",
+      "summary": "Oracle WebLogic Server APIs Get JVM runtime information",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime/threadPoolRuntime",
+      "operationId": "getThreadPoolRuntime",
+      "summary": "Oracle WebLogic Server APIs Get thread pool runtime information",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime/JDBCServiceRuntime",
+      "operationId": "getJDBCServiceRuntime",
+      "summary": "Oracle WebLogic Server APIs Get JDBC service runtime information",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans",
+      "operationId": "getJDBCDataSourceRuntimes",
+      "summary": "Oracle WebLogic Server APIs List all JDBC data source runtimes",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans/{dataSourceName}",
+      "operationId": "getJDBCDataSourceRuntime",
+      "summary": "Oracle WebLogic Server APIs Get a JDBC data source runtime",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime/JMSRuntime",
+      "operationId": "getJMSRuntime",
+      "summary": "Oracle WebLogic Server APIs Get JMS runtime information",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime/JMSRuntime/JMSServers",
+      "operationId": "getJMSServerRuntimes",
+      "summary": "Oracle WebLogic Server APIs List all JMS server runtimes",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime/applicationRuntimes",
+      "operationId": "getApplicationRuntimes",
+      "summary": "Oracle WebLogic Server APIs List all application runtimes",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/serverRuntime/applicationRuntimes/{appName}",
+      "operationId": "getApplicationRuntime",
+      "summary": "Oracle WebLogic Server APIs Get an application runtime",
+      "tags": [
+        "Server Runtime"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/lifecycle/latest/servers/{serverName}/shutdown",
+      "operationId": "lifecycleShutdownServer",
+      "summary": "Oracle WebLogic Server APIs Shut down a server via lifecycle API",
+      "tags": [
+        "Lifecycle"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/lifecycle/latest/servers/{serverName}/start",
+      "operationId": "lifecycleStartServer",
+      "summary": "Oracle WebLogic Server APIs Start a server via lifecycle API",
+      "tags": [
+        "Lifecycle"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/lifecycle/latest/servers/{serverName}/suspend",
+      "operationId": "lifecycleSuspendServer",
+      "summary": "Oracle WebLogic Server APIs Suspend a server via lifecycle API",
+      "tags": [
+        "Lifecycle"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/lifecycle/latest/servers/{serverName}/resume",
+      "operationId": "lifecycleResumeServer",
+      "summary": "Oracle WebLogic Server APIs Resume a server via lifecycle API",
+      "tags": [
+        "Lifecycle"
+      ]
+    }
+  ]
+}

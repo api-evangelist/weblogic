@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JVMRuntime",
+  "title": "JVMRuntime",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "heapSizeCurrent": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current JVM heap size in bytes"
+    },
+    "heapSizeMax": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Maximum JVM heap size in bytes"
+    },
+    "heapFreeCurrent": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current free heap memory in bytes"
+    },
+    "heapFreePercent": {
+      "type": "number",
+      "format": "double",
+      "description": "Percentage of heap memory that is free"
+    },
+    "javaVersion": {
+      "type": "string",
+      "description": "Java version"
+    },
+    "javaVendor": {
+      "type": "string",
+      "description": "Java vendor name"
+    },
+    "osName": {
+      "type": "string",
+      "description": "Operating system name"
+    },
+    "osVersion": {
+      "type": "string",
+      "description": "Operating system version"
+    },
+    "uptime": {
+      "type": "integer",
+      "format": "int64",
+      "description": "JVM uptime in milliseconds"
+    }
+  }
+}

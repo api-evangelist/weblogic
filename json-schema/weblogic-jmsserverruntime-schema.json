@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JMSServerRuntime",
+  "title": "JMSServerRuntime",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "JMS server name"
+    },
+    "messagesCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current number of messages"
+    },
+    "messagesPendingCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Number of pending messages"
+    },
+    "messagesHighCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "High watermark of messages"
+    },
+    "messagesReceivedCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Total messages received"
+    },
+    "bytesCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current total bytes of all messages"
+    },
+    "bytesPendingCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Bytes of pending messages"
+    },
+    "consumersCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current number of consumers"
+    },
+    "consumersHighCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "High watermark of consumers"
+    },
+    "destinationsCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current number of destinations"
+    },
+    "sessionPoolsCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current number of session pools"
+    },
+    "healthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string"
+        },
+        "subsystemName": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

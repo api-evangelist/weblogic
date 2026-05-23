@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServerRuntime",
+  "title": "ServerRuntime",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Server name"
+    },
+    "state": {
+      "type": "string",
+      "description": "Current server state"
+    },
+    "listenAddress": {
+      "type": "string",
+      "description": "Current listen address"
+    },
+    "listenPort": {
+      "type": "integer",
+      "description": "Current listen port"
+    },
+    "SSLListenPort": {
+      "type": "integer",
+      "description": "Current SSL listen port"
+    },
+    "activationTime": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Server activation time in milliseconds since epoch"
+    },
+    "currentMachine": {
+      "type": "string",
+      "description": "Machine the server is running on"
+    },
+    "weblogicVersion": {
+      "type": "string",
+      "description": "WebLogic Server version string"
+    },
+    "openSocketsCurrentCount": {
+      "type": "integer",
+      "description": "Current number of open sockets"
+    },
+    "healthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "HEALTH_OK",
+            "HEALTH_WARN",
+            "HEALTH_CRITICAL",
+            "HEALTH_FAILED",
+            "HEALTH_OVERLOADED"
+          ]
+        },
+        "subsystemName": {
+          "type": "string"
+        },
+        "symptoms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "restartRequired": {
+      "type": "boolean",
+      "description": "Whether a server restart is required"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      }
+    }
+  }
+}

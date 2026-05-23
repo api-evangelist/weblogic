@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SecurityConfiguration",
+  "title": "SecurityConfiguration",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "realms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "authenticationProviders": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "crossDomainSecurityEnabled": {
+      "type": "boolean"
+    },
+    "webAppFilesCaseInsensitive": {
+      "type": "string",
+      "enum": [
+        "os",
+        "true",
+        "false"
+      ]
+    }
+  }
+}

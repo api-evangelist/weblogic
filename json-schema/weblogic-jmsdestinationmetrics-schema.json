@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JMSDestinationMetrics",
+  "title": "JMSDestinationMetrics",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Destination name"
+    },
+    "type": {
+      "type": "string",
+      "description": "Destination type",
+      "enum": [
+        "Queue",
+        "Topic"
+      ]
+    },
+    "messagesCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current messages in the destination"
+    },
+    "messagesPendingCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Pending messages"
+    },
+    "messagesHighCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "High watermark of messages"
+    },
+    "messagesReceivedCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Total received messages"
+    },
+    "consumersCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current consumers"
+    },
+    "consumersHighCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "High watermark of consumers"
+    },
+    "consumersTotal": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Total consumers created"
+    },
+    "bytesCurrentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Current total bytes"
+    },
+    "bytesPendingCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Pending bytes"
+    }
+  }
+}

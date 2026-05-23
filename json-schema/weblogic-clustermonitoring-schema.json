@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ClusterMonitoring",
+  "title": "ClusterMonitoring",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Cluster name"
+    },
+    "servers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "health": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Cluster member servers and their states"
+    },
+    "aliveServerCount": {
+      "type": "integer",
+      "description": "Number of alive servers in the cluster"
+    },
+    "resendRequestsCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Number of resent requests"
+    },
+    "fragmentsReceivedCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Number of fragments received"
+    },
+    "fragmentsSentCount": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Number of fragments sent"
+    }
+  }
+}

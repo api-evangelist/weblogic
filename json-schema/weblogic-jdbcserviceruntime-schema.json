@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JDBCServiceRuntime",
+  "title": "JDBCServiceRuntime",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "JDBCDataSourceRuntimeMBeans": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/JDBCDataSourceRuntime"
+      }
+    }
+  }
+}
