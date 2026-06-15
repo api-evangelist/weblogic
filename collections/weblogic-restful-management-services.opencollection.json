@@ -1,0 +1,936 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server RESTful Management Services API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Edit",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get edit configuration tree root",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit"
+          },
+          "docs": "Returns the root resource of the edit configuration tree. This provides links to all configurable resources in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Start an edit session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/changeManager/startEdit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts a new configuration edit session. Only one edit session can be active per user. The edit session locks the domain configuration for exclusive modification by the current user."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Activate pending changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/changeManager/activate"
+          },
+          "docs": "Activates all pending configuration changes made during the current edit session. This distributes changes to all affected servers in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Cancel the current edit session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/changeManager/cancelEdit"
+          },
+          "docs": "Cancels the current edit session and discards all pending configuration changes."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Undo unactivated changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/changeManager/undoUnactivatedChanges"
+          },
+          "docs": "Reverts all unactivated changes within the current edit session without ending the session."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all server configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers"
+          },
+          "docs": "Returns all server configurations in the domain for editing."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new server configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new managed server configuration in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a server configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific server for editing."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Update a server configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the configuration of a specific server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Delete a server configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Deletes a managed server configuration from the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all cluster configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters"
+          },
+          "docs": "Returns all cluster configurations in the domain for editing."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new cluster configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new cluster configuration in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a cluster configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters/:clusterName",
+            "params": [
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic cluster"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific cluster for editing."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Update a cluster configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters/:clusterName",
+            "params": [
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic cluster"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the configuration of a specific cluster."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Delete a cluster configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters/:clusterName",
+            "params": [
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic cluster"
+              }
+            ]
+          },
+          "docs": "Deletes a cluster configuration from the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JDBC system resource configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JDBCSystemResources"
+          },
+          "docs": "Returns all JDBC system resource (data source) configurations in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new JDBC system resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JDBCSystemResources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new JDBC system resource (data source) configuration."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a JDBC system resource configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JDBCSystemResources/:dataSourceName",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific JDBC system resource."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Delete a JDBC system resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JDBCSystemResources/:dataSourceName",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Deletes a JDBC system resource configuration from the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JMS system resource configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JMSSystemResources"
+          },
+          "docs": "Returns all JMS system resource configurations in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new JMS system resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JMSSystemResources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new JMS system resource configuration."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all application deployment configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments"
+          },
+          "docs": "Returns all application deployment configurations in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new application deployment configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new application deployment configuration."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get an application deployment configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific application deployment."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Delete an application deployment configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Deletes an application deployment configuration."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Domain Configuration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get domain configuration tree root",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainConfig"
+          },
+          "docs": "Returns the root resource of the read-only domain configuration tree, providing links to all configuration resources in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all server configurations (read-only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainConfig/servers"
+          },
+          "docs": "Returns all server configurations in the domain (read-only view)."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a server configuration (read-only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainConfig/servers/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific server (read-only view)."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all cluster configurations (read-only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainConfig/clusters"
+          },
+          "docs": "Returns all cluster configurations in the domain (read-only view)."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get domain security configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainConfig/securityConfiguration"
+          },
+          "docs": "Returns the security configuration of the domain including realms."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Domain Runtime",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get domain runtime tree root",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime"
+          },
+          "docs": "Returns the root resource of the domain runtime MBean tree, providing links to runtime monitoring data and lifecycle operations across all servers in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all server lifecycle runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes"
+          },
+          "docs": "Returns lifecycle runtime information for all servers in the domain, including current state and available lifecycle operations."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a server lifecycle runtime",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns lifecycle runtime information for a specific server including its current state."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all server runtimes in the domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverRuntimes"
+          },
+          "docs": "Returns runtime information for all running servers in the domain, accessed from the administration server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a server runtime from the domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverRuntimes/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns runtime information for a specific server in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List deployment progress objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/deploymentManager/deploymentProgressObjects"
+          },
+          "docs": "Returns information about in-progress and completed deployment operations across the domain."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Lifecycle",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Start a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/start",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Starts the specified managed server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Shut down a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/shutdown",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Gracefully shuts down the specified managed server. In-flight work is completed before shutdown."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Force shut down a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/forceShutdown",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Forces an immediate shutdown of the specified managed server without waiting for in-flight work to complete."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Suspend a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/suspend",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Suspends the specified managed server, transitioning it to ADMIN state where it only accepts administrative requests."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Resume a suspended managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/resume",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Resumes the specified managed server from ADMIN state back to RUNNING state, re-enabling it to accept client requests."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Restart SSL on a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/restartSSL",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Restarts the SSL listen sockets on the specified managed server, reloading SSL certificates and keys."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Shut down a server via lifecycle API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/lifecycle/latest/servers/:serverName/shutdown",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Shuts down the specified server using the lifecycle management resource set."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Start a server via lifecycle API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/lifecycle/latest/servers/:serverName/start",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Starts the specified server using the lifecycle management resource set."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Suspend a server via lifecycle API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/lifecycle/latest/servers/:serverName/suspend",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Suspends the specified server using the lifecycle management resource set."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Resume a server via lifecycle API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/lifecycle/latest/servers/:serverName/resume",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Resumes the specified server using the lifecycle management resource set."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Server Configuration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server configuration tree root",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverConfig"
+          },
+          "docs": "Returns the root resource of the read-only server configuration tree for the server handling the request."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Server Runtime",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server runtime tree root",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime"
+          },
+          "docs": "Returns the root resource of the server runtime MBean tree for the server handling the request."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get JVM runtime information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JVMRuntime"
+          },
+          "docs": "Returns JVM runtime information including heap usage, uptime, and Java version for the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get thread pool runtime information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/threadPoolRuntime"
+          },
+          "docs": "Returns thread pool runtime information including active threads, queue length, and throughput metrics for the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get JDBC service runtime information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JDBCServiceRuntime"
+          },
+          "docs": "Returns JDBC service runtime information including data source runtimes and connection pool metrics."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JDBC data source runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans"
+          },
+          "docs": "Returns runtime information for all JDBC data sources on the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a JDBC data source runtime",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans/:dataSourceName",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Returns runtime information for a specific JDBC data source."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get JMS runtime information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JMSRuntime"
+          },
+          "docs": "Returns JMS runtime information including JMS server runtimes and connection statistics for the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JMS server runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JMSRuntime/JMSServers"
+          },
+          "docs": "Returns runtime information for all JMS servers on the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all application runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/applicationRuntimes"
+          },
+          "docs": "Returns runtime information for all deployed applications on the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get an application runtime",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/applicationRuntimes/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Returns runtime information for a specific deployed application."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

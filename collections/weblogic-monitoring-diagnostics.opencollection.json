@@ -1,0 +1,420 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Monitoring and Diagnostics API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Servers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all monitored servers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/servers"
+          },
+          "docs": "Returns monitoring information for all servers in the domain including their current state, health, and basic runtime metrics."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server monitoring information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/servers/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns detailed monitoring information for a specific server including state, health, JVM metrics, and subsystem runtimes."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server JVM metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/servers/:serverName/jvm",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns JVM runtime metrics for the specified server including heap usage, garbage collection statistics, and thread information."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server thread pool metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/servers/:serverName/threadPool",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns thread pool monitoring data for the specified server including thread counts, queue lengths, and throughput."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List work managers on a server",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/servers/:serverName/workManagers",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns monitoring information for all work managers on the specified server."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Health",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server health status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/servers/:serverName/health",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns the overall health state of the specified server along with health status of individual subsystems."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Clusters",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all monitored clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/clusters"
+          },
+          "docs": "Returns monitoring information for all clusters in the domain including member servers and cluster health."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get cluster monitoring information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/clusters/:clusterName",
+            "params": [
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic cluster"
+              }
+            ]
+          },
+          "docs": "Returns detailed monitoring information for a specific cluster including member server states and cluster health."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Data Sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all data source metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/dataSources"
+          },
+          "docs": "Returns monitoring metrics for all JDBC data sources across all servers in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get data source metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/dataSources/:dataSourceName",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Returns detailed metrics for a specific JDBC data source."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Test a data source connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/wls/latest/dataSources/:dataSourceName/test",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Tests the connection pool for the specified data source by reserving and releasing a connection."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "JMS",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JMS server metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/JMSServers"
+          },
+          "docs": "Returns monitoring metrics for all JMS servers in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get JMS server metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/JMSServers/:jmsServerName",
+            "params": [
+              {
+                "name": "jmsServerName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JMS server"
+              }
+            ]
+          },
+          "docs": "Returns detailed metrics for a specific JMS server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List JMS destinations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/JMSServers/:jmsServerName/destinations",
+            "params": [
+              {
+                "name": "jmsServerName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JMS server"
+              }
+            ]
+          },
+          "docs": "Returns monitoring metrics for all destinations on a JMS server."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all application deployment metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/deployments"
+          },
+          "docs": "Returns monitoring information for all deployed applications across the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get application deployment metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/deployments/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Returns detailed monitoring information for a specific deployed application."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List servlet metrics for an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/deployments/:appName/servlets",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Returns servlet-level monitoring metrics for a deployed web application."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Diagnostics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List WLDF system resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/diagnostics/WLDFSystemResources"
+          },
+          "docs": "Returns a list of WebLogic Diagnostic Framework (WLDF) system resources configured in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a WLDF system resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/diagnostics/WLDFSystemResources/:resourceName",
+            "params": [
+              {
+                "name": "resourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WLDF system resource"
+              }
+            ]
+          },
+          "docs": "Returns details of a specific WLDF system resource."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List diagnostic data access runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/wls/latest/diagnostics/dataAccessRuntimes"
+          },
+          "docs": "Returns information about diagnostic data access runtimes that provide access to collected diagnostic data."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Query diagnostic data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/wls/latest/diagnostics/dataAccessRuntimes/:runtimeName/query",
+            "params": [
+              {
+                "name": "runtimeName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the data access runtime"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a query against diagnostic data collected by the WebLogic Diagnostic Framework. Supports querying harvested metrics, server log entries, and other diagnostic data sources."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

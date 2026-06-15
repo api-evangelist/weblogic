@@ -1,61 +1,142 @@
-# Oracle WebLogic Server APIs
+# Oracle WebLogic Server APIs (weblogic)
 
 Collection of APIs and resources for Oracle WebLogic Server administration and management. WebLogic Server is Oracle's enterprise-grade Java EE application server providing high availability, scalability, and comprehensive management capabilities through RESTful management APIs, monitoring and diagnostics, and deployment services.
 
-**Type:** Company
-**Website:** [oracle.com/middleware/technologies/weblogic.html](https://www.oracle.com/middleware/technologies/weblogic.html)
-**Documentation:** [docs.oracle.com/middleware/fusion-middleware/weblogic-server](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/)
+**APIs.json:** [https://www.oracle.com/middleware/technologies/weblogic.html](https://www.oracle.com/middleware/technologies/weblogic.html)
+
+## Tags
+
+- Application Server
+- Enterprise
+- Java EE
+- Middleware
+- Oracle
+- WebLogic
+
+## Timestamps
+
+- **Created:** 2024
+- **Modified:** 2026-05-19
 
 ## APIs
 
-| API | Description |
-|-----|-------------|
-| [RESTful Management Services](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/) | Domain configuration, server lifecycle, cluster and data source management |
-| [Monitoring and Diagnostics](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/) | Runtime metrics, server health, JVM stats, WLDF diagnostics |
-| [Deployment API](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/) | Deploy, redeploy, undeploy, start, and stop Java EE applications |
-| [WLST Scripting Tool](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlstc/) | Python-based CLI for automating domain administration |
-| [JMX API](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/jmxcu/) | Java Management Extensions access to WebLogic MBeans |
+### WebLogic RESTful Management Services API
 
-## Artifacts
+RESTful API for monitoring and managing WebLogic Server domains, servers, applications, and resources. Provides access to configuration editing, server lifecycle management, cluster administration, data source management, and JMS resource configuration.
 
-### OpenAPI Specifications
-- [weblogic-restful-management-services-openapi.yml](openapi/weblogic-restful-management-services-openapi.yml) — 57 management operations for domain configuration and server lifecycle
-- [weblogic-monitoring-diagnostics-openapi.yml](openapi/weblogic-monitoring-diagnostics-openapi.yml) — 21 monitoring operations for server health, metrics, and diagnostics
-- [weblogic-deployment-openapi.yml](openapi/weblogic-deployment-openapi.yml) — 17 deployment operations for application lifecycle management
+#### Tags
 
-### Naftiko Capabilities
-**Workflow Capabilities:**
-- [domain-administration.yaml](capabilities/domain-administration.yaml) — Domain admin (server management + monitoring): 17 tools
-- [application-deployment.yaml](capabilities/application-deployment.yaml) — Full deployment lifecycle (deployment + monitoring): 13 tools
+- Administration
+- Clusters
+- Configuration
+- Data Sources
+- JMS
+- Management
+- Monitoring
+- REST
+- Server Lifecycle
 
-**Shared Per-API Definitions:**
-- [capabilities/shared/weblogic-management.yaml](capabilities/shared/weblogic-management.yaml) — Management API definition
-- [capabilities/shared/weblogic-monitoring.yaml](capabilities/shared/weblogic-monitoring.yaml) — Monitoring API definition
-- [capabilities/shared/weblogic-deployment.yaml](capabilities/shared/weblogic-deployment.yaml) — Deployment API definition
+#### Properties
 
-### Spectral Rules
-- [weblogic-rules.yml](rules/weblogic-rules.yml) — Linting rules enforcing WebLogic API conventions
+- [Documentation](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/)
+- [OpenAPI](openapi/weblogic-restful-management-services-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/weblogic-restful-management-services.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/weblogic-restful-management-services.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [JSON Schema](json-schema/weblogic-server-configuration.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/weblogic-domain-configuration.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/weblogic-cluster-configuration.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/weblogic-datasource-configuration.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/weblogic-server-runtime.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Structure](json-structure/weblogic-server-configuration-structure.json)
+- [JSON-LD](json-ld/weblogic-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
 
-### JSON Schemas
-- [weblogic-server-configuration.json](json-schema/weblogic-server-configuration.json)
-- [weblogic-domain-configuration.json](json-schema/weblogic-domain-configuration.json)
-- [weblogic-cluster-configuration.json](json-schema/weblogic-cluster-configuration.json)
-- [weblogic-datasource-configuration.json](json-schema/weblogic-datasource-configuration.json)
-- [weblogic-server-runtime.json](json-schema/weblogic-server-runtime.json)
-- [weblogic-application-deployment.json](json-schema/weblogic-application-deployment.json)
+### WebLogic Monitoring and Diagnostics API
 
-### JSON Structures
-- [weblogic-server-configuration-structure.json](json-structure/weblogic-server-configuration-structure.json) — Server configuration field documentation
+API for accessing runtime monitoring data, metrics, and diagnostics information. Provides server health, JVM metrics, thread pool statistics, JDBC data source metrics, JMS statistics, application deployment metrics, and WLDF diagnostics.
 
-### JSON-LD Contexts
-- [weblogic-context.jsonld](json-ld/weblogic-context.jsonld) — Linked data context for WebLogic resources
+#### Tags
 
-### Examples
-- [weblogic-start-server-example.json](examples/weblogic-start-server-example.json) — Start managed server request/response
-- [weblogic-deploy-application-example.json](examples/weblogic-deploy-application-example.json) — Deploy application request/response
+- Diagnostics
+- Health
+- JMX
+- Metrics
+- Monitoring
+- Performance
+- WLDF
 
-### Vocabulary
-- [weblogic-vocabulary.yml](vocabulary/weblogic-vocabulary.yml) — Oracle WebLogic terminology and concepts
+#### Properties
+
+- [Documentation](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/)
+- [OpenAPI](openapi/weblogic-monitoring-diagnostics-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/weblogic-monitoring-diagnostics.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/weblogic-monitoring-diagnostics.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [JSON Schema](json-schema/weblogic-server-runtime.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON-LD](json-ld/weblogic-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+
+### WebLogic Deployment API
+
+API for deploying, undeploying, redeploying, and managing applications and shared libraries. Supports the full deployment lifecycle including prepare, activate, start, stop, redeploy, and undeploy operations.
+
+#### Tags
+
+- Applications
+- Deployment
+- DevOps
+- Libraries
+- Resources
+
+#### Properties
+
+- [Documentation](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/)
+- [OpenAPI](openapi/weblogic-deployment-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/weblogic-deployment.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/weblogic-deployment.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [JSON Schema](json-schema/weblogic-application-deployment.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON-LD](json-ld/weblogic-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+
+### WebLogic WLST (WebLogic Scripting Tool) API
+
+Python-based scripting interface for automating WebLogic Server administration tasks. Supports online (connected) and offline modes for configuring, deploying, and managing WebLogic domains programmatically.
+
+#### Tags
+
+- Automation
+- CLI
+- Python
+- Scripting
+
+#### Properties
+
+- [Documentation](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlstc/)
+- [Reference](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlstg/)
+- [Postman Collection](collections/weblogic-deployment.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/weblogic-deployment.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Postman Collection](collections/weblogic-monitoring-diagnostics.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/weblogic-monitoring-diagnostics.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Postman Collection](collections/weblogic-restful-management-services.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/weblogic-restful-management-services.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+
+### WebLogic JMX API
+
+Java Management Extensions API for programmatic access to WebLogic Server MBeans. Provides the same management capabilities as the REST API via JMX connections, suitable for Java-based management clients and monitoring tools.
+
+#### Tags
+
+- Java
+- JMX
+- Management
+- MBeans
+
+#### Properties
+
+- [Documentation](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/jmxcu/)
+- [API Reference](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlmbr/)
+- [Postman Collection](collections/weblogic-deployment.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/weblogic-deployment.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Postman Collection](collections/weblogic-monitoring-diagnostics.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/weblogic-monitoring-diagnostics.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Postman Collection](collections/weblogic-restful-management-services.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/weblogic-restful-management-services.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ## Common Properties
 
@@ -65,12 +146,18 @@ Collection of APIs and resources for Oracle WebLogic Server administration and m
 - [Support](https://support.oracle.com)
 - [Community](https://community.oracle.com/tech/developers/categories/weblogic-server)
 - [Blog](https://blogs.oracle.com/weblogicserver/)
+- [Website](https://www.oracle.com/middleware/technologies/weblogic.html)
+- [Terms of Service](https://www.oracle.com/legal/terms.html)
+- [Privacy Policy](https://www.oracle.com/legal/privacy/)
 - [GitHub Organization](https://github.com/oracle)
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/weblogic)
 - [YouTube](https://www.youtube.com/@OracleDevelopers)
-- [Status](https://ocistatus.oraclecloud.com/)
+- [Status Page](https://ocistatus.oraclecloud.com/)
+- [Vocabulary](vocabulary/weblogic-vocabulary.yml)
+- [Spectral Rules](rules/weblogic-rules.yml)
 
 ## Maintainers
 
 **FN:** Kin Lane
 **Email:** kin@apievangelist.com
+**URL:** https://apievangelist.com
