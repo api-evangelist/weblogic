@@ -125,6 +125,10 @@ apis:
       - type: APIReference
         url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlmbr/
 common:
+  - type: DomainSecurity
+    url: security/weblogic-domain-security.yml
+  - type: Authentication
+    url: authentication/weblogic-authentication.yml
   - type: Portal
     url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/
   - type: GettingStarted

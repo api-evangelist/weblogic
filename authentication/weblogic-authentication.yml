@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/weblogic-deployment-openapi.yml, openapi/weblogic-monitoring-diagnostics-openapi.yml,
+  openapi/weblogic-restful-management-services-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: WebLogic Server administrator credentials
+  sources:
+  - openapi/weblogic-deployment-openapi.yml
+  - openapi/weblogic-monitoring-diagnostics-openapi.yml
+  - openapi/weblogic-restful-management-services-openapi.yml
