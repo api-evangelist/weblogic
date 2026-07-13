@@ -2,16 +2,10 @@
   "repo": "weblogic",
   "feeds": [
     {
-      "source": "https://blogs.oracle.com/weblogicserver/",
-      "saved": 0,
-      "error": "HTTP 403 Forbidden on listing, non-slash, and /rss"
-    },
-    {
       "source": "https://community.oracle.com/tech/developers/categories/weblogic-server",
-      "saved": 0,
-      "error": "HTTPError (not fetched this run)"
+      "error": "HTTPError"
     }
   ],
-  "fetched": "2026-06-27T13:21:42Z",
+  "fetched": "2026-07-11T11:50:51Z",
   "post_count": 0
 }
