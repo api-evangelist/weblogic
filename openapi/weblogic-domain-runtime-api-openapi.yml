@@ -1,0 +1,336 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Domain Runtime API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Domain Runtime
+  description: Access to domain-level runtime MBeans including server lifecycle operations, deployment operations, and domain-wide monitoring data.
+paths:
+  /domainRuntime:
+    get:
+      operationId: getDomainRuntimeRoot
+      summary: Oracle WebLogic Server APIs Get domain runtime tree root
+      description: Returns the root resource of the domain runtime MBean tree, providing links to runtime monitoring data and lifecycle operations across all servers in the domain.
+      tags:
+      - Domain Runtime
+      responses:
+        '200':
+          description: Domain runtime root resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/serverLifeCycleRuntimes:
+    get:
+      operationId: getServerLifecycleRuntimes
+      summary: Oracle WebLogic Server APIs List all server lifecycle runtimes
+      description: Returns lifecycle runtime information for all servers in the domain, including current state and available lifecycle operations.
+      tags:
+      - Domain Runtime
+      responses:
+        '200':
+          description: List of server lifecycle runtimes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServerLifecycleRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}:
+    get:
+      operationId: getServerLifecycleRuntime
+      summary: Oracle WebLogic Server APIs Get a server lifecycle runtime
+      description: Returns lifecycle runtime information for a specific server including its current state.
+      tags:
+      - Domain Runtime
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server lifecycle runtime
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerLifecycleRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverRuntimes:
+    get:
+      operationId: getDomainServerRuntimes
+      summary: Oracle WebLogic Server APIs List all server runtimes in the domain
+      description: Returns runtime information for all running servers in the domain, accessed from the administration server.
+      tags:
+      - Domain Runtime
+      responses:
+        '200':
+          description: List of server runtimes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServerRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/serverRuntimes/{serverName}:
+    get:
+      operationId: getDomainServerRuntime
+      summary: Oracle WebLogic Server APIs Get a server runtime from the domain
+      description: Returns runtime information for a specific server in the domain.
+      tags:
+      - Domain Runtime
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server runtime information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/deploymentManager/deploymentProgressObjects:
+    get:
+      operationId: getDeploymentProgressObjects
+      summary: Oracle WebLogic Server APIs List deployment progress objects
+      description: Returns information about in-progress and completed deployment operations across the domain.
+      tags:
+      - Domain Runtime
+      responses:
+        '200':
+          description: List of deployment progress objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeploymentProgress'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    DomainRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Domain name
+        activationTime:
+          type: integer
+          format: int64
+          description: Domain activation time in milliseconds
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    DeploymentProgress:
+      type: object
+      properties:
+        name:
+          type: string
+        state:
+          type: string
+          description: Deployment state
+          enum:
+          - STATE_NEW
+          - STATE_PREPARING
+          - STATE_PREPARED
+          - STATE_ACTIVATING
+          - STATE_ACTIVE
+          - STATE_DEACTIVATING
+          - STATE_RETIRING
+          - STATE_RETIRED
+          - STATE_FAILED
+        progress:
+          type: string
+          description: Progress description
+        completed:
+          type: boolean
+          description: Whether the deployment operation is complete
+        failed:
+          type: boolean
+          description: Whether the deployment operation failed
+        targets:
+          type: array
+          items:
+            type: string
+    ServerRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        state:
+          type: string
+          description: Current server state
+        listenAddress:
+          type: string
+          description: Current listen address
+        listenPort:
+          type: integer
+          description: Current listen port
+        SSLListenPort:
+          type: integer
+          description: Current SSL listen port
+        activationTime:
+          type: integer
+          format: int64
+          description: Server activation time in milliseconds since epoch
+        currentMachine:
+          type: string
+          description: Machine the server is running on
+        weblogicVersion:
+          type: string
+          description: WebLogic Server version string
+        openSocketsCurrentCount:
+          type: integer
+          description: Current number of open sockets
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+              enum:
+              - HEALTH_OK
+              - HEALTH_WARN
+              - HEALTH_CRITICAL
+              - HEALTH_FAILED
+              - HEALTH_OVERLOADED
+            subsystemName:
+              type: string
+            symptoms:
+              type: array
+              items:
+                type: string
+        restartRequired:
+          type: boolean
+          description: Whether a server restart is required
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Error type URI
+        title:
+          type: string
+          description: Short error title
+        status:
+          type: integer
+          description: HTTP status code
+        detail:
+          type: string
+          description: Detailed error message
+        o:errorPath:
+          type: string
+          description: Path to the field that caused the error
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Link relation type
+        href:
+          type: string
+          format: uri
+          description: Link URI
+        title:
+          type: string
+          description: Link title
+    ServerLifecycleRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        state:
+          type: string
+          description: Current server lifecycle state
+          enum:
+          - SHUTDOWN
+          - STARTING
+          - STANDBY
+          - ADMIN
+          - RESUMING
+          - RUNNING
+          - SUSPENDING
+          - FORCE_SUSPENDING
+          - SHUTTING_DOWN
+          - FAILED
+          - UNKNOWN
+        nodeManagerRestartCount:
+          type: integer
+          description: Number of times node manager has restarted this server
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    serverName:
+      name: serverName
+      in: path
+      required: true
+      description: The name of the WebLogic Server instance
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

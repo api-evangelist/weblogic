@@ -1,0 +1,325 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Servers API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Servers
+  description: Server-level monitoring and health information
+paths:
+  /servers:
+    get:
+      operationId: getServers
+      summary: Oracle WebLogic Server APIs List all monitored servers
+      description: Returns monitoring information for all servers in the domain including their current state, health, and basic runtime metrics.
+      tags:
+      - Servers
+      responses:
+        '200':
+          description: List of monitored servers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServerMonitoring'
+                  links:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Link'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /servers/{serverName}:
+    get:
+      operationId: getServer
+      summary: Oracle WebLogic Server APIs Get server monitoring information
+      description: Returns detailed monitoring information for a specific server including state, health, JVM metrics, and subsystem runtimes.
+      tags:
+      - Servers
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server monitoring information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerMonitoring'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /servers/{serverName}/jvm:
+    get:
+      operationId: getServerJVM
+      summary: Oracle WebLogic Server APIs Get server JVM metrics
+      description: Returns JVM runtime metrics for the specified server including heap usage, garbage collection statistics, and thread information.
+      tags:
+      - Servers
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: JVM metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JVMMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /servers/{serverName}/threadPool:
+    get:
+      operationId: getServerThreadPool
+      summary: Oracle WebLogic Server APIs Get server thread pool metrics
+      description: Returns thread pool monitoring data for the specified server including thread counts, queue lengths, and throughput.
+      tags:
+      - Servers
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Thread pool metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreadPoolMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /servers/{serverName}/workManagers:
+    get:
+      operationId: getServerWorkManagers
+      summary: Oracle WebLogic Server APIs List work managers on a server
+      description: Returns monitoring information for all work managers on the specified server.
+      tags:
+      - Servers
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: List of work manager metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkManagerMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    WorkManagerMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Work manager name
+        pendingRequests:
+          type: integer
+          description: Number of pending requests
+        completedRequests:
+          type: integer
+          format: int64
+          description: Number of completed requests
+        stuckThreadCount:
+          type: integer
+          description: Number of stuck threads
+    ServerMonitoring:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        state:
+          type: string
+          description: Current server state
+          enum:
+          - RUNNING
+          - ADMIN
+          - STANDBY
+          - SHUTDOWN
+          - STARTING
+          - SUSPENDING
+          - FAILED
+          - UNKNOWN
+        health:
+          type: string
+          description: Overall health state
+          enum:
+          - HEALTH_OK
+          - HEALTH_WARN
+          - HEALTH_CRITICAL
+          - HEALTH_FAILED
+          - HEALTH_OVERLOADED
+        clusterName:
+          type: string
+          description: Cluster this server belongs to
+        currentMachine:
+          type: string
+          description: Machine the server is running on
+        listenAddress:
+          type: string
+          description: Listen address
+        listenPort:
+          type: integer
+          description: Listen port
+        sslListenPort:
+          type: integer
+          description: SSL listen port
+        activationTime:
+          type: integer
+          format: int64
+          description: Activation time in milliseconds since epoch
+        openSocketsCurrentCount:
+          type: integer
+          description: Current number of open sockets
+        weblogicVersion:
+          type: string
+          description: WebLogic Server version
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    ThreadPoolMetrics:
+      type: object
+      properties:
+        executeThreadTotalCount:
+          type: integer
+          description: Total execute threads
+        executeThreadIdleCount:
+          type: integer
+          description: Idle execute threads
+        hoggingThreadCount:
+          type: integer
+          description: Hogging threads
+        stuckThreadCount:
+          type: integer
+          description: Stuck threads
+        pendingUserRequestCount:
+          type: integer
+          description: Pending user requests
+        throughput:
+          type: number
+          format: double
+          description: Thread pool throughput
+        completedRequestCount:
+          type: integer
+          format: int64
+          description: Completed requests
+        queueLength:
+          type: integer
+          description: Current queue length
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+    JVMMetrics:
+      type: object
+      properties:
+        heapSizeCurrent:
+          type: integer
+          format: int64
+          description: Current heap size in bytes
+        heapSizeMax:
+          type: integer
+          format: int64
+          description: Maximum heap size in bytes
+        heapFreeCurrent:
+          type: integer
+          format: int64
+          description: Current free heap in bytes
+        heapFreePercent:
+          type: number
+          format: double
+          description: Percentage of heap that is free
+        javaVersion:
+          type: string
+          description: Java version
+        javaVendor:
+          type: string
+          description: Java vendor
+        osName:
+          type: string
+          description: Operating system name
+        osVersion:
+          type: string
+          description: Operating system version
+        uptime:
+          type: integer
+          format: int64
+          description: JVM uptime in milliseconds
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    serverName:
+      name: serverName
+      in: path
+      required: true
+      description: The name of the WebLogic Server instance
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

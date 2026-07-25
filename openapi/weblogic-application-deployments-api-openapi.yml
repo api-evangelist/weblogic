@@ -1,0 +1,321 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Application Deployments
+  description: Deploy, undeploy, redeploy, and manage application configurations using the edit tree
+paths:
+  /edit/appDeployments:
+    get:
+      operationId: listAppDeployments
+      summary: Oracle WebLogic Server APIs List all application deployments
+      description: Returns all application deployment configurations in the domain. Requires an active edit session for modification operations.
+      tags:
+      - Application Deployments
+      responses:
+        '200':
+          description: List of application deployments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AppDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createAppDeployment
+      summary: Oracle WebLogic Server APIs Create an application deployment
+      description: Creates a new application deployment configuration. Requires an active edit session. The application must be accessible from the administration server file system or uploaded first.
+      tags:
+      - Application Deployments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppDeploymentCreate'
+      responses:
+        '201':
+          description: Application deployment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppDeployment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/appDeployments/{appName}:
+    get:
+      operationId: getAppDeployment
+      summary: Oracle WebLogic Server APIs Get an application deployment
+      description: Returns the configuration of a specific application deployment.
+      tags:
+      - Application Deployments
+      parameters:
+      - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: updateAppDeployment
+      summary: Oracle WebLogic Server APIs Update an application deployment
+      description: Updates the configuration of a specific application deployment. Requires an active edit session.
+      tags:
+      - Application Deployments
+      parameters:
+      - $ref: '#/components/parameters/appName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppDeploymentUpdate'
+      responses:
+        '200':
+          description: Application deployment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppDeployment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteAppDeployment
+      summary: Oracle WebLogic Server APIs Remove an application deployment
+      description: Removes an application deployment configuration from the domain. Requires an active edit session. This undeploys the application from all targets upon activation.
+      tags:
+      - Application Deployments
+      parameters:
+      - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment removed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+    AppDeployment:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name
+        sourcePath:
+          type: string
+          description: Path to the application archive or exploded directory
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        moduleType:
+          type: string
+          description: Module type
+          enum:
+          - ear
+          - war
+          - jar
+          - rar
+        planPath:
+          type: string
+          description: Path to the deployment plan
+        stagingMode:
+          type: string
+          description: Application staging mode
+          enum:
+          - stage
+          - nostage
+          - external_stage
+        securityDDModel:
+          type: string
+          description: Security deployment descriptor model
+          enum:
+          - DDOnly
+          - CustomRoles
+          - CustomRolesAndPolicies
+          - Advanced
+        versionIdentifier:
+          type: string
+          description: Application version identifier
+        notes:
+          type: string
+          description: Optional notes about the deployment
+        deploymentOrder:
+          type: integer
+          description: Order in which this application is deployed relative to other deployments. Lower values deploy first.
+          default: 100
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    AppDeploymentCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name
+        sourcePath:
+          type: string
+          description: Path to the application archive or exploded directory
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        moduleType:
+          type: string
+          description: Module type
+          enum:
+          - ear
+          - war
+          - jar
+          - rar
+        planPath:
+          type: string
+          description: Path to the deployment plan
+        stagingMode:
+          type: string
+          description: Application staging mode
+          enum:
+          - stage
+          - nostage
+          - external_stage
+        securityDDModel:
+          type: string
+          enum:
+          - DDOnly
+          - CustomRoles
+          - CustomRolesAndPolicies
+          - Advanced
+        deploymentOrder:
+          type: integer
+          default: 100
+        notes:
+          type: string
+      required:
+      - name
+      - sourcePath
+      - targets
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    AppDeploymentUpdate:
+      type: object
+      properties:
+        targets:
+          type: array
+          items:
+            type: string
+          description: Updated target servers or clusters
+        planPath:
+          type: string
+          description: Updated deployment plan path
+        stagingMode:
+          type: string
+          enum:
+          - stage
+          - nostage
+          - external_stage
+        securityDDModel:
+          type: string
+          enum:
+          - DDOnly
+          - CustomRoles
+          - CustomRolesAndPolicies
+          - Advanced
+        deploymentOrder:
+          type: integer
+        notes:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    appName:
+      name: appName
+      in: path
+      required: true
+      description: The name of the application deployment
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

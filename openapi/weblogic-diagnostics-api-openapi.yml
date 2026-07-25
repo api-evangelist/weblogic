@@ -1,0 +1,259 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Diagnostics API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Diagnostics
+  description: WebLogic Diagnostic Framework (WLDF) resources
+paths:
+  /diagnostics/WLDFSystemResources:
+    get:
+      operationId: getWLDFResources
+      summary: Oracle WebLogic Server APIs List WLDF system resources
+      description: Returns a list of WebLogic Diagnostic Framework (WLDF) system resources configured in the domain.
+      tags:
+      - Diagnostics
+      responses:
+        '200':
+          description: List of WLDF system resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WLDFSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /diagnostics/WLDFSystemResources/{resourceName}:
+    get:
+      operationId: getWLDFResource
+      summary: Oracle WebLogic Server APIs Get a WLDF system resource
+      description: Returns details of a specific WLDF system resource.
+      tags:
+      - Diagnostics
+      parameters:
+      - $ref: '#/components/parameters/resourceName'
+      responses:
+        '200':
+          description: WLDF system resource details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WLDFSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /diagnostics/dataAccessRuntimes:
+    get:
+      operationId: getDataAccessRuntimes
+      summary: Oracle WebLogic Server APIs List diagnostic data access runtimes
+      description: Returns information about diagnostic data access runtimes that provide access to collected diagnostic data.
+      tags:
+      - Diagnostics
+      responses:
+        '200':
+          description: List of data access runtimes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DataAccessRuntime'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /diagnostics/dataAccessRuntimes/{runtimeName}/query:
+    post:
+      operationId: queryDiagnosticData
+      summary: Oracle WebLogic Server APIs Query diagnostic data
+      description: Executes a query against diagnostic data collected by the WebLogic Diagnostic Framework. Supports querying harvested metrics, server log entries, and other diagnostic data sources.
+      tags:
+      - Diagnostics
+      parameters:
+      - $ref: '#/components/parameters/runtimeName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: WLDF query expression to filter diagnostic data
+                beginTimestamp:
+                  type: integer
+                  format: int64
+                  description: Start timestamp for the query range (millis since epoch)
+                endTimestamp:
+                  type: integer
+                  format: int64
+                  description: End timestamp for the query range (millis since epoch)
+                maxRecords:
+                  type: integer
+                  description: Maximum number of records to return
+                  default: 100
+              required:
+              - query
+      responses:
+        '200':
+          description: Diagnostic data query results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiagnosticQueryResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    resourceName:
+      name: resourceName
+      in: path
+      required: true
+      description: The name of the WLDF system resource
+      schema:
+        type: string
+    runtimeName:
+      name: runtimeName
+      in: path
+      required: true
+      description: The name of the data access runtime
+      schema:
+        type: string
+  schemas:
+    DiagnosticQueryResult:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+          description: Column definitions for the result set
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: Result rows
+        totalRecords:
+          type: integer
+          description: Total number of matching records
+        returnedRecords:
+          type: integer
+          description: Number of records returned
+    DataAccessRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Data access runtime name
+        availableDataTypes:
+          type: array
+          items:
+            type: string
+          description: Types of diagnostic data available for querying
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    WLDFSystemResource:
+      type: object
+      properties:
+        name:
+          type: string
+          description: WLDF system resource name
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        harvestor:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              description: Whether the harvester is enabled
+            samplePeriod:
+              type: integer
+              description: Sample period in milliseconds
+        instrumentation:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              description: Whether instrumentation is enabled
+        watchNotification:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              description: Whether watch and notification is enabled
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

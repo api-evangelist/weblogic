@@ -1,0 +1,232 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments JMS API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: JMS
+  description: JMS subsystem monitoring
+paths:
+  /JMSServers:
+    get:
+      operationId: getJMSServers
+      summary: Oracle WebLogic Server APIs List all JMS server metrics
+      description: Returns monitoring metrics for all JMS servers in the domain.
+      tags:
+      - JMS
+      responses:
+        '200':
+          description: List of JMS server metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JMSServerMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /JMSServers/{jmsServerName}:
+    get:
+      operationId: getJMSServer
+      summary: Oracle WebLogic Server APIs Get JMS server metrics
+      description: Returns detailed metrics for a specific JMS server.
+      tags:
+      - JMS
+      parameters:
+      - $ref: '#/components/parameters/jmsServerName'
+      responses:
+        '200':
+          description: JMS server metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JMSServerMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /JMSServers/{jmsServerName}/destinations:
+    get:
+      operationId: getJMSDestinations
+      summary: Oracle WebLogic Server APIs List JMS destinations
+      description: Returns monitoring metrics for all destinations on a JMS server.
+      tags:
+      - JMS
+      parameters:
+      - $ref: '#/components/parameters/jmsServerName'
+      responses:
+        '200':
+          description: List of JMS destination metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JMSDestinationMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    jmsServerName:
+      name: jmsServerName
+      in: path
+      required: true
+      description: The name of the JMS server
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    JMSDestinationMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Destination name
+        type:
+          type: string
+          description: Destination type
+          enum:
+          - Queue
+          - Topic
+        messagesCurrentCount:
+          type: integer
+          format: int64
+          description: Current messages in the destination
+        messagesPendingCount:
+          type: integer
+          format: int64
+          description: Pending messages
+        messagesHighCount:
+          type: integer
+          format: int64
+          description: High watermark of messages
+        messagesReceivedCount:
+          type: integer
+          format: int64
+          description: Total received messages
+        consumersCurrentCount:
+          type: integer
+          format: int64
+          description: Current consumers
+        consumersHighCount:
+          type: integer
+          format: int64
+          description: High watermark of consumers
+        consumersTotal:
+          type: integer
+          format: int64
+          description: Total consumers created
+        bytesCurrentCount:
+          type: integer
+          format: int64
+          description: Current total bytes
+        bytesPendingCount:
+          type: integer
+          format: int64
+          description: Pending bytes
+    JMSServerMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: JMS server name
+        messagesCurrentCount:
+          type: integer
+          format: int64
+          description: Current messages
+        messagesPendingCount:
+          type: integer
+          format: int64
+          description: Pending messages
+        messagesHighCount:
+          type: integer
+          format: int64
+          description: High watermark of messages
+        messagesReceivedCount:
+          type: integer
+          format: int64
+          description: Total messages received
+        bytesCurrentCount:
+          type: integer
+          format: int64
+          description: Current bytes
+        bytesPendingCount:
+          type: integer
+          format: int64
+          description: Pending bytes
+        consumersCurrentCount:
+          type: integer
+          format: int64
+          description: Current consumers
+        consumersHighCount:
+          type: integer
+          format: int64
+          description: High watermark of consumers
+        destinationsCurrentCount:
+          type: integer
+          format: int64
+          description: Current destinations
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

@@ -1,0 +1,127 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Health API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Health
+  description: Server and subsystem health checks
+paths:
+  /servers/{serverName}/health:
+    get:
+      operationId: getServerHealth
+      summary: Oracle WebLogic Server APIs Get server health status
+      description: Returns the overall health state of the specified server along with health status of individual subsystems.
+      tags:
+      - Health
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server health information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerHealth'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    serverName:
+      name: serverName
+      in: path
+      required: true
+      description: The name of the WebLogic Server instance
+      schema:
+        type: string
+  schemas:
+    ServerHealth:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        overallHealth:
+          type: string
+          description: Overall health state
+          enum:
+          - HEALTH_OK
+          - HEALTH_WARN
+          - HEALTH_CRITICAL
+          - HEALTH_FAILED
+          - HEALTH_OVERLOADED
+        subsystemHealthStates:
+          type: array
+          description: Health states of individual subsystems
+          items:
+            type: object
+            properties:
+              subsystemName:
+                type: string
+                description: Name of the subsystem
+              state:
+                type: string
+                description: Health state
+                enum:
+                - HEALTH_OK
+                - HEALTH_WARN
+                - HEALTH_CRITICAL
+                - HEALTH_FAILED
+                - HEALTH_OVERLOADED
+              symptoms:
+                type: array
+                items:
+                  type: string
+                description: Health symptoms or issues
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

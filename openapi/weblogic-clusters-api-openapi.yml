@@ -1,0 +1,143 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Clusters API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Clusters
+  description: Cluster-level monitoring information
+paths:
+  /clusters:
+    get:
+      operationId: getClusters
+      summary: Oracle WebLogic Server APIs List all monitored clusters
+      description: Returns monitoring information for all clusters in the domain including member servers and cluster health.
+      tags:
+      - Clusters
+      responses:
+        '200':
+          description: List of monitored clusters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ClusterMonitoring'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /clusters/{clusterName}:
+    get:
+      operationId: getCluster
+      summary: Oracle WebLogic Server APIs Get cluster monitoring information
+      description: Returns detailed monitoring information for a specific cluster including member server states and cluster health.
+      tags:
+      - Clusters
+      parameters:
+      - $ref: '#/components/parameters/clusterName'
+      responses:
+        '200':
+          description: Cluster monitoring information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterMonitoring'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    ClusterMonitoring:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Cluster name
+        servers:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              state:
+                type: string
+              health:
+                type: string
+          description: Cluster member servers and their states
+        aliveServerCount:
+          type: integer
+          description: Number of alive servers in the cluster
+        resendRequestsCount:
+          type: integer
+          format: int64
+          description: Number of resent requests
+        fragmentsReceivedCount:
+          type: integer
+          format: int64
+          description: Number of fragments received
+        fragmentsSentCount:
+          type: integer
+          format: int64
+          description: Number of fragments sent
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    clusterName:
+      name: clusterName
+      in: path
+      required: true
+      description: The name of the WebLogic cluster
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

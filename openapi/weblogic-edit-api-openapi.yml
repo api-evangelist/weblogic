@@ -1,0 +1,907 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Edit API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Edit
+  description: Configuration editing operations. An edit session must be started before making changes to the domain configuration. Changes are staged and then activated.
+paths:
+  /edit:
+    get:
+      operationId: getEditRoot
+      summary: Oracle WebLogic Server APIs Get edit configuration tree root
+      description: Returns the root resource of the edit configuration tree. This provides links to all configurable resources in the domain.
+      tags:
+      - Edit
+      responses:
+        '200':
+          description: Edit tree root resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditRoot'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/changeManager/startEdit:
+    post:
+      operationId: startEdit
+      summary: Oracle WebLogic Server APIs Start an edit session
+      description: Starts a new configuration edit session. Only one edit session can be active per user. The edit session locks the domain configuration for exclusive modification by the current user.
+      tags:
+      - Edit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                waitTimeInMillis:
+                  type: integer
+                  description: Maximum time in milliseconds to wait for the edit lock
+                  default: -1
+                timeoutInMillis:
+                  type: integer
+                  description: Time in milliseconds before the edit session times out due to inactivity
+                  default: 900000
+                exclusive:
+                  type: boolean
+                  description: Whether to request exclusive editing access
+                  default: false
+      responses:
+        '200':
+          description: Edit session started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeManagerStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Another edit session is already active
+  /edit/changeManager/activate:
+    post:
+      operationId: activate
+      summary: Oracle WebLogic Server APIs Activate pending changes
+      description: Activates all pending configuration changes made during the current edit session. This distributes changes to all affected servers in the domain.
+      tags:
+      - Edit
+      responses:
+        '200':
+          description: Changes activated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivationStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: No pending changes to activate
+  /edit/changeManager/cancelEdit:
+    post:
+      operationId: cancelEdit
+      summary: Oracle WebLogic Server APIs Cancel the current edit session
+      description: Cancels the current edit session and discards all pending configuration changes.
+      tags:
+      - Edit
+      responses:
+        '200':
+          description: Edit session cancelled successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/changeManager/undoUnactivatedChanges:
+    post:
+      operationId: undoUnactivatedChanges
+      summary: Oracle WebLogic Server APIs Undo unactivated changes
+      description: Reverts all unactivated changes within the current edit session without ending the session.
+      tags:
+      - Edit
+      responses:
+        '200':
+          description: Changes reverted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/servers:
+    get:
+      operationId: getEditServers
+      summary: Oracle WebLogic Server APIs List all server configurations
+      description: Returns all server configurations in the domain for editing.
+      tags:
+      - Edit
+      responses:
+        '200':
+          description: List of server configurations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServerConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditServer
+      summary: Oracle WebLogic Server APIs Create a new server configuration
+      description: Creates a new managed server configuration in the domain.
+      tags:
+      - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerConfiguration'
+      responses:
+        '201':
+          description: Server created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerConfiguration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/servers/{serverName}:
+    get:
+      operationId: getEditServer
+      summary: Oracle WebLogic Server APIs Get a server configuration
+      description: Returns the configuration of a specific server for editing.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: updateEditServer
+      summary: Oracle WebLogic Server APIs Update a server configuration
+      description: Updates the configuration of a specific server.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerConfiguration'
+      responses:
+        '200':
+          description: Server updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerConfiguration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEditServer
+      summary: Oracle WebLogic Server APIs Delete a server configuration
+      description: Deletes a managed server configuration from the domain.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /edit/clusters:
+    get:
+      operationId: getEditClusters
+      summary: Oracle WebLogic Server APIs List all cluster configurations
+      description: Returns all cluster configurations in the domain for editing.
+      tags:
+      - Edit
+      responses:
+        '200':
+          description: List of cluster configurations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ClusterConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditCluster
+      summary: Oracle WebLogic Server APIs Create a new cluster configuration
+      description: Creates a new cluster configuration in the domain.
+      tags:
+      - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClusterConfiguration'
+      responses:
+        '201':
+          description: Cluster created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterConfiguration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/clusters/{clusterName}:
+    get:
+      operationId: getEditCluster
+      summary: Oracle WebLogic Server APIs Get a cluster configuration
+      description: Returns the configuration of a specific cluster for editing.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/clusterName'
+      responses:
+        '200':
+          description: Cluster configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterConfiguration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: updateEditCluster
+      summary: Oracle WebLogic Server APIs Update a cluster configuration
+      description: Updates the configuration of a specific cluster.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/clusterName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClusterConfiguration'
+      responses:
+        '200':
+          description: Cluster updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEditCluster
+      summary: Oracle WebLogic Server APIs Delete a cluster configuration
+      description: Deletes a cluster configuration from the domain.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/clusterName'
+      responses:
+        '200':
+          description: Cluster deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /edit/JDBCSystemResources:
+    get:
+      operationId: getEditDataSources
+      summary: Oracle WebLogic Server APIs List all JDBC system resource configurations
+      description: Returns all JDBC system resource (data source) configurations in the domain.
+      tags:
+      - Edit
+      responses:
+        '200':
+          description: List of JDBC system resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JDBCSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditDataSource
+      summary: Oracle WebLogic Server APIs Create a new JDBC system resource
+      description: Creates a new JDBC system resource (data source) configuration.
+      tags:
+      - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JDBCSystemResource'
+      responses:
+        '201':
+          description: JDBC system resource created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JDBCSystemResource'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/JDBCSystemResources/{dataSourceName}:
+    get:
+      operationId: getEditDataSource
+      summary: Oracle WebLogic Server APIs Get a JDBC system resource configuration
+      description: Returns the configuration of a specific JDBC system resource.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/dataSourceName'
+      responses:
+        '200':
+          description: JDBC system resource configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JDBCSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEditDataSource
+      summary: Oracle WebLogic Server APIs Delete a JDBC system resource
+      description: Deletes a JDBC system resource configuration from the domain.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/dataSourceName'
+      responses:
+        '200':
+          description: JDBC system resource deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /edit/JMSSystemResources:
+    get:
+      operationId: getEditJMSResources
+      summary: Oracle WebLogic Server APIs List all JMS system resource configurations
+      description: Returns all JMS system resource configurations in the domain.
+      tags:
+      - Edit
+      responses:
+        '200':
+          description: List of JMS system resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JMSSystemResource'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditJMSResource
+      summary: Oracle WebLogic Server APIs Create a new JMS system resource
+      description: Creates a new JMS system resource configuration.
+      tags:
+      - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JMSSystemResource'
+      responses:
+        '201':
+          description: JMS system resource created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/appDeployments:
+    get:
+      operationId: getEditAppDeployments
+      summary: Oracle WebLogic Server APIs List all application deployment configurations
+      description: Returns all application deployment configurations in the domain.
+      tags:
+      - Edit
+      responses:
+        '200':
+          description: List of application deployments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AppDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEditAppDeployment
+      summary: Oracle WebLogic Server APIs Create a new application deployment configuration
+      description: Creates a new application deployment configuration.
+      tags:
+      - Edit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppDeployment'
+      responses:
+        '201':
+          description: Application deployment created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/appDeployments/{appName}:
+    get:
+      operationId: getEditAppDeployment
+      summary: Oracle WebLogic Server APIs Get an application deployment configuration
+      description: Returns the configuration of a specific application deployment.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEditAppDeployment
+      summary: Oracle WebLogic Server APIs Delete an application deployment configuration
+      description: Deletes an application deployment configuration.
+      tags:
+      - Edit
+      parameters:
+      - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    JDBCSystemResource:
+      type: object
+      properties:
+        name:
+          type: string
+          description: JDBC system resource name
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        descriptorFileName:
+          type: string
+          description: JDBC descriptor file name
+        JDBCResource:
+          type: object
+          properties:
+            name:
+              type: string
+            JDBCDataSourceParams:
+              type: object
+              properties:
+                JNDINames:
+                  type: array
+                  items:
+                    type: string
+                  description: JNDI names for the data source
+                globalTransactionsProtocol:
+                  type: string
+                  enum:
+                  - TwoPhaseCommit
+                  - LoggingLastResource
+                  - EmulateTwoPhaseCommit
+                  - OnePhaseCommit
+                  - None
+            JDBCDriverParams:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: JDBC connection URL
+                driverName:
+                  type: string
+                  description: JDBC driver class name
+                properties:
+                  type: object
+                  properties:
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
+            JDBCConnectionPoolParams:
+              type: object
+              properties:
+                initialCapacity:
+                  type: integer
+                  description: Initial number of connections
+                maxCapacity:
+                  type: integer
+                  description: Maximum number of connections
+                minCapacity:
+                  type: integer
+                  description: Minimum number of connections
+                testTableName:
+                  type: string
+                  description: Table name used for connection testing
+                testConnectionsOnReserve:
+                  type: boolean
+                  description: Whether to test connections when reserved
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+      - name
+    JMSSystemResource:
+      type: object
+      properties:
+        name:
+          type: string
+          description: JMS system resource name
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        descriptorFileName:
+          type: string
+          description: JMS descriptor file name
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+      - name
+    ServerConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Server name
+        listenAddress:
+          type: string
+          description: Listen address for the server
+        listenPort:
+          type: integer
+          description: Listen port for the server
+          default: 7001
+        SSLListenPort:
+          type: integer
+          description: SSL listen port
+        cluster:
+          type: string
+          description: Cluster this server belongs to
+        machine:
+          type: string
+          description: Machine this server is assigned to
+        listenPortEnabled:
+          type: boolean
+          description: Whether the plain-text listen port is enabled
+        clientCertProxyEnabled:
+          type: boolean
+          description: Whether client cert proxy is enabled
+        startupMode:
+          type: string
+          description: Server startup mode
+          enum:
+          - RUNNING
+          - STANDBY
+          - ADMIN
+        autoRestart:
+          type: boolean
+          description: Whether the server automatically restarts on failure
+        restartMax:
+          type: integer
+          description: Maximum number of restart attempts
+        javaCompiler:
+          type: string
+          description: Java compiler to use for JSP compilation
+        stagingMode:
+          type: string
+          description: Application staging mode
+          enum:
+          - stage
+          - nostage
+          - external_stage
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+      - name
+    AppDeployment:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name
+        sourcePath:
+          type: string
+          description: Path to the application source
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        moduleType:
+          type: string
+          description: Module type (ear, war, jar, etc.)
+        planPath:
+          type: string
+          description: Path to the deployment plan
+        stagingMode:
+          type: string
+          description: Staging mode
+          enum:
+          - stage
+          - nostage
+          - external_stage
+        securityDDModel:
+          type: string
+          description: Security deployment descriptor model
+          enum:
+          - DDOnly
+          - CustomRoles
+          - CustomRolesAndPolicies
+          - Advanced
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+      - name
+    ActivationStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the activation
+          enum:
+          - ACTIVATED
+          - FAILED
+          - PENDING
+        activationTasks:
+          type: array
+          items:
+            type: object
+            properties:
+              server:
+                type: string
+              state:
+                type: string
+              error:
+                type: string
+    EditRoot:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Domain name
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        changeManager:
+          type: object
+          description: Reference to the change manager resource
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Error type URI
+        title:
+          type: string
+          description: Short error title
+        status:
+          type: integer
+          description: HTTP status code
+        detail:
+          type: string
+          description: Detailed error message
+        o:errorPath:
+          type: string
+          description: Path to the field that caused the error
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Link relation type
+        href:
+          type: string
+          format: uri
+          description: Link URI
+        title:
+          type: string
+          description: Link title
+    ClusterConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Cluster name
+        clusterMessagingMode:
+          type: string
+          description: Messaging mode for the cluster
+          enum:
+          - unicast
+          - multicast
+        clusterBroadcastChannel:
+          type: string
+          description: Multicast channel for cluster communication
+        clusterAddress:
+          type: string
+          description: Comma-separated list of address:port pairs for cluster members
+        defaultLoadAlgorithm:
+          type: string
+          description: Load balancing algorithm
+          enum:
+          - round-robin
+          - weight-based
+          - round-robin-affinity
+          - weight-based-affinity
+          - random
+        weblogicPluginEnabled:
+          type: boolean
+          description: Whether the WebLogic plugin is enabled
+        frontendHost:
+          type: string
+          description: Frontend host for the cluster
+        frontendHTTPPort:
+          type: integer
+          description: Frontend HTTP port
+        frontendHTTPSPort:
+          type: integer
+          description: Frontend HTTPS port
+        numberOfServersInClusterAddress:
+          type: integer
+          description: Number of servers in the cluster address
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+      - name
+    ChangeManagerStatus:
+      type: object
+      properties:
+        locked:
+          type: boolean
+          description: Whether the configuration is locked for editing
+        lockOwner:
+          type: string
+          description: The user who holds the edit lock
+        hasChanges:
+          type: boolean
+          description: Whether there are pending changes
+        mergeNeeded:
+          type: boolean
+          description: Whether a merge is needed before activation
+  parameters:
+    appName:
+      name: appName
+      in: path
+      required: true
+      description: The name of the deployed application
+      schema:
+        type: string
+    serverName:
+      name: serverName
+      in: path
+      required: true
+      description: The name of the WebLogic Server instance
+      schema:
+        type: string
+    clusterName:
+      name: clusterName
+      in: path
+      required: true
+      description: The name of the WebLogic cluster
+      schema:
+        type: string
+    dataSourceName:
+      name: dataSourceName
+      in: path
+      required: true
+      description: The name of the JDBC data source
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

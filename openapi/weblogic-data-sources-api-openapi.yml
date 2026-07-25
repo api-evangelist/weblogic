@@ -1,0 +1,194 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Data Sources API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Data Sources
+  description: JDBC data source monitoring and metrics
+paths:
+  /dataSources:
+    get:
+      operationId: getDataSources
+      summary: Oracle WebLogic Server APIs List all data source metrics
+      description: Returns monitoring metrics for all JDBC data sources across all servers in the domain.
+      tags:
+      - Data Sources
+      responses:
+        '200':
+          description: List of data source metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DataSourceMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /dataSources/{dataSourceName}:
+    get:
+      operationId: getDataSource
+      summary: Oracle WebLogic Server APIs Get data source metrics
+      description: Returns detailed metrics for a specific JDBC data source.
+      tags:
+      - Data Sources
+      parameters:
+      - $ref: '#/components/parameters/dataSourceName'
+      responses:
+        '200':
+          description: Data source metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSourceMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /dataSources/{dataSourceName}/test:
+    post:
+      operationId: testDataSource
+      summary: Oracle WebLogic Server APIs Test a data source connection
+      description: Tests the connection pool for the specified data source by reserving and releasing a connection.
+      tags:
+      - Data Sources
+      parameters:
+      - $ref: '#/components/parameters/dataSourceName'
+      responses:
+        '200':
+          description: Data source test result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Test result status
+                  message:
+                    type: string
+                    description: Test result message
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    DataSourceMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Data source name
+        state:
+          type: string
+          description: Data source state
+          enum:
+          - Running
+          - Suspended
+          - Shutdown
+          - Overloaded
+          - Unknown
+        enabled:
+          type: boolean
+          description: Whether the data source is enabled
+        activeConnectionsCurrentCount:
+          type: integer
+          description: Current active connections
+        activeConnectionsHighCount:
+          type: integer
+          description: High watermark of active connections
+        connectionsTotalCount:
+          type: integer
+          description: Total connections created
+        currCapacity:
+          type: integer
+          description: Current capacity
+        numAvailable:
+          type: integer
+          description: Available connections
+        numUnavailable:
+          type: integer
+          description: Unavailable connections
+        waitingForConnectionCurrentCount:
+          type: integer
+          description: Threads waiting for a connection
+        waitSecondsHighCount:
+          type: integer
+          description: Highest wait time in seconds
+        connectionDelayTime:
+          type: integer
+          description: Average connection creation time in ms
+        failuresToReconnectCount:
+          type: integer
+          description: Failed reconnection attempts
+        leakedConnectionCount:
+          type: integer
+          description: Leaked connections
+        prepStmtCacheCurrentSize:
+          type: integer
+          description: Prepared statement cache size
+        serverName:
+          type: string
+          description: Server hosting this data source instance
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    dataSourceName:
+      name: dataSourceName
+      in: path
+      required: true
+      description: The name of the JDBC data source
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

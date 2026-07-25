@@ -1,0 +1,323 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Lifecycle API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Lifecycle
+  description: Server lifecycle management operations including starting, stopping, suspending, and resuming servers.
+paths:
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/start:
+    post:
+      operationId: startServer
+      summary: Oracle WebLogic Server APIs Start a managed server
+      description: Starts the specified managed server.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server start initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/shutdown:
+    post:
+      operationId: shutdownServer
+      summary: Oracle WebLogic Server APIs Shut down a managed server
+      description: Gracefully shuts down the specified managed server. In-flight work is completed before shutdown.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeout:
+                  type: integer
+                  description: Timeout in seconds for graceful shutdown
+                  default: 0
+                ignoreSessions:
+                  type: boolean
+                  description: Whether to ignore active sessions during shutdown
+                  default: false
+                waitForAllSessions:
+                  type: boolean
+                  description: Whether to wait for all HTTP sessions to complete
+                  default: false
+      responses:
+        '200':
+          description: Server shutdown initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/forceShutdown:
+    post:
+      operationId: forceShutdownServer
+      summary: Oracle WebLogic Server APIs Force shut down a managed server
+      description: Forces an immediate shutdown of the specified managed server without waiting for in-flight work to complete.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server force shutdown initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/suspend:
+    post:
+      operationId: suspendServer
+      summary: Oracle WebLogic Server APIs Suspend a managed server
+      description: Suspends the specified managed server, transitioning it to ADMIN state where it only accepts administrative requests.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeout:
+                  type: integer
+                  description: Timeout in seconds for graceful suspend
+                  default: 0
+      responses:
+        '200':
+          description: Server suspend initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/resume:
+    post:
+      operationId: resumeServer
+      summary: Oracle WebLogic Server APIs Resume a suspended managed server
+      description: Resumes the specified managed server from ADMIN state back to RUNNING state, re-enabling it to accept client requests.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Server resume initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /domainRuntime/serverLifeCycleRuntimes/{serverName}/restartSSL:
+    post:
+      operationId: restartSSL
+      summary: Oracle WebLogic Server APIs Restart SSL on a managed server
+      description: Restarts the SSL listen sockets on the specified managed server, reloading SSL certificates and keys.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: SSL restart initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /lifecycle/latest/servers/{serverName}/shutdown:
+    post:
+      operationId: lifecycleShutdownServer
+      summary: Oracle WebLogic Server APIs Shut down a server via lifecycle API
+      description: Shuts down the specified server using the lifecycle management resource set.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeout:
+                  type: integer
+                  description: Timeout in seconds for graceful shutdown
+                ignoreSessions:
+                  type: boolean
+                  description: Whether to ignore active sessions
+                waitForAllSessions:
+                  type: boolean
+                  description: Whether to wait for all sessions to complete
+      responses:
+        '200':
+          description: Shutdown initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /lifecycle/latest/servers/{serverName}/start:
+    post:
+      operationId: lifecycleStartServer
+      summary: Oracle WebLogic Server APIs Start a server via lifecycle API
+      description: Starts the specified server using the lifecycle management resource set.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Start initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /lifecycle/latest/servers/{serverName}/suspend:
+    post:
+      operationId: lifecycleSuspendServer
+      summary: Oracle WebLogic Server APIs Suspend a server via lifecycle API
+      description: Suspends the specified server using the lifecycle management resource set.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Suspend initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /lifecycle/latest/servers/{serverName}/resume:
+    post:
+      operationId: lifecycleResumeServer
+      summary: Oracle WebLogic Server APIs Resume a server via lifecycle API
+      description: Resumes the specified server using the lifecycle management resource set.
+      tags:
+      - Lifecycle
+      parameters:
+      - $ref: '#/components/parameters/serverName'
+      responses:
+        '200':
+          description: Resume initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    serverName:
+      name: serverName
+      in: path
+      required: true
+      description: The name of the WebLogic Server instance
+      schema:
+        type: string
+  schemas:
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Error type URI
+        title:
+          type: string
+          description: Short error title
+        status:
+          type: integer
+          description: HTTP status code
+        detail:
+          type: string
+          description: Detailed error message
+        o:errorPath:
+          type: string
+          description: Path to the field that caused the error
+    TaskStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Task status
+        progress:
+          type: string
+          description: Progress description
+        completed:
+          type: boolean
+          description: Whether the task is complete
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

@@ -1,0 +1,237 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Library Deployments API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Library Deployments
+  description: Deploy and manage shared libraries
+paths:
+  /edit/libraries:
+    get:
+      operationId: listLibraries
+      summary: Oracle WebLogic Server APIs List all shared library deployments
+      description: Returns all shared library deployment configurations in the domain.
+      tags:
+      - Library Deployments
+      responses:
+        '200':
+          description: List of shared library deployments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LibraryDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createLibrary
+      summary: Oracle WebLogic Server APIs Create a shared library deployment
+      description: Creates a new shared library deployment. Requires an active edit session.
+      tags:
+      - Library Deployments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibraryDeploymentCreate'
+      responses:
+        '201':
+          description: Library deployment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryDeployment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /edit/libraries/{libraryName}:
+    get:
+      operationId: getLibrary
+      summary: Oracle WebLogic Server APIs Get a shared library deployment
+      description: Returns the configuration of a specific shared library deployment.
+      tags:
+      - Library Deployments
+      parameters:
+      - $ref: '#/components/parameters/libraryName'
+      responses:
+        '200':
+          description: Library deployment configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryDeployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteLibrary
+      summary: Oracle WebLogic Server APIs Remove a shared library deployment
+      description: Removes a shared library deployment from the domain. Requires an active edit session.
+      tags:
+      - Library Deployments
+      parameters:
+      - $ref: '#/components/parameters/libraryName'
+      responses:
+        '200':
+          description: Library deployment removed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+    LibraryDeployment:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Library name
+        sourcePath:
+          type: string
+          description: Path to the library archive
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        specificationVersion:
+          type: string
+          description: Library specification version
+        implementationVersion:
+          type: string
+          description: Library implementation version
+        moduleType:
+          type: string
+          description: Module type
+          enum:
+          - ear
+          - war
+          - jar
+        stagingMode:
+          type: string
+          enum:
+          - stage
+          - nostage
+          - external_stage
+        deploymentOrder:
+          type: integer
+          default: 100
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    LibraryDeploymentCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Library name
+        sourcePath:
+          type: string
+          description: Path to the library archive
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        moduleType:
+          type: string
+          enum:
+          - ear
+          - war
+          - jar
+        stagingMode:
+          type: string
+          enum:
+          - stage
+          - nostage
+          - external_stage
+        deploymentOrder:
+          type: integer
+          default: 100
+      required:
+      - name
+      - sourcePath
+      - targets
+  parameters:
+    libraryName:
+      name: libraryName
+      in: path
+      required: true
+      description: The name of the shared library deployment
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

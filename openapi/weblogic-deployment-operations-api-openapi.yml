@@ -1,0 +1,432 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Deployment Operations API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Deployment Operations
+  description: Runtime deployment operations using the domain runtime deployment manager
+paths:
+  /domainRuntime/deploymentManager/deploy:
+    post:
+      operationId: deploy
+      summary: Oracle WebLogic Server APIs Deploy an application at runtime
+      description: Deploys an application to the specified targets using the deployment manager. This is a runtime operation that does not require an edit session.
+      tags:
+      - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application deployment name
+                source:
+                  type: string
+                  description: Path to the application archive or exploded directory on the administration server
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target server or cluster names
+                plan:
+                  type: string
+                  description: Path to the deployment plan
+                deploymentOptions:
+                  type: object
+                  properties:
+                    stageMode:
+                      type: string
+                      enum:
+                      - stage
+                      - nostage
+                      - external_stage
+                    planStageMode:
+                      type: string
+                      enum:
+                      - stage
+                      - nostage
+                      - external_stage
+                    retireGracefully:
+                      type: boolean
+                      description: Whether to retire previous version gracefully
+                    retireTimeout:
+                      type: integer
+                      description: Timeout in seconds for graceful retirement
+                    securityModel:
+                      type: string
+                      enum:
+                      - DDOnly
+                      - CustomRoles
+                      - CustomRolesAndPolicies
+                      - Advanced
+              required:
+              - name
+              - source
+              - targets
+      responses:
+        '200':
+          description: Deployment initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/undeploy:
+    post:
+      operationId: undeploy
+      summary: Oracle WebLogic Server APIs Undeploy an application at runtime
+      description: Undeploys an application from the specified targets using the deployment manager.
+      tags:
+      - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application deployment name to undeploy
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target servers or clusters to undeploy from
+                deploymentOptions:
+                  type: object
+                  properties:
+                    gracefulIgnoreSessions:
+                      type: boolean
+                      description: Whether to ignore active sessions
+                    gracefulProductionToAdmin:
+                      type: boolean
+                      description: Whether to transition to admin mode first
+                    timeout:
+                      type: integer
+                      description: Timeout in seconds for graceful undeployment
+              required:
+              - name
+      responses:
+        '200':
+          description: Undeployment initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/redeploy:
+    post:
+      operationId: redeploy
+      summary: Oracle WebLogic Server APIs Redeploy an application
+      description: Redeploys an application, refreshing it from the source location. Can update the entire application or specific modules.
+      tags:
+      - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application deployment name
+                source:
+                  type: string
+                  description: Updated source path (optional, uses existing if omitted)
+                plan:
+                  type: string
+                  description: Updated deployment plan path
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target servers or clusters
+                deploymentOptions:
+                  type: object
+                  properties:
+                    retireGracefully:
+                      type: boolean
+                    retireTimeout:
+                      type: integer
+              required:
+              - name
+      responses:
+        '200':
+          description: Redeployment initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/startApplication:
+    post:
+      operationId: startApplication
+      summary: Oracle WebLogic Server APIs Start a deployed application
+      description: Starts a deployed application that is currently in the prepared or admin state, transitioning it to the active state.
+      tags:
+      - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application name to start
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target servers or clusters
+              required:
+              - name
+      responses:
+        '200':
+          description: Application start initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/stopApplication:
+    post:
+      operationId: stopApplication
+      summary: Oracle WebLogic Server APIs Stop a deployed application
+      description: Stops a deployed application, transitioning it to the prepared state where it no longer accepts client requests.
+      tags:
+      - Deployment Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Application name to stop
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: Target servers or clusters
+                deploymentOptions:
+                  type: object
+                  properties:
+                    gracefulIgnoreSessions:
+                      type: boolean
+                    timeout:
+                      type: integer
+              required:
+              - name
+      responses:
+        '200':
+          description: Application stop initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentTaskStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/deploymentProgressObjects:
+    get:
+      operationId: listDeploymentProgress
+      summary: Oracle WebLogic Server APIs List all deployment progress objects
+      description: Returns progress information for all in-progress and recently completed deployment operations.
+      tags:
+      - Deployment Operations
+      responses:
+        '200':
+          description: List of deployment progress objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeploymentProgress'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /domainRuntime/deploymentManager/deploymentProgressObjects/{taskId}:
+    get:
+      operationId: getDeploymentProgress
+      summary: Oracle WebLogic Server APIs Get deployment progress
+      description: Returns progress information for a specific deployment operation.
+      tags:
+      - Deployment Operations
+      parameters:
+      - name: taskId
+        in: path
+        required: true
+        description: Deployment task identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Deployment progress information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentProgress'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+    DeploymentProgress:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Deployment task name
+        state:
+          type: string
+          description: Current deployment state
+          enum:
+          - STATE_NEW
+          - STATE_PREPARING
+          - STATE_PREPARED
+          - STATE_ACTIVATING
+          - STATE_ACTIVE
+          - STATE_DEACTIVATING
+          - STATE_RETIRING
+          - STATE_RETIRED
+          - STATE_FAILED
+        progress:
+          type: string
+          description: Progress description
+        completed:
+          type: boolean
+          description: Whether the operation is complete
+        failed:
+          type: boolean
+          description: Whether the operation failed
+        targets:
+          type: array
+          items:
+            type: object
+            properties:
+              target:
+                type: string
+              state:
+                type: string
+              error:
+                type: string
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    DeploymentTaskStatus:
+      type: object
+      properties:
+        taskId:
+          type: string
+          description: Unique identifier for the deployment task
+        status:
+          type: string
+          description: Current status of the deployment task
+          enum:
+          - INITIATED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          - CANCELLED
+        progress:
+          type: string
+          description: Progress description
+        completed:
+          type: boolean
+          description: Whether the task is complete
+        failed:
+          type: boolean
+          description: Whether the task failed
+        message:
+          type: string
+          description: Status or error message
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html

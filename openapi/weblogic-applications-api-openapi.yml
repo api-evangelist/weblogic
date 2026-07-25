@@ -1,0 +1,201 @@
+openapi: 3.1.0
+info:
+  title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Applications API
+  description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
+  version: 14.1.1.0
+  contact:
+    name: Oracle Support
+    url: https://support.oracle.com
+  license:
+    name: Oracle Technology Network License
+    url: https://www.oracle.com/legal/terms.html
+servers:
+- url: https://{host}:{port}/management/weblogic/latest
+  description: WebLogic Server Administration Server
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the WebLogic Administration Server
+    port:
+      default: '7001'
+      description: Port of the WebLogic Administration Server
+security:
+- basicAuth: []
+tags:
+- name: Applications
+  description: Application deployment monitoring
+paths:
+  /deployments:
+    get:
+      operationId: getDeployments
+      summary: Oracle WebLogic Server APIs List all application deployment metrics
+      description: Returns monitoring information for all deployed applications across the domain.
+      tags:
+      - Applications
+      responses:
+        '200':
+          description: List of application deployment metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeploymentMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /deployments/{appName}:
+    get:
+      operationId: getDeployment
+      summary: Oracle WebLogic Server APIs Get application deployment metrics
+      description: Returns detailed monitoring information for a specific deployed application.
+      tags:
+      - Applications
+      parameters:
+      - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: Application deployment metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /deployments/{appName}/servlets:
+    get:
+      operationId: getDeploymentServlets
+      summary: Oracle WebLogic Server APIs List servlet metrics for an application
+      description: Returns servlet-level monitoring metrics for a deployed web application.
+      tags:
+      - Applications
+      parameters:
+      - $ref: '#/components/parameters/appName'
+      responses:
+        '200':
+          description: List of servlet metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServletMetrics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    ServletMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Servlet name
+        contextPath:
+          type: string
+          description: Servlet context path
+        invocationTotalCount:
+          type: integer
+          format: int64
+          description: Total invocations
+        executionTimeAverage:
+          type: integer
+          description: Average execution time in milliseconds
+        executionTimeTotal:
+          type: integer
+          format: int64
+          description: Total execution time in milliseconds
+        executionTimeHigh:
+          type: integer
+          description: Highest execution time in milliseconds
+        executionTimeLow:
+          type: integer
+          description: Lowest execution time in milliseconds
+        reloadTotalCount:
+          type: integer
+          description: Number of times the servlet was reloaded
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    DeploymentMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name
+        type:
+          type: string
+          description: Application type (ear, war, etc.)
+        state:
+          type: string
+          description: Deployment state
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+        targets:
+          type: array
+          items:
+            type: string
+          description: Target servers or clusters
+        sessions:
+          type: object
+          properties:
+            openSessionsCurrentCount:
+              type: integer
+              description: Current open sessions
+            openSessionsHighCount:
+              type: integer
+              description: High watermark of open sessions
+            sessionsOpenedTotalCount:
+              type: integer
+              format: int64
+              description: Total sessions opened
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    appName:
+      name: appName
+      in: path
+      required: true
+      description: The name of the deployed application
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WebLogic Server administrator credentials
+externalDocs:
+  description: Deploying Applications to Oracle WebLogic Server
+  url: https://docs.oracle.com/en/middleware/standalone/weblogic-server/14.1.1.0/develop-and-deploy.html
