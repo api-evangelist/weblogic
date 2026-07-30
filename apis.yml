@@ -3,127 +3,576 @@ description: >-
   Collection of APIs and resources for Oracle WebLogic Server administration and management. WebLogic Server is Oracle's
   enterprise-grade Java EE application server providing high availability, scalability, and comprehensive management
   capabilities through RESTful management APIs, monitoring and diagnostics, and deployment services.
+accessModel:
+  pricing: enterprise
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Enterprise · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 image: https://www.oracle.com/a/ocom/img/weblogic-server.png
 url: https://www.oracle.com/middleware/technologies/weblogic.html
 created: '2024'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - name: WebLogic RESTful Management Services API
-    description: >-
-      RESTful API for monitoring and managing WebLogic Server domains, servers, applications, and resources. Provides
-      access to configuration editing, server lifecycle management, cluster administration, data source management, and
-      JMS resource configuration.
-    image: https://www.oracle.com/a/ocom/img/weblogic-server.png
-    humanUrl: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
-    baseUrl: https://host:port/management/weblogic/latest
-    tags:
-      - Administration
-      - Clusters
-      - Configuration
-      - Data Sources
-      - JMS
-      - Management
-      - Monitoring
-      - REST
-      - Server Lifecycle
-    properties:
-      - type: Documentation
-        url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
-      - type: OpenAPI
-        url: openapi/weblogic-restful-management-services-openapi.yml
-      - type: JSONSchema
-        url: json-schema/weblogic-server-configuration.json
-      - type: JSONSchema
-        url: json-schema/weblogic-domain-configuration.json
-      - type: JSONSchema
-        url: json-schema/weblogic-cluster-configuration.json
-      - type: JSONSchema
-        url: json-schema/weblogic-datasource-configuration.json
-      - type: JSONSchema
-        url: json-schema/weblogic-server-runtime.json
-      - type: JSONStructure
-        url: json-structure/weblogic-server-configuration-structure.json
-      - type: JSONLD
-        url: json-ld/weblogic-context.jsonld
-    contact:
-      - FN: Oracle Support
-        url: https://support.oracle.com
-  - name: WebLogic Monitoring and Diagnostics API
-    description: >-
-      API for accessing runtime monitoring data, metrics, and diagnostics information. Provides server health, JVM
-      metrics, thread pool statistics, JDBC data source metrics, JMS statistics, application deployment metrics, and
-      WLDF diagnostics.
-    humanUrl: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
-    baseUrl: https://host:port/management/wls/latest
-    tags:
-      - Diagnostics
-      - Health
-      - JMX
-      - Metrics
-      - Monitoring
-      - Performance
-      - WLDF
-    properties:
-      - type: Documentation
-        url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
-      - type: OpenAPI
-        url: openapi/weblogic-monitoring-diagnostics-openapi.yml
-      - type: JSONSchema
-        url: json-schema/weblogic-server-runtime.json
-      - type: JSONLD
-        url: json-ld/weblogic-context.jsonld
-  - name: WebLogic Deployment API
-    description: >-
-      API for deploying, undeploying, redeploying, and managing applications and shared libraries. Supports the full
-      deployment lifecycle including prepare, activate, start, stop, redeploy, and undeploy operations.
-    humanUrl: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
-    baseUrl: https://host:port/management/weblogic/latest/edit/appDeployments
-    tags:
-      - Applications
-      - Deployment
-      - DevOps
-      - Libraries
-      - Resources
-    properties:
-      - type: Documentation
-        url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
-      - type: OpenAPI
-        url: openapi/weblogic-deployment-openapi.yml
-      - type: JSONSchema
-        url: json-schema/weblogic-application-deployment.json
-      - type: JSONLD
-        url: json-ld/weblogic-context.jsonld
-  - name: WebLogic WLST (WebLogic Scripting Tool) API
-    description: >-
-      Python-based scripting interface for automating WebLogic Server administration tasks. Supports online (connected)
-      and offline modes for configuring, deploying, and managing WebLogic domains programmatically.
-    humanUrl: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlstc/
-    tags:
-      - Automation
-      - CLI
-      - Python
-      - Scripting
-    properties:
-      - type: Documentation
-        url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlstc/
-      - type: Reference
-        url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlstg/
-  - name: WebLogic JMX API
-    description: >-
-      Java Management Extensions API for programmatic access to WebLogic Server MBeans. Provides the same management
-      capabilities as the REST API via JMX connections, suitable for Java-based management clients and monitoring tools.
-    humanUrl: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/jmxcu/
-    tags:
-      - Java
-      - JMX
-      - Management
-      - MBeans
-    properties:
-      - type: Documentation
-        url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/jmxcu/
-      - type: APIReference
-        url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlmbr/
+- name: WebLogic WLST (WebLogic Scripting Tool) API
+  description: >-
+    Python-based scripting interface for automating WebLogic Server administration tasks. Supports online
+    (connected) and offline modes for configuring, deploying, and managing WebLogic domains programmatically.
+  humanUrl: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlstc/
+  tags:
+  - Automation
+  - CLI
+  - Python
+  - Scripting
+  properties:
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlstc/
+  - type: Reference
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlstg/
+- name: WebLogic JMX API
+  description: >-
+    Java Management Extensions API for programmatic access to WebLogic Server MBeans. Provides the same
+    management capabilities as the REST API via JMX connections, suitable for Java-based management clients
+    and monitoring tools.
+  humanUrl: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/jmxcu/
+  tags:
+  - Java
+  - JMX
+  - Management
+  - MBeans
+  properties:
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/jmxcu/
+  - type: APIReference
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlmbr/
+- aid: weblogic:weblogic-application-deployments-api
+  name: Oracle WebLogic Server APIs Application Deployments API
+  description: Deploy, undeploy, redeploy, and manage application configurations using the edit tree
+  tags:
+  - Application Deployments
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-application-deployments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-applications-api
+  name: Oracle WebLogic Server APIs Applications API
+  description: Application deployment monitoring
+  tags:
+  - Applications
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-applications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-clusters-api
+  name: Oracle WebLogic Server APIs Clusters API
+  description: Cluster-level monitoring information
+  tags:
+  - Clusters
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-clusters-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-data-sources-api
+  name: Oracle WebLogic Server APIs Data Sources API
+  description: JDBC data source monitoring and metrics
+  tags:
+  - Data Sources
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-data-sources-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-deployment-operations-api
+  name: Oracle WebLogic Server APIs Deployment Operations API
+  description: Runtime deployment operations using the domain runtime deployment manager
+  tags:
+  - Deployment Operations
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-deployment-operations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-diagnostics-api
+  name: Oracle WebLogic Server APIs Diagnostics API
+  description: WebLogic Diagnostic Framework (WLDF) resources
+  tags:
+  - Diagnostics
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-diagnostics-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-domain-configuration-api
+  name: Oracle WebLogic Server APIs Domain Configuration API
+  description: >-
+    Read-only access to the domain-level configuration MBean tree including servers, clusters, data sources,
+    JMS resources, and security realms.
+  tags:
+  - Domain Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-domain-configuration-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-domain-runtime-api
+  name: Oracle WebLogic Server APIs Domain Runtime API
+  description: >-
+    Access to domain-level runtime MBeans including server lifecycle operations, deployment operations,
+    and domain-wide monitoring data.
+  tags:
+  - Domain Runtime
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-domain-runtime-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-edit-api
+  name: Oracle WebLogic Server APIs Edit API
+  description: >-
+    Configuration editing operations. An edit session must be started before making changes to the domain
+    configuration. Changes are staged and then activated.
+  tags:
+  - Edit
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-edit-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-health-api
+  name: Oracle WebLogic Server APIs Health API
+  description: Server and subsystem health checks
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-health-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-jms-api
+  name: Oracle WebLogic Server APIs JMS API
+  description: JMS subsystem monitoring
+  tags:
+  - JMS
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-jms-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-library-deployments-api
+  name: Oracle WebLogic Server APIs Library Deployments API
+  description: Deploy and manage shared libraries
+  tags:
+  - Library Deployments
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-library-deployments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-lifecycle-api
+  name: Oracle WebLogic Server APIs Lifecycle API
+  description: >-
+    Server lifecycle management operations including starting, stopping, suspending, and resuming servers.
+  tags:
+  - Lifecycle
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-lifecycle-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-server-configuration-api
+  name: Oracle WebLogic Server APIs Server Configuration API
+  description: >-
+    Read-only access to the server-level configuration MBean tree for individual managed servers.
+  tags:
+  - Server Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-server-configuration-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-server-runtime-api
+  name: Oracle WebLogic Server APIs Server Runtime API
+  description: >-
+    Access to server-level runtime MBeans providing monitoring data for individual server instances including
+    thread pools, JDBC, JMS, and application runtimes.
+  tags:
+  - Server Runtime
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-server-runtime-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-servers-api
+  name: Oracle WebLogic Server APIs Servers API
+  description: Server-level monitoring and health information
+  tags:
+  - Servers
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-servers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
+- aid: weblogic:weblogic-upload-api
+  name: Oracle WebLogic Server APIs Upload API
+  description: Upload application archives to the administration server
+  tags:
+  - Upload
+  properties:
+  - type: OpenAPI
+    url: openapi/weblogic-upload-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/restm/
+  - type: JSONSchema
+    url: json-schema/weblogic-server-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-domain-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-cluster-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-datasource-configuration.json
+  - type: JSONSchema
+    url: json-schema/weblogic-server-runtime.json
+  - type: JSONStructure
+    url: json-structure/weblogic-server-configuration-structure.json
+  - type: JSONLD
+    url: json-ld/weblogic-context.jsonld
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/wlrst/
+  - type: Documentation
+    url: https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/depgd/
+  - type: JSONSchema
+    url: json-schema/weblogic-application-deployment.json
 common:
   - type: AgenticAccess
     url: agentic-access/weblogic-agentic-access.yml
