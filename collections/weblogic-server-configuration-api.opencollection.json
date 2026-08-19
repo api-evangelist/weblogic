@@ -1,0 +1,36 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Server Configuration API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Server Configuration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server configuration tree root",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverConfig"
+          },
+          "docs": "Returns the root resource of the read-only server configuration tree for the server handling the request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

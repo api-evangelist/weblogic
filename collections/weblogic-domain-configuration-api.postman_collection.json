@@ -1,0 +1,964 @@
+{
+  "item": [
+    {
+      "id": "5b52e9bd-030c-49b7-b287-160b44f38d73",
+      "name": "Domain Configuration",
+      "description": {
+        "content": "Read-only access to the domain-level configuration MBean tree including servers, clusters, data sources, JMS resources, and security realms.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f16c180a-eab3-4a50-930e-0c65f0b4aad5",
+          "name": "Oracle WebLogic Server APIs Get domain configuration tree root",
+          "request": {
+            "name": "Oracle WebLogic Server APIs Get domain configuration tree root",
+            "description": {
+              "content": "Returns the root resource of the read-only domain configuration tree, providing links to all configuration resources in the domain.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domainConfig"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Hostname of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "Port of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "48d0cfb0-373c-4216-9944-1edac5cb590b",
+              "name": "Domain configuration root resource",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"adminServerName\": \"string\",\n  \"domainVersion\": \"string\",\n  \"productionModeEnabled\": false,\n  \"configurationVersion\": \"string\",\n  \"links\": [\n    {\n      \"rel\": \"string\",\n      \"href\": \"http://yajSkXFBSwiJTdYDYgeeX.oxyiqor3UJxhKnVl,1E0rSJijcMyebKyYAGDhhBn2os59eQS\",\n      \"title\": \"string\"\n    },\n    {\n      \"rel\": \"string\",\n      \"href\": \"https://luyEJRP.vjnmQsAqafP43UfxxSCvc\",\n      \"title\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "645b6cb7-ad8c-4c07-90b6-d4cb4854f567",
+              "name": "Authentication required or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 3488,\n  \"detail\": \"string\",\n  \"o:errorPath\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "02b4dadc-f149-432d-a261-c40f4977b14c",
+          "name": "Oracle WebLogic Server APIs List all server configurations (read-only)",
+          "request": {
+            "name": "Oracle WebLogic Server APIs List all server configurations (read-only)",
+            "description": {
+              "content": "Returns all server configurations in the domain (read-only view).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domainConfig",
+                "servers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Hostname of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "Port of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "194e739f-964f-47df-96e1-bef98a7b2da5",
+              "name": "List of server configurations",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig",
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"name\": \"string\",\n      \"listenAddress\": \"string\",\n      \"listenPort\": 7001,\n      \"SSLListenPort\": 9938,\n      \"cluster\": \"string\",\n      \"machine\": \"string\",\n      \"listenPortEnabled\": false,\n      \"clientCertProxyEnabled\": true,\n      \"startupMode\": \"STANDBY\",\n      \"autoRestart\": false,\n      \"restartMax\": 6640,\n      \"javaCompiler\": \"string\",\n      \"stagingMode\": \"external_stage\",\n      \"links\": [\n        {\n          \"rel\": \"string\",\n          \"href\": \"https://qIsfQIkKYXwZlnbdQXXV.lyibhuUR2ey2gpCUEGCVzZecdyhUeFNK\",\n          \"title\": \"string\"\n        },\n        {\n          \"rel\": \"string\",\n          \"href\": \"http://vxb.ftsBfrgJuaFu4QBLrBQStLT2UXSLc\",\n          \"title\": \"string\"\n        }\n      ]\n    },\n    {\n      \"name\": \"string\",\n      \"listenAddress\": \"string\",\n      \"listenPort\": 7001,\n      \"SSLListenPort\": 1123,\n      \"cluster\": \"string\",\n      \"machine\": \"string\",\n      \"listenPortEnabled\": true,\n      \"clientCertProxyEnabled\": false,\n      \"startupMode\": \"RUNNING\",\n      \"autoRestart\": true,\n      \"restartMax\": 7576,\n      \"javaCompiler\": \"string\",\n      \"stagingMode\": \"nostage\",\n      \"links\": [\n        {\n          \"rel\": \"string\",\n          \"href\": \"https://lYLUKFkwPSCknMigvKBq.uyapxZ+2sFUU9Oz\",\n          \"title\": \"string\"\n        },\n        {\n          \"rel\": \"string\",\n          \"href\": \"https://uZONQvwGZvTSt.gvcgBSy,gPbLaEAyowkfOom9zLZPzulifqy,CMCpi-e9HhdQEOu\",\n          \"title\": \"string\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e476678f-a5d8-47e7-82b6-3e84bd2e5ec0",
+              "name": "Authentication required or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig",
+                    "servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 3488,\n  \"detail\": \"string\",\n  \"o:errorPath\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b27a1754-4ffe-46b9-b2f0-435597c62d2a",
+          "name": "Oracle WebLogic Server APIs Get a server configuration (read-only)",
+          "request": {
+            "name": "Oracle WebLogic Server APIs Get a server configuration (read-only)",
+            "description": {
+              "content": "Returns the configuration of a specific server (read-only view).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domainConfig",
+                "servers",
+                ":serverName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "serverName",
+                  "description": "(Required) The name of the WebLogic Server instance"
+                },
+                {
+                  "description": "Hostname of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "Port of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c85352ba-9ab2-4b52-91d2-3559df8d0c93",
+              "name": "Server configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig",
+                    "servers",
+                    ":serverName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "serverName",
+                      "description": "(Required) The name of the WebLogic Server instance"
+                    },
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"listenAddress\": \"string\",\n  \"listenPort\": 7001,\n  \"SSLListenPort\": 603,\n  \"cluster\": \"string\",\n  \"machine\": \"string\",\n  \"listenPortEnabled\": false,\n  \"clientCertProxyEnabled\": true,\n  \"startupMode\": \"RUNNING\",\n  \"autoRestart\": true,\n  \"restartMax\": 1484,\n  \"javaCompiler\": \"string\",\n  \"stagingMode\": \"external_stage\",\n  \"links\": [\n    {\n      \"rel\": \"string\",\n      \"href\": \"http://D.dyc2rdErhLvVfY4n6ucIVEmt8b5m8ZLG,XjCozmTX-xZr7coOgCyPM3s.yqmoA\",\n      \"title\": \"string\"\n    },\n    {\n      \"rel\": \"string\",\n      \"href\": \"https://xEWrgkvGjAnQnMRSGScPH.hieBAWyjqQbYpJdgEfFmMp8w-kKUTgSLImQZxRaBtJRmKdsRwcLATVwMm\",\n      \"title\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64f562bd-b6de-4c8f-9750-c2b7e96d164b",
+              "name": "Authentication required or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig",
+                    "servers",
+                    ":serverName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "serverName",
+                      "description": "(Required) The name of the WebLogic Server instance"
+                    },
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 3488,\n  \"detail\": \"string\",\n  \"o:errorPath\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebd7fb76-75b6-4374-b4d9-ac5948f1304a",
+              "name": "The specified resource was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig",
+                    "servers",
+                    ":serverName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "serverName",
+                      "description": "(Required) The name of the WebLogic Server instance"
+                    },
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 3488,\n  \"detail\": \"string\",\n  \"o:errorPath\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "41748974-5dfa-4bd1-8950-c3b9b8cb0194",
+          "name": "Oracle WebLogic Server APIs List all cluster configurations (read-only)",
+          "request": {
+            "name": "Oracle WebLogic Server APIs List all cluster configurations (read-only)",
+            "description": {
+              "content": "Returns all cluster configurations in the domain (read-only view).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domainConfig",
+                "clusters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Hostname of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "Port of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b022c8b6-b3dc-42a1-8e0e-d8406a5f04e8",
+              "name": "List of cluster configurations",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig",
+                    "clusters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"name\": \"string\",\n      \"clusterMessagingMode\": \"unicast\",\n      \"clusterBroadcastChannel\": \"string\",\n      \"clusterAddress\": \"string\",\n      \"defaultLoadAlgorithm\": \"round-robin-affinity\",\n      \"weblogicPluginEnabled\": true,\n      \"frontendHost\": \"string\",\n      \"frontendHTTPPort\": 1609,\n      \"frontendHTTPSPort\": 3298,\n      \"numberOfServersInClusterAddress\": 4318,\n      \"links\": [\n        {\n          \"rel\": \"string\",\n          \"href\": \"https://A.okvFAg5,os79heaz0EoBK1EMZrbaocPKhs5sKkciT8zVSe,1LJ-y7sRtbMZOB7r4\",\n          \"title\": \"string\"\n        },\n        {\n          \"rel\": \"string\",\n          \"href\": \"http://KUweaQvLpjXifGiFkpxToYKksYqUaTDzH.tjsgi14dNbX,TI58GxEiZPheQ\",\n          \"title\": \"string\"\n        }\n      ]\n    },\n    {\n      \"name\": \"string\",\n      \"clusterMessagingMode\": \"multicast\",\n      \"clusterBroadcastChannel\": \"string\",\n      \"clusterAddress\": \"string\",\n      \"defaultLoadAlgorithm\": \"weight-based-affinity\",\n      \"weblogicPluginEnabled\": true,\n      \"frontendHost\": \"string\",\n      \"frontendHTTPPort\": 1539,\n      \"frontendHTTPSPort\": 6060,\n      \"numberOfServersInClusterAddress\": 2690,\n      \"links\": [\n        {\n          \"rel\": \"string\",\n          \"href\": \"http://hXBkDUhPfqoMOnRpAOzIhMHYxKuEK.eagsfaVPQqQ3VBDGmDHZKi5PIUjfJTxt.ieLFStsJ3npO\",\n          \"title\": \"string\"\n        },\n        {\n          \"rel\": \"string\",\n          \"href\": \"https://ccMLTsjkgntDPvSSNv.suOihJOLbZ0bpQ4lz4IPLy-SL0RkQC7oXARyfcL-T9.UnirS7v+\",\n          \"title\": \"string\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea7983b8-11b7-45d1-891a-ed1b355cfbee",
+              "name": "Authentication required or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig",
+                    "clusters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 3488,\n  \"detail\": \"string\",\n  \"o:errorPath\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3d7fee23-1590-4dd1-aa85-25b79a5ab018",
+          "name": "Oracle WebLogic Server APIs Get domain security configuration",
+          "request": {
+            "name": "Oracle WebLogic Server APIs Get domain security configuration",
+            "description": {
+              "content": "Returns the security configuration of the domain including realms.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domainConfig",
+                "securityConfiguration"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Hostname of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "Port of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "06729749-642a-44ae-8c7e-0d5d238a5f86",
+              "name": "Security configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig",
+                    "securityConfiguration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"realms\": [\n    {\n      \"name\": \"string\",\n      \"authenticationProviders\": [\n        {\n          \"name\": \"string\",\n          \"type\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"type\": \"string\"\n        }\n      ]\n    },\n    {\n      \"name\": \"string\",\n      \"authenticationProviders\": [\n        {\n          \"name\": \"string\",\n          \"type\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"type\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"crossDomainSecurityEnabled\": false,\n  \"webAppFilesCaseInsensitive\": \"os\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f86ef02-45d3-490a-abbf-7dd6d9dabd49",
+              "name": "Authentication required or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domainConfig",
+                    "securityConfiguration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 3488,\n  \"detail\": \"string\",\n  \"o:errorPath\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Hostname of the WebLogic Administration Server",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost",
+      "key": "host"
+    },
+    {
+      "description": {
+        "content": "Port of the WebLogic Administration Server",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "7001",
+      "key": "port"
+    },
+    {
+      "type": "string",
+      "value": "https://{{host}}:{{port}}/management/weblogic/latest",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c8c18e7a-3e4d-44e6-8c8a-1c60081e2b5b",
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Domain Configuration API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.\n\nContact Support:\n Name: Oracle Support",
+      "type": "text/plain"
+    }
+  }
+}

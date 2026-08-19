@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Diagnostics API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Diagnostics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List WLDF system resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/diagnostics/WLDFSystemResources"
+          },
+          "docs": "Returns a list of WebLogic Diagnostic Framework (WLDF) system resources configured in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a WLDF system resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/diagnostics/WLDFSystemResources/:resourceName",
+            "params": [
+              {
+                "name": "resourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WLDF system resource"
+              }
+            ]
+          },
+          "docs": "Returns details of a specific WLDF system resource."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List diagnostic data access runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/diagnostics/dataAccessRuntimes"
+          },
+          "docs": "Returns information about diagnostic data access runtimes that provide access to collected diagnostic data."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Query diagnostic data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/diagnostics/dataAccessRuntimes/:runtimeName/query",
+            "params": [
+              {
+                "name": "runtimeName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the data access runtime"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a query against diagnostic data collected by the WebLogic Diagnostic Framework. Supports querying harvested metrics, server log entries, and other diagnostic data sources."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

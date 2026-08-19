@@ -1,0 +1,723 @@
+{
+  "item": [
+    {
+      "id": "02c6d388-400b-44ff-beb1-4175a8113a34",
+      "name": "Applications",
+      "description": {
+        "content": "Application deployment monitoring",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a09f0995-1a9b-470f-8074-3ef4db17df9a",
+          "name": "Oracle WebLogic Server APIs List all application deployment metrics",
+          "request": {
+            "name": "Oracle WebLogic Server APIs List all application deployment metrics",
+            "description": {
+              "content": "Returns monitoring information for all deployed applications across the domain.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "deployments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Hostname of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "Port of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dac958c5-6323-4396-843e-1b7564238f5e",
+              "name": "List of application deployment metrics",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"state\": \"string\",\n      \"healthState\": {\n        \"state\": \"string\",\n        \"subsystemName\": \"string\"\n      },\n      \"targets\": [\n        \"string\",\n        \"string\"\n      ],\n      \"sessions\": {\n        \"openSessionsCurrentCount\": 8129,\n        \"openSessionsHighCount\": 8426,\n        \"sessionsOpenedTotalCount\": 1739\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"state\": \"string\",\n      \"healthState\": {\n        \"state\": \"string\",\n        \"subsystemName\": \"string\"\n      },\n      \"targets\": [\n        \"string\",\n        \"string\"\n      ],\n      \"sessions\": {\n        \"openSessionsCurrentCount\": 4366,\n        \"openSessionsHighCount\": 9460,\n        \"sessionsOpenedTotalCount\": 6849\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d4c1323-8eb2-4ad3-83ce-fa9b38f1e0e2",
+              "name": "Authentication required or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 4556,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6dbab2b1-db00-4aaf-9683-0f23b2bbe11b",
+          "name": "Oracle WebLogic Server APIs Get application deployment metrics",
+          "request": {
+            "name": "Oracle WebLogic Server APIs Get application deployment metrics",
+            "description": {
+              "content": "Returns detailed monitoring information for a specific deployed application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "deployments",
+                ":appName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "appName",
+                  "description": "(Required) The name of the deployed application"
+                },
+                {
+                  "description": "Hostname of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "Port of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "909a1d19-4a64-4703-a57a-3a9cf565d1a3",
+              "name": "Application deployment metrics",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deployments",
+                    ":appName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appName",
+                      "description": "(Required) The name of the deployed application"
+                    },
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"type\": \"string\",\n  \"state\": \"string\",\n  \"healthState\": {\n    \"state\": \"string\",\n    \"subsystemName\": \"string\"\n  },\n  \"targets\": [\n    \"string\",\n    \"string\"\n  ],\n  \"sessions\": {\n    \"openSessionsCurrentCount\": 8282,\n    \"openSessionsHighCount\": 4784,\n    \"sessionsOpenedTotalCount\": 9270\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e924161-cb97-4fae-a03f-515f7165d3e7",
+              "name": "Authentication required or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deployments",
+                    ":appName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appName",
+                      "description": "(Required) The name of the deployed application"
+                    },
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 4556,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "94b569d7-6a04-4eb6-b48a-a80fa3aefc28",
+              "name": "The specified resource was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deployments",
+                    ":appName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appName",
+                      "description": "(Required) The name of the deployed application"
+                    },
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 4556,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3b936ec8-e677-4fbd-b481-250481119140",
+          "name": "Oracle WebLogic Server APIs List servlet metrics for an application",
+          "request": {
+            "name": "Oracle WebLogic Server APIs List servlet metrics for an application",
+            "description": {
+              "content": "Returns servlet-level monitoring metrics for a deployed web application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "deployments",
+                ":appName",
+                "servlets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "appName",
+                  "description": "(Required) The name of the deployed application"
+                },
+                {
+                  "description": "Hostname of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "Port of the WebLogic Administration Server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "50296cf5-2ecd-41f3-8f3e-5b369f316285",
+              "name": "List of servlet metrics",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deployments",
+                    ":appName",
+                    "servlets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appName",
+                      "description": "(Required) The name of the deployed application"
+                    },
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"name\": \"string\",\n      \"contextPath\": \"string\",\n      \"invocationTotalCount\": 2995,\n      \"executionTimeAverage\": 4301,\n      \"executionTimeTotal\": 3006,\n      \"executionTimeHigh\": 2840,\n      \"executionTimeLow\": 171,\n      \"reloadTotalCount\": 2223\n    },\n    {\n      \"name\": \"string\",\n      \"contextPath\": \"string\",\n      \"invocationTotalCount\": 2055,\n      \"executionTimeAverage\": 3400,\n      \"executionTimeTotal\": 1295,\n      \"executionTimeHigh\": 9643,\n      \"executionTimeLow\": 6462,\n      \"reloadTotalCount\": 3562\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c2dd2ac-4bf0-49a6-8ae2-7212f07d6456",
+              "name": "Authentication required or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deployments",
+                    ":appName",
+                    "servlets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appName",
+                      "description": "(Required) The name of the deployed application"
+                    },
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 4556,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "80f42c6f-d3a7-4198-a69b-b75b3f5fee09",
+              "name": "The specified resource was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deployments",
+                    ":appName",
+                    "servlets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appName",
+                      "description": "(Required) The name of the deployed application"
+                    },
+                    {
+                      "description": "Hostname of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "Port of the WebLogic Administration Server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 4556,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Hostname of the WebLogic Administration Server",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost",
+      "key": "host"
+    },
+    {
+      "description": {
+        "content": "Port of the WebLogic Administration Server",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "7001",
+      "key": "port"
+    },
+    {
+      "type": "string",
+      "value": "https://{{host}}:{{port}}/management/weblogic/latest",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "63875ab2-192b-4058-9c1d-a863ac6d21f8",
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Applications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.\n\nContact Support:\n Name: Oracle Support",
+      "type": "text/plain"
+    }
+  }
+}

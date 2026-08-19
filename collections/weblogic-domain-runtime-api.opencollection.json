@@ -1,0 +1,107 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Domain Runtime API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain Runtime",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get domain runtime tree root",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime"
+          },
+          "docs": "Returns the root resource of the domain runtime MBean tree, providing links to runtime monitoring data and lifecycle operations across all servers in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all server lifecycle runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes"
+          },
+          "docs": "Returns lifecycle runtime information for all servers in the domain, including current state and available lifecycle operations."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a server lifecycle runtime",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns lifecycle runtime information for a specific server including its current state."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all server runtimes in the domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverRuntimes"
+          },
+          "docs": "Returns runtime information for all running servers in the domain, accessed from the administration server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a server runtime from the domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverRuntimes/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns runtime information for a specific server in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List deployment progress objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/deploymentManager/deploymentProgressObjects"
+          },
+          "docs": "Returns information about in-progress and completed deployment operations across the domain."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

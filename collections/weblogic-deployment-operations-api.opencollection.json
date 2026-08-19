@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Deployment Operations API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Deployment Operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Deploy an application at runtime",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/deploymentManager/deploy",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deploys an application to the specified targets using the deployment manager. This is a runtime operation that does not require an edit session."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Undeploy an application at runtime",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/deploymentManager/undeploy",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Undeploys an application from the specified targets using the deployment manager."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Redeploy an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/deploymentManager/redeploy",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Redeploys an application, refreshing it from the source location. Can update the entire application or specific modules."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Start a deployed application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/deploymentManager/startApplication",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts a deployed application that is currently in the prepared or admin state, transitioning it to the active state."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Stop a deployed application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/deploymentManager/stopApplication",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Stops a deployed application, transitioning it to the prepared state where it no longer accepts client requests."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all deployment progress objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/deploymentManager/deploymentProgressObjects"
+          },
+          "docs": "Returns progress information for all in-progress and recently completed deployment operations."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get deployment progress",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/deploymentManager/deploymentProgressObjects/:taskId",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path",
+                "description": "Deployment task identifier"
+              }
+            ]
+          },
+          "docs": "Returns progress information for a specific deployment operation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

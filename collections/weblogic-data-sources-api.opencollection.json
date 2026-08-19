@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Data Sources API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all data source metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/dataSources"
+          },
+          "docs": "Returns monitoring metrics for all JDBC data sources across all servers in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get data source metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/dataSources/:dataSourceName",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Returns detailed metrics for a specific JDBC data source."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Test a data source connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/dataSources/:dataSourceName/test",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Tests the connection pool for the specified data source by reserving and releasing a connection."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

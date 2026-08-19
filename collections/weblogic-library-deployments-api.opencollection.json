@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Library Deployments API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Library Deployments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all shared library deployments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/libraries"
+          },
+          "docs": "Returns all shared library deployment configurations in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a shared library deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/libraries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new shared library deployment. Requires an active edit session."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a shared library deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/libraries/:libraryName",
+            "params": [
+              {
+                "name": "libraryName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the shared library deployment"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific shared library deployment."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Remove a shared library deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/libraries/:libraryName",
+            "params": [
+              {
+                "name": "libraryName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the shared library deployment"
+              }
+            ]
+          },
+          "docs": "Removes a shared library deployment from the domain. Requires an active edit session."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

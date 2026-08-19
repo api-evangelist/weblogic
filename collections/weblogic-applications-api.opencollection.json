@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Applications API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all application deployment metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/deployments"
+          },
+          "docs": "Returns monitoring information for all deployed applications across the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get application deployment metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/deployments/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Returns detailed monitoring information for a specific deployed application."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List servlet metrics for an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/deployments/:appName/servlets",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Returns servlet-level monitoring metrics for a deployed web application."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

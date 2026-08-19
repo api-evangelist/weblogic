@@ -1,0 +1,151 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Server Runtime API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Server Runtime",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server runtime tree root",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime"
+          },
+          "docs": "Returns the root resource of the server runtime MBean tree for the server handling the request."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get JVM runtime information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JVMRuntime"
+          },
+          "docs": "Returns JVM runtime information including heap usage, uptime, and Java version for the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get thread pool runtime information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/threadPoolRuntime"
+          },
+          "docs": "Returns thread pool runtime information including active threads, queue length, and throughput metrics for the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get JDBC service runtime information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JDBCServiceRuntime"
+          },
+          "docs": "Returns JDBC service runtime information including data source runtimes and connection pool metrics."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JDBC data source runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans"
+          },
+          "docs": "Returns runtime information for all JDBC data sources on the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a JDBC data source runtime",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JDBCServiceRuntime/JDBCDataSourceRuntimeMBeans/:dataSourceName",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Returns runtime information for a specific JDBC data source."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get JMS runtime information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JMSRuntime"
+          },
+          "docs": "Returns JMS runtime information including JMS server runtimes and connection statistics for the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JMS server runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/JMSRuntime/JMSServers"
+          },
+          "docs": "Returns runtime information for all JMS servers on the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all application runtimes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/applicationRuntimes"
+          },
+          "docs": "Returns runtime information for all deployed applications on the current server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get an application runtime",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/serverRuntime/applicationRuntimes/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Returns runtime information for a specific deployed application."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

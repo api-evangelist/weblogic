@@ -1,0 +1,112 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Application Deployments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all application deployments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments"
+          },
+          "docs": "Returns all application deployment configurations in the domain. Requires an active edit session for modification operations."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create an application deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new application deployment configuration. Requires an active edit session. The application must be accessible from the administration server file system or uploaded first."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get an application deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the application deployment"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific application deployment."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Update an application deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the application deployment"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the configuration of a specific application deployment. Requires an active edit session."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Remove an application deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the application deployment"
+              }
+            ]
+          },
+          "docs": "Removes an application deployment configuration from the domain. Requires an active edit session. This undeploys the application from all targets upon activation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

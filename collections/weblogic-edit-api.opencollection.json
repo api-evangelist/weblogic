@@ -1,0 +1,412 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Edit API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Edit",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get edit configuration tree root",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit"
+          },
+          "docs": "Returns the root resource of the edit configuration tree. This provides links to all configurable resources in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Start an edit session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/changeManager/startEdit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts a new configuration edit session. Only one edit session can be active per user. The edit session locks the domain configuration for exclusive modification by the current user."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Activate pending changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/changeManager/activate"
+          },
+          "docs": "Activates all pending configuration changes made during the current edit session. This distributes changes to all affected servers in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Cancel the current edit session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/changeManager/cancelEdit"
+          },
+          "docs": "Cancels the current edit session and discards all pending configuration changes."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Undo unactivated changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/changeManager/undoUnactivatedChanges"
+          },
+          "docs": "Reverts all unactivated changes within the current edit session without ending the session."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all server configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers"
+          },
+          "docs": "Returns all server configurations in the domain for editing."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new server configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new managed server configuration in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a server configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific server for editing."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Update a server configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the configuration of a specific server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Delete a server configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/servers/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Deletes a managed server configuration from the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all cluster configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters"
+          },
+          "docs": "Returns all cluster configurations in the domain for editing."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new cluster configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new cluster configuration in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a cluster configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters/:clusterName",
+            "params": [
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic cluster"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific cluster for editing."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Update a cluster configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters/:clusterName",
+            "params": [
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic cluster"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the configuration of a specific cluster."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Delete a cluster configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/clusters/:clusterName",
+            "params": [
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic cluster"
+              }
+            ]
+          },
+          "docs": "Deletes a cluster configuration from the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JDBC system resource configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JDBCSystemResources"
+          },
+          "docs": "Returns all JDBC system resource (data source) configurations in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new JDBC system resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JDBCSystemResources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new JDBC system resource (data source) configuration."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get a JDBC system resource configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JDBCSystemResources/:dataSourceName",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific JDBC system resource."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Delete a JDBC system resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JDBCSystemResources/:dataSourceName",
+            "params": [
+              {
+                "name": "dataSourceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JDBC data source"
+              }
+            ]
+          },
+          "docs": "Deletes a JDBC system resource configuration from the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JMS system resource configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JMSSystemResources"
+          },
+          "docs": "Returns all JMS system resource configurations in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new JMS system resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/JMSSystemResources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new JMS system resource configuration."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all application deployment configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments"
+          },
+          "docs": "Returns all application deployment configurations in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Create a new application deployment configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new application deployment configuration."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get an application deployment configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific application deployment."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Delete an application deployment configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/management/weblogic/latest/edit/appDeployments/:appName",
+            "params": [
+              {
+                "name": "appName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed application"
+              }
+            ]
+          },
+          "docs": "Deletes an application deployment configuration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

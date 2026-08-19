@@ -1,0 +1,44 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Health API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Health",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server health status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/servers/:serverName/health",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns the overall health state of the specified server along with health status of individual subsystems."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments JMS API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "JMS",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all JMS server metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/JMSServers"
+          },
+          "docs": "Returns monitoring metrics for all JMS servers in the domain."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get JMS server metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/JMSServers/:jmsServerName",
+            "params": [
+              {
+                "name": "jmsServerName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JMS server"
+              }
+            ]
+          },
+          "docs": "Returns detailed metrics for a specific JMS server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List JMS destinations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/JMSServers/:jmsServerName/destinations",
+            "params": [
+              {
+                "name": "jmsServerName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the JMS server"
+              }
+            ]
+          },
+          "docs": "Returns monitoring metrics for all destinations on a JMS server."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Clusters API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Clusters",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all monitored clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/clusters"
+          },
+          "docs": "Returns monitoring information for all clusters in the domain including member servers and cluster health."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get cluster monitoring information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/clusters/:clusterName",
+            "params": [
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic cluster"
+              }
+            ]
+          },
+          "docs": "Returns detailed monitoring information for a specific cluster including member server states and cluster health."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

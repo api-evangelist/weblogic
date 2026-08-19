@@ -1,0 +1,112 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Servers API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Servers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List all monitored servers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/servers"
+          },
+          "docs": "Returns monitoring information for all servers in the domain including their current state, health, and basic runtime metrics."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server monitoring information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/servers/:serverName",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns detailed monitoring information for a specific server including state, health, JVM metrics, and subsystem runtimes."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server JVM metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/servers/:serverName/jvm",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns JVM runtime metrics for the specified server including heap usage, garbage collection statistics, and thread information."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Get server thread pool metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/servers/:serverName/threadPool",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns thread pool monitoring data for the specified server including thread counts, queue lengths, and throughput."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs List work managers on a server",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/management/weblogic/latest/servers/:serverName/workManagers",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Returns monitoring information for all work managers on the specified server."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

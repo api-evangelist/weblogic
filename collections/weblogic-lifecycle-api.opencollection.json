@@ -1,0 +1,227 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Lifecycle API",
+    "version": "14.1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Lifecycle",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Start a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/start",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Starts the specified managed server."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Shut down a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/shutdown",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Gracefully shuts down the specified managed server. In-flight work is completed before shutdown."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Force shut down a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/forceShutdown",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Forces an immediate shutdown of the specified managed server without waiting for in-flight work to complete."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Suspend a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/suspend",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Suspends the specified managed server, transitioning it to ADMIN state where it only accepts administrative requests."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Resume a suspended managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/resume",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Resumes the specified managed server from ADMIN state back to RUNNING state, re-enabling it to accept client requests."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Restart SSL on a managed server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/domainRuntime/serverLifeCycleRuntimes/:serverName/restartSSL",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Restarts the SSL listen sockets on the specified managed server, reloading SSL certificates and keys."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Shut down a server via lifecycle API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/lifecycle/latest/servers/:serverName/shutdown",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Shuts down the specified server using the lifecycle management resource set."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Start a server via lifecycle API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/lifecycle/latest/servers/:serverName/start",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Starts the specified server using the lifecycle management resource set."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Suspend a server via lifecycle API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/lifecycle/latest/servers/:serverName/suspend",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Suspends the specified server using the lifecycle management resource set."
+        },
+        {
+          "info": {
+            "name": "Oracle WebLogic Server APIs Resume a server via lifecycle API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/management/weblogic/latest/lifecycle/latest/servers/:serverName/resume",
+            "params": [
+              {
+                "name": "serverName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the WebLogic Server instance"
+              }
+            ]
+          },
+          "docs": "Resumes the specified server using the lifecycle management resource set."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
