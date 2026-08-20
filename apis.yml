@@ -87,6 +87,8 @@ apis:
   name: Oracle WebLogic Server APIs Applications API
   description: Application deployment monitoring
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -117,6 +119,8 @@ apis:
   name: Oracle WebLogic Server APIs Clusters API
   description: Cluster-level monitoring information
   tags:
+  - Cluster
+  tags_raw:
   - Clusters
   properties:
   - type: OpenAPI
