@@ -3,6 +3,18 @@ description: >-
   Collection of APIs and resources for Oracle WebLogic Server administration and management. WebLogic Server is Oracle's
   enterprise-grade Java EE application server providing high availability, scalability, and comprehensive management
   capabilities through RESTful management APIs, monitoring and diagnostics, and deployment services.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: enterprise
   onboarding: self-serve
@@ -578,6 +590,9 @@ apis:
   - type: JSONSchema
     url: json-schema/weblogic-application-deployment.json
 common:
+  - type: CapabilityMap
+    url: capabilities/weblogic-capability-edges.yml
+    name: Oracle WebLogic Server APIs Business Capability Map
   - type: AgenticAccess
     url: agentic-access/weblogic-agentic-access.yml
   - type: DomainSecurity

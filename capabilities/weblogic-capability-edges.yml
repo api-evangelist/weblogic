@@ -1,0 +1,47 @@
+slug: weblogic
+provider: Oracle WebLogic Server APIs
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Deployment Operations
+  spec_file: weblogic-deployment-operations-api-openapi.yml
+  capability_id: BC-4210.40
+  capability_id_l1: BC-4210
+  capability_name: Deployment Orchestration
+  confidence: 0.75
+  evidence: POST /domainRuntime/deploymentManager/deploy "Deploy an application at runtime"; "Undeploy
+    an application at runtime"; "Redeploy an application"
+  reason: Operations deploy, undeploy, redeploy, start and stop applications on a runtime — deployment
+    orchestration of software changes. Also plausible as IT Application Management, but the deploy verbs
+    match deployment orchestration directly.
+- tag: Clusters
+  spec_file: weblogic-clusters-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: GET /clusters getClusters "List all monitored clusters"; schema ClusterMonitoring
+  reason: Monitoring of WebLogic application-server clusters is IT infrastructure/operations management,
+    not a business capability of a bank. Sub-capability chosen as infrastructure (compute) management;
+    could arguably be IT Operations Management.
+- tag: Lifecycle
+  spec_file: weblogic-lifecycle-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: POST /domainRuntime/serverLifeCycleRuntimes/{serverName}/start "Start a managed server"; "Force
+    shut down a managed server"
+  reason: Start/stop/suspend/resume of managed servers is day-to-day IT operations control of infrastructure,
+    no business capability.
