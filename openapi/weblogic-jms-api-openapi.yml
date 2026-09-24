@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments JMS API
   description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
@@ -92,27 +92,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    jmsServerName:
-      name: jmsServerName
-      in: path
-      required: true
-      description: The name of the JMS server
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Authentication required or invalid credentials
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -222,6 +201,27 @@ components:
               type: string
             subsystemName:
               type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    jmsServerName:
+      name: jmsServerName
+      in: path
+      required: true
+      description: The name of the JMS server
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http

@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Domain Configuration API
   description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
@@ -121,6 +121,107 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Link relation type
+        href:
+          type: string
+          format: uri
+          description: Link URI
+        title:
+          type: string
+          description: Link title
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Error type URI
+        title:
+          type: string
+          description: Short error title
+        status:
+          type: integer
+          description: HTTP status code
+        detail:
+          type: string
+          description: Detailed error message
+        o:errorPath:
+          type: string
+          description: Path to the field that caused the error
+    DomainConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Domain name
+        adminServerName:
+          type: string
+          description: Name of the administration server
+        domainVersion:
+          type: string
+          description: WebLogic Server domain version
+        productionModeEnabled:
+          type: boolean
+          description: Whether the domain is in production mode
+        configurationVersion:
+          type: string
+          description: Configuration version string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    ClusterConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Cluster name
+        clusterMessagingMode:
+          type: string
+          description: Messaging mode for the cluster
+          enum:
+          - unicast
+          - multicast
+        clusterBroadcastChannel:
+          type: string
+          description: Multicast channel for cluster communication
+        clusterAddress:
+          type: string
+          description: Comma-separated list of address:port pairs for cluster members
+        defaultLoadAlgorithm:
+          type: string
+          description: Load balancing algorithm
+          enum:
+          - round-robin
+          - weight-based
+          - round-robin-affinity
+          - weight-based-affinity
+          - random
+        weblogicPluginEnabled:
+          type: boolean
+          description: Whether the WebLogic plugin is enabled
+        frontendHost:
+          type: string
+          description: Frontend host for the cluster
+        frontendHTTPPort:
+          type: integer
+          description: Frontend HTTP port
+        frontendHTTPSPort:
+          type: integer
+          description: Frontend HTTPS port
+        numberOfServersInClusterAddress:
+          type: integer
+          description: Number of servers in the cluster address
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+      required:
+      - name
     ServerConfiguration:
       type: object
       properties:
@@ -178,24 +279,6 @@ components:
             $ref: '#/components/schemas/Link'
       required:
       - name
-    Error:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Error type URI
-        title:
-          type: string
-          description: Short error title
-        status:
-          type: integer
-          description: HTTP status code
-        detail:
-          type: string
-          description: Detailed error message
-        o:errorPath:
-          type: string
-          description: Path to the field that caused the error
     SecurityConfiguration:
       type: object
       properties:
@@ -225,89 +308,6 @@ components:
           - os
           - 'true'
           - 'false'
-    Link:
-      type: object
-      properties:
-        rel:
-          type: string
-          description: Link relation type
-        href:
-          type: string
-          format: uri
-          description: Link URI
-        title:
-          type: string
-          description: Link title
-    ClusterConfiguration:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Cluster name
-        clusterMessagingMode:
-          type: string
-          description: Messaging mode for the cluster
-          enum:
-          - unicast
-          - multicast
-        clusterBroadcastChannel:
-          type: string
-          description: Multicast channel for cluster communication
-        clusterAddress:
-          type: string
-          description: Comma-separated list of address:port pairs for cluster members
-        defaultLoadAlgorithm:
-          type: string
-          description: Load balancing algorithm
-          enum:
-          - round-robin
-          - weight-based
-          - round-robin-affinity
-          - weight-based-affinity
-          - random
-        weblogicPluginEnabled:
-          type: boolean
-          description: Whether the WebLogic plugin is enabled
-        frontendHost:
-          type: string
-          description: Frontend host for the cluster
-        frontendHTTPPort:
-          type: integer
-          description: Frontend HTTP port
-        frontendHTTPSPort:
-          type: integer
-          description: Frontend HTTPS port
-        numberOfServersInClusterAddress:
-          type: integer
-          description: Number of servers in the cluster address
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/Link'
-      required:
-      - name
-    DomainConfiguration:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Domain name
-        adminServerName:
-          type: string
-          description: Name of the administration server
-        domainVersion:
-          type: string
-          description: WebLogic Server domain version
-        productionModeEnabled:
-          type: boolean
-          description: Whether the domain is in production mode
-        configurationVersion:
-          type: string
-          description: Configuration version string
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/Link'
   responses:
     Unauthorized:
       description: Authentication required or invalid credentials

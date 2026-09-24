@@ -41,6 +41,25 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
+  "notes": [
+    "weblogic-application-deployments-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-applications-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-clusters-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-data-sources-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-deployment-operations-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-diagnostics-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-domain-configuration-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-domain-runtime-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-edit-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-health-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-jms-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-library-deployments-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-lifecycle-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-server-configuration-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-server-runtime-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-servers-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "weblogic-upload-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
   "skipped": []
 }

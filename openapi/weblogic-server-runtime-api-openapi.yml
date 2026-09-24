@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Server Runtime API
   description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
@@ -210,56 +210,15 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    Link:
-      type: object
-      properties:
-        rel:
-          type: string
-          description: Link relation type
-        href:
-          type: string
-          format: uri
-          description: Link URI
-        title:
-          type: string
-          description: Link title
-    JVMRuntime:
+    JDBCServiceRuntime:
       type: object
       properties:
         name:
           type: string
-        heapSizeCurrent:
-          type: integer
-          format: int64
-          description: Current JVM heap size in bytes
-        heapSizeMax:
-          type: integer
-          format: int64
-          description: Maximum JVM heap size in bytes
-        heapFreeCurrent:
-          type: integer
-          format: int64
-          description: Current free heap memory in bytes
-        heapFreePercent:
-          type: number
-          format: double
-          description: Percentage of heap memory that is free
-        javaVersion:
-          type: string
-          description: Java version
-        javaVendor:
-          type: string
-          description: Java vendor name
-        osName:
-          type: string
-          description: Operating system name
-        osVersion:
-          type: string
-          description: Operating system version
-        uptime:
-          type: integer
-          format: int64
-          description: JVM uptime in milliseconds
+        JDBCDataSourceRuntimeMBeans:
+          type: array
+          items:
+            $ref: '#/components/schemas/JDBCDataSourceRuntime'
     ApplicationRuntime:
       type: object
       properties:
@@ -297,45 +256,37 @@ components:
                 type: string
               state:
                 type: string
-    JMSRuntime:
+    Link:
       type: object
       properties:
-        name:
+        rel:
           type: string
-        connectionsCurrentCount:
-          type: integer
-          description: Current number of JMS connections
-        connectionsTotalCount:
-          type: integer
-          description: Total JMS connections created
-        connectionsHighCount:
-          type: integer
-          description: High watermark of JMS connections
-        JMSServersCurrentCount:
-          type: integer
-          description: Current number of JMS servers
-        JMSServersTotalCount:
-          type: integer
-          description: Total JMS servers created
-        JMSServersHighCount:
-          type: integer
-          description: High watermark of JMS servers
-        healthState:
-          type: object
-          properties:
-            state:
-              type: string
-            subsystemName:
-              type: string
-    JDBCServiceRuntime:
+          description: Link relation type
+        href:
+          type: string
+          format: uri
+          description: Link URI
+        title:
+          type: string
+          description: Link title
+    Error:
       type: object
       properties:
-        name:
+        type:
           type: string
-        JDBCDataSourceRuntimeMBeans:
-          type: array
-          items:
-            $ref: '#/components/schemas/JDBCDataSourceRuntime'
+          description: Error type URI
+        title:
+          type: string
+          description: Short error title
+        status:
+          type: integer
+          description: HTTP status code
+        detail:
+          type: string
+          description: Detailed error message
+        o:errorPath:
+          type: string
+          description: Path to the field that caused the error
     JDBCDataSourceRuntime:
       type: object
       properties:
@@ -402,59 +353,6 @@ components:
         prepStmtCacheCurrentSize:
           type: integer
           description: Current size of the prepared statement cache
-    JMSServerRuntime:
-      type: object
-      properties:
-        name:
-          type: string
-          description: JMS server name
-        messagesCurrentCount:
-          type: integer
-          format: int64
-          description: Current number of messages
-        messagesPendingCount:
-          type: integer
-          format: int64
-          description: Number of pending messages
-        messagesHighCount:
-          type: integer
-          format: int64
-          description: High watermark of messages
-        messagesReceivedCount:
-          type: integer
-          format: int64
-          description: Total messages received
-        bytesCurrentCount:
-          type: integer
-          format: int64
-          description: Current total bytes of all messages
-        bytesPendingCount:
-          type: integer
-          format: int64
-          description: Bytes of pending messages
-        consumersCurrentCount:
-          type: integer
-          format: int64
-          description: Current number of consumers
-        consumersHighCount:
-          type: integer
-          format: int64
-          description: High watermark of consumers
-        destinationsCurrentCount:
-          type: integer
-          format: int64
-          description: Current number of destinations
-        sessionPoolsCurrentCount:
-          type: integer
-          format: int64
-          description: Current number of session pools
-        healthState:
-          type: object
-          properties:
-            state:
-              type: string
-            subsystemName:
-              type: string
     ServerRuntime:
       type: object
       properties:
@@ -510,24 +408,43 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Link'
-    Error:
+    JVMRuntime:
       type: object
       properties:
-        type:
+        name:
           type: string
-          description: Error type URI
-        title:
-          type: string
-          description: Short error title
-        status:
+        heapSizeCurrent:
           type: integer
-          description: HTTP status code
-        detail:
+          format: int64
+          description: Current JVM heap size in bytes
+        heapSizeMax:
+          type: integer
+          format: int64
+          description: Maximum JVM heap size in bytes
+        heapFreeCurrent:
+          type: integer
+          format: int64
+          description: Current free heap memory in bytes
+        heapFreePercent:
+          type: number
+          format: double
+          description: Percentage of heap memory that is free
+        javaVersion:
           type: string
-          description: Detailed error message
-        o:errorPath:
+          description: Java version
+        javaVendor:
           type: string
-          description: Path to the field that caused the error
+          description: Java vendor name
+        osName:
+          type: string
+          description: Operating system name
+        osVersion:
+          type: string
+          description: Operating system version
+        uptime:
+          type: integer
+          format: int64
+          description: JVM uptime in milliseconds
     ThreadPoolRuntime:
       type: object
       properties:
@@ -573,6 +490,89 @@ components:
               type: string
             subsystemName:
               type: string
+    JMSRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+        connectionsCurrentCount:
+          type: integer
+          description: Current number of JMS connections
+        connectionsTotalCount:
+          type: integer
+          description: Total JMS connections created
+        connectionsHighCount:
+          type: integer
+          description: High watermark of JMS connections
+        JMSServersCurrentCount:
+          type: integer
+          description: Current number of JMS servers
+        JMSServersTotalCount:
+          type: integer
+          description: Total JMS servers created
+        JMSServersHighCount:
+          type: integer
+          description: High watermark of JMS servers
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
+    JMSServerRuntime:
+      type: object
+      properties:
+        name:
+          type: string
+          description: JMS server name
+        messagesCurrentCount:
+          type: integer
+          format: int64
+          description: Current number of messages
+        messagesPendingCount:
+          type: integer
+          format: int64
+          description: Number of pending messages
+        messagesHighCount:
+          type: integer
+          format: int64
+          description: High watermark of messages
+        messagesReceivedCount:
+          type: integer
+          format: int64
+          description: Total messages received
+        bytesCurrentCount:
+          type: integer
+          format: int64
+          description: Current total bytes of all messages
+        bytesPendingCount:
+          type: integer
+          format: int64
+          description: Bytes of pending messages
+        consumersCurrentCount:
+          type: integer
+          format: int64
+          description: Current number of consumers
+        consumersHighCount:
+          type: integer
+          format: int64
+          description: High watermark of consumers
+        destinationsCurrentCount:
+          type: integer
+          format: int64
+          description: Current number of destinations
+        sessionPoolsCurrentCount:
+          type: integer
+          format: int64
+          description: Current number of session pools
+        healthState:
+          type: object
+          properties:
+            state:
+              type: string
+            subsystemName:
+              type: string
   responses:
     Unauthorized:
       description: Authentication required or invalid credentials
@@ -587,18 +587,18 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   parameters:
-    appName:
-      name: appName
-      in: path
-      required: true
-      description: The name of the deployed application
-      schema:
-        type: string
     dataSourceName:
       name: dataSourceName
       in: path
       required: true
       description: The name of the JDBC data source
+      schema:
+        type: string
+    appName:
+      name: appName
+      in: path
+      required: true
+      description: The name of the deployed application
       schema:
         type: string
   securitySchemes:

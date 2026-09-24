@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Oracle WebLogic Server APIs Oracle WebLogic Server Deployment Application Deployments Lifecycle API
   description: RESTful API for deploying, undeploying, redeploying, and managing applications and shared libraries on Oracle WebLogic Server. Supports uploading application archives, deploying from the server file system, managing deployment plans, and controlling application lifecycle states across servers and clusters.
@@ -274,14 +274,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    serverName:
-      name: serverName
-      in: path
-      required: true
-      description: The name of the WebLogic Server instance
-      schema:
-        type: string
   schemas:
     Error:
       type: object
@@ -313,6 +305,14 @@ components:
         completed:
           type: boolean
           description: Whether the task is complete
+  parameters:
+    serverName:
+      name: serverName
+      in: path
+      required: true
+      description: The name of the WebLogic Server instance
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http
